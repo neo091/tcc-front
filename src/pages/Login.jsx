@@ -47,7 +47,7 @@ const Login = () => {
                     </div>
 
                     <div className="md:block hidden w-1/2">
-                        <img className="rounded-2xl" src="src/assets/logo.jpg" />
+                        <img className="rounded-2xl" src="https://i.imgur.com/luWsbMo.jpg" />
                     </div>
                 </div>
             </section>
