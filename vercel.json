@@ -11,6 +11,10 @@
         {
             "src": "/register",
             "dest": "/"
+        },
+        {
+            "src": "/src/assets/logo.jpg",
+            "dest": "/src/assets/logo.jpg"
         }
     ]
 }
