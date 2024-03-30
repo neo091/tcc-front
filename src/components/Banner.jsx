@@ -9,6 +9,7 @@ const Banner = ({ text, children }) => {
                 }
 
                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magni eos, itaque, nostrum hic eius nesciunt deleniti officia ad numquam rem quis rerum laudantium architecto tempore eum illum sunt quo fugit?</p>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magni eos, itaque, nostrum hic eius nesciunt deleniti officia ad numquam rem quis rerum laudantium architecto tempore eum illum sunt quo fugit?</p>
 
             </div>
 
