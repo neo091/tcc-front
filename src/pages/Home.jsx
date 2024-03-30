@@ -4,7 +4,6 @@ import logo from '../assets/logo.jpg'
 import ButtonSky from "../components/ButtonSky"
 import Listas from "../components/Listas"
 
-
 const Home = () => {
 
     return (
