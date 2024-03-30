@@ -8,6 +8,8 @@ const Banner = ({ text, children }) => {
                     text ? <h1 className=' text-2xl text-white font-bold w-2/3 mx-auto'>{text}</h1> : children
                 }
 
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magni eos, itaque, nostrum hic eius nesciunt deleniti officia ad numquam rem quis rerum laudantium architecto tempore eum illum sunt quo fugit?</p>
+
             </div>
 
         </>
