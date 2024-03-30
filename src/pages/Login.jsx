@@ -50,16 +50,10 @@ const Login = () => {
                     </div>
 
                     <div className="md:block hidden w-1/2">
-<<<<<<< HEAD
                         <img className="rounded-2xl" src={tcclogo} />
-=======
-                        <img className="rounded-2xl" src="https://i.imgur.com/luWsbMo.jpg" />
->>>>>>> be541c7bdd6aaa04166efeeb11d7ef42a97e9b77
                     </div>
                 </div>
             </section>
-
-
         </>
     )
 
