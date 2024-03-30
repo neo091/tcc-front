@@ -11,9 +11,9 @@ const Register = () => {
             <Banner text='Registro de Usuarios' />
 
             <Content>
-                <div className=' bg-gray-50 bg-opacity-50 border border-gray p-6'>
+                <div className='bg-gray-50 bg-opacity-50 border border-gray p-6'>
 
-                    <div className='w-3/4 mx-auto '>
+                    <div className='w-2/3 mx-auto '>
 
                         <div >
                             <form action="" className=''>

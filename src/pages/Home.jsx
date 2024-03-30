@@ -2,6 +2,8 @@ import Banner from "../components/Banner"
 import Content from "../components/Content"
 import logo from '../assets/logo.jpg'
 import ButtonSky from "../components/ButtonSky"
+import Listas from "../components/Listas"
+
 
 const Home = () => {
 
@@ -23,7 +25,7 @@ const Home = () => {
             </Banner>
             <Content>
 
-                Aquí va todo el contenido de la home
+
             </Content>
         </>
     )
