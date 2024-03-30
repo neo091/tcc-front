@@ -11,41 +11,32 @@ const Login = () => {
         <>
             <Banner text='Inicia sesión' />
             <Content>
-                <div className=' bg-gray-50 bg-opacity-50 border border-gray p-6'>
+                <div className='bg-gray-50 bg-opacity-50 border border-gray p-6'>
+                    <div className='w-2/3 mx-auto '>
 
-                    <div className='w-3/4 mx-auto '>
+                        <form action="" className=''>
+                            <div>
+                                <p>Nombre de usuario o correo electrónico</p>
+                                <input type="text" className='p-2 rounded-xl border w-full' />
+                            </div>
 
-                        <div >
-                            <form action="" className=''>
-                                <div>
-                                    <p>Nombre de usuario o correo electrónico</p>
-                                    <input type="text" className='p-2 rounded-xl border w-full' />
-                                </div>
+                            <div className='mt-2'>
+                                <p>Contraseña</p>
+                                <input type="password" className='p-2 rounded-xl border w-full' />
+                            </div>
 
-                                <div className='mt-2'>
-                                    <p>Contraseña</p>
-                                    <input type="password" className='p-2 rounded-xl border w-full' />
-                                </div>
+                            <div className='mt-2'>
+                                <input type="checkbox" className=' mr-3' />
+                                <label htmlFor="">Recuerdame</label>
+                            </div>
 
-                                <div className='mt-2'>
-                                    <input type="checkbox" className=' mr-3' />
-                                    <label htmlFor="">Recuerdame</label>
-                                </div>
+                            <div className='mt-2'>
+                                <Button text='Login' />
+                            </div>
 
-                                <div className='mt-2'>
-                                    <Button text='Login' />
-                                </div>
-
-                                <a href="/register" className=' text-blue-600'>Register</a>
-                            </form>
-                        </div>
+                            <a href="/register" className=' text-blue-600'>Register</a>
+                        </form>
                     </div>
-
-
-
-
-
-
                 </div>
             </Content>
         </>
