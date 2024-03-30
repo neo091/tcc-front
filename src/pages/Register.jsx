@@ -1,3 +1,5 @@
+import tcclogo from '../assets/logo.jpg'
+
 const Register = () => {
 
     return (
@@ -48,7 +50,7 @@ const Register = () => {
                     </div>
 
                     <div className="md:block hidden w-1/2">
-                        <img className="rounded-2xl" src="src/assets/logo.jpg" />
+                        <img className="rounded-2xl" src={tcclogo} />
                     </div>
                 </div>
             </section>
