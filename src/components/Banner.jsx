@@ -7,7 +7,6 @@ const Banner = ({ text, children }) => {
                 {
                     text ? <h1 className=' text-2xl w-2/3 mx-auto'>{text}</h1> : children
                 }
-
             </div>
 
         </>
