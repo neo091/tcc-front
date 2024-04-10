@@ -2,6 +2,7 @@ import tcclogo from '../assets/logo.jpg'
 import Banner from '../components/Banner'
 import Button from '../components/Button'
 import Content from '../components/Content'
+import Header from '../components/Header'
 
 
 
@@ -9,12 +10,13 @@ const Login = () => {
 
     return (
         <>
+            <Header />
             <Banner text='Inicia sesión' />
             <Content>
                 <div className='bg-gray-50 bg-opacity-50 border border-gray p-6'>
                     <div className='w-2/3 mx-auto '>
 
-                        <form action="" className=''>
+                        <form action="/Dashboard" method='POST'>
                             <div>
                                 <p>Nombre de usuario o correo electrónico</p>
                                 <input type="text" className='p-2 rounded-xl border w-full' />

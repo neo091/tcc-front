@@ -1,27 +1,36 @@
-import Banner from "../components/Banner"
 import Content from "../components/Content"
-import logo from '../assets/logo.jpg'
-import ButtonSky from "../components/ButtonSky"
-import Listas from "../components/Listas"
+import EnlaceDefault from "../components/EnlaceDefault"
+import Header from "../components/Header"
 
 const Home = () => {
 
     return (
         <>
-            <Banner>
-                <div className="w-2/3 mx-auto">
-                    <h2 className="text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center dark:text-white">APRENDE INGLÉS DE MANERA FÁCIL Y EFICIENTE</h2>
+            <Header />
+            <div className="w-2/3 flex items-center mx-auto my-14">
 
-                    <p class="mt-6 text-lg text-slate-600 text-center max-w-3xl mx-auto dark:text-slate-400">Aquí encontrarás una variedad de recursos, consejos y estrategias diseñadas para ayudarte a dominar este idioma de manera efectiva y sin complicaciones. <br />Ya sea que estés comenzando desde cero o buscando mejorar tus habilidades existentes, ¡estamos aquí para guiarte en cada paso del camino hacia la fluidez en <span className=" text-sky-500">inglés</span>!</p>
+                <div className="w-2/3">
+                    <h2 className="text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-4xl tracking-tight text-center ">APRENDE INGLÉS DE MANERA FÁCIL Y EFICIENTE</h2>
 
-
-                    <div class="mt-6 sm:mt-10 flex justify-center space-x-6 text-sm">
-
-                        <ButtonSky text='Comenzar' url='./register' />
-
-                    </div>
+                    <p className="mt-6 text-lg text-slate-600 text-center max-w-3xl mx-auto ">Aquí encontrarás una variedad de recursos, consejos y estrategias diseñadas para ayudarte a dominar este idioma de manera efectiva y sin complicaciones.</p>
                 </div>
-            </Banner>
+
+
+                <img src="images/learning.png" width="400px" height="500px" alt="" />
+
+
+
+            </div>
+
+            <div className=" w-2/5 mx-auto">
+
+                <div className="mt-6 sm:mt-10 flex justify-center space-x-6 text-sm">
+
+                    <EnlaceDefault text='Comenzar' href='./register' />
+
+                </div>
+
+            </div>
             <Content>
 
 

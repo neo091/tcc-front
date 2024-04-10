@@ -22,7 +22,7 @@ const Register = () => {
                                     <input type="text" className='p-2 rounded-xl border w-full' />
                                 </div>
 
-                                <div>
+                                <div className='mt-2'>
                                     <p>Correo electrónico</p>
                                     <input type="text" className='p-2 rounded-xl border w-full' />
                                 </div>
