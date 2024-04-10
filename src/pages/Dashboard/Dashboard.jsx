@@ -1,6 +1,6 @@
-import Content from "../components/Content"
+import Content from "../../components/Content"
 import { useParams } from 'react-router-dom'
-import Header from "../components/Header"
+import Header from "../../components/Header"
 import { useState } from "react"
 
 const ClientDash = ({ clientName, updateUserNameHandle }) => {
