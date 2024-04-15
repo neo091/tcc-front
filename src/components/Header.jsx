@@ -2,7 +2,7 @@ const Header = () => {
 
     return (
         <>
-            <header className=" w-full ">
+            <header className=" w-full bg-gradient-to-r from-violet-950 to-violet-800 text-white ">
                 <div className=" w-2/3 mx-auto">
 
                     <nav className="flex items-center justify-between flex-wrap p-2">
@@ -24,7 +24,7 @@ const Header = () => {
                                 </a>
                             </div>
                             <div>
-                                <a href="/login" className="inline-block text-sm px-4 py-2 leading-none border rounded border-black hover:bg-black hover:text-white hover:border-transparent  mt-4 lg:mt-0  ">Login</a>
+                                <a href="/login" className="inline-block text-sm px-4 py-2 leading-none border rounded border-white hover:bg-black hover:text-white hover:border-transparent  mt-4 lg:mt-0  ">Login</a>
 
                                 <a href="/register" className="inline-block text-sm px-4 py-2 leading-none  mt-4 lg:mt-0">Registro</a>
                             </div>

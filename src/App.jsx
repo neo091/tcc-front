@@ -2,10 +2,9 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Login from './pages/Login'
-import Register from './pages/Register'
-import Header from './components/Header'
-import Footer from './components/Footer'
+import Register from './pages/Register/Register'
 import { useState } from 'react'
+import RegisterSuccess from './pages/Register/Success'
 
 function App() {
 
@@ -26,7 +25,8 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/Login' element={<Login />} />
         <Route path='/Register' element={<Register />} />
-        <Route path='/Dashboard' element={<Dashboard user={user} updateUserNameHandle={updateUserNameHandle} />} />
+        <Route path='/Dashboard' element={<Dashboard user={user} />} />
+        <Route path='/register-success' element={<RegisterSuccess />} />
         <Route path='*' element={<Navigate to="/" />} />
       </Routes>
     </>

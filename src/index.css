@@ -26,3 +26,7 @@
 body {
     font-family: Nista, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
+
+.active-panel {
+    background-color: rgba(226, 226, 240, 1);
+}
