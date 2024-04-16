@@ -1,14 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Content from "../../components/Content"
 import Header from "../../components/Header"
+import HeaderDash from "./HeaderDash"
 
-const Profile = ({ name, type, updatePanelHandle }) => {
+const Profile = ({ name, type, updatePanelHandle, logoutHandle }) => {
 
     const updatePanel = (e) => {
         document.querySelector('.active-panel').classList.remove('active-panel')
         e.target.classList.add('active-panel')
         updatePanelHandle(e.target.dataset.panelName)
     }
+
     return (
         <>
             <div className="w-1/4 py-5">
@@ -27,7 +29,7 @@ const Profile = ({ name, type, updatePanelHandle }) => {
                 </div>
 
                 <div className="mt-2 flex flex-col">
-                    <a href="/login" className="bg-red-600  w-full text-white p-2">Desconectar</a>
+                    <a href="#" onClick={() => logoutHandle()} className="bg-red-600  w-full text-white p-2">Desconectar</a>
 
                 </div>
             </div>
@@ -101,9 +103,19 @@ const DashPanels = ({ type, activePanel }) => {
     )
 }
 
-const Dashboard = ({ user }) => {
+const Dashboard = () => {
 
-    if (!user.name) { return location.href = '/login' }
+    const [user, setUser] = useState([])
+
+    useEffect(() => {
+        const loggedUserJson = window.localStorage.getItem("loggedTCC")
+        if (loggedUserJson) {
+            const userLogged = JSON.parse(loggedUserJson)
+            setUser(userLogged)
+        } else {
+            location.href = './login'
+        }
+    }, [])
 
     const [activePanel, setActivePanel] = useState('tasks')
 
@@ -111,12 +123,19 @@ const Dashboard = ({ user }) => {
         setActivePanel(panel)
     }
 
+    const logout = () => {
+        window.localStorage.clear()
+        location.href = './login'
+    }
+
+
     return (
         <>
-            <Header />
+            {user ? <HeaderDash user={user} /> : <Header />}
+
             <Content>
                 <div className="flex">
-                    <Profile name={user.name} type={user.type} updatePanelHandle={updateTabeHandle} />
+                    <Profile name={user.name} type={user.type} logoutHandle={logout} updatePanelHandle={updateTabeHandle} />
                     <DashPanels type={user.type} activePanel={activePanel} />
                 </div>
             </Content>
