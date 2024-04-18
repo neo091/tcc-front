@@ -10,9 +10,9 @@ const Home = () => {
             <div className="w-2/3 flex items-center mx-auto my-14">
 
                 <div className="w-2/3">
-                    <h2 className="text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-4xl tracking-tight text-center ">APRENDE INGLÉS DE MANERA FÁCIL Y EFICIENTE</h2>
+                    <h2 className=" font-extrabold text-4xl sm:text-5xl lg:text-4xl tracking-tight text-center ">APRENDE INGLÉS DE MANERA FÁCIL Y EFICIENTE</h2>
 
-                    <p className="mt-6 text-lg text-slate-600 text-center max-w-3xl mx-auto ">Aquí encontrarás una variedad de recursos, consejos y estrategias diseñadas para ayudarte a dominar este idioma de manera efectiva y sin complicaciones.</p>
+                    <p className="mt-6 text-lg text-slate-300 text-center max-w-3xl mx-auto ">Aquí encontrarás una variedad de recursos, consejos y estrategias diseñadas para ayudarte a dominar este idioma de manera efectiva y sin complicaciones.</p>
                 </div>
 
 

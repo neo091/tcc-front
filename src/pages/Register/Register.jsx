@@ -13,7 +13,7 @@ const Input = ({ type, label, handle }) => {
     return (
         <div className='my-4'>
             <label>{label}</label>
-            <input type={type} className='p-2 rounded-xl border w-full' onChange={(e) => handle(e.target.value)} />
+            <input type={type} className='p-2 bg-slate-700 rounded w-full' onChange={(e) => handle(e.target.value)} />
         </div>
     )
 }
@@ -120,18 +120,22 @@ const Register = () => {
 
             <Content>
                 <Alert type={alertType} message={alertMessage} hide={hideAlert} />
-                <div className='bg-gray-50 bg-opacity-50 border rounded border-gray p-6'>
+                <div className='flex justify-center items-center'>
 
-                    <div className='w-2/3 mx-auto '>
+                    <div className=' bg-slate-800 p-2 '>
 
                         <form action="/register-success" method='POST' onSubmit={(e) => registerSubmit(e)}>
                             <Input type="text" label="Nombre" handle={nameHandle} />
                             <Input type="text" label="Correo electrónico" handle={emailHandle} />
                             <Input type="password" label="Contraseña" handle={passwordHandle} />
 
-                            <Separador />
+                            <div className='flex justify-center items-center gap-3'>
 
-                            <Button text='Register' /> | <EnlaceDefaultNoBg href="/login" text="Login" />
+                                <Button text='Register' /> | <EnlaceDefaultNoBg href="/login" text="Login" />
+
+                            </div>
+
+
 
                         </form>
                     </div>

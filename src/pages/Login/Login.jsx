@@ -13,7 +13,7 @@ const Input = ({ type, label, handle }) => {
     return (
         <div className='my-4'>
             <label>{label}</label>
-            <input type={type} className='p-2 rounded-xl border w-full' onChange={(e) => handle(e.target.value)} />
+            <input type={type} className='p-2 bg-slate-700 rounded border-none w-full' onChange={(e) => handle(e.target.value)} />
         </div>
     )
 }
@@ -109,16 +109,18 @@ const Login = () => {
             <Header />
             <Banner text='Inicia sesión' />
             <Content>
-                <div className='bg-gray-50 bg-opacity-50 border border-gray p-6'>
-                    <div className='w-2/3 mx-auto '>
+                <div className=' flex justify-center items-center self-center'>
+                    <div className='bg-slate-800 p-2 rounded' >
 
                         <Alert type={alert.type} message={alert.message} hide={hideAlert} />
 
                         <form action="/Dashboard" method='POST' onSubmit={(e) => submitHandle(e)} >
                             <Input type='text' label='Correo electrónico' handle={emailHandle} />
                             <Input type='password' label='Contraseña' handle={passwordHandle} />
-                            <Separador />
-                            <Button text='Login' /> | <EnlaceDefaultNoBg text='Register' href='./register' />
+                            <div className='flex gap-3 items-center justify-center'>
+                                <Button text='Login' /> | <EnlaceDefaultNoBg text='Register' href='./register' />
+                            </div>
+
                         </form>
                     </div>
                 </div>

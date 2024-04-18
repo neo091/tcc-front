@@ -2,40 +2,9 @@ import { useEffect, useState } from "react"
 import Content from "../../components/Content"
 import Header from "../../components/Header"
 import HeaderDash from "./HeaderDash"
-
-const Profile = ({ name, type, updatePanelHandle, logoutHandle }) => {
-
-    const updatePanel = (e) => {
-        document.querySelector('.active-panel').classList.remove('active-panel')
-        e.target.classList.add('active-panel')
-        updatePanelHandle(e.target.dataset.panelName)
-    }
-
-    return (
-        <>
-            <div className="w-1/4 py-5">
-                <img src="../images/user-4-xxl.png" className=" mx-auto w-[200px] bg-black rounded-full " alt="" />
-                <p className=" text-center capitalize ">{name}</p>
-                <p className=" text-sm text-center text-blue-500">
-                    {type === 0 ? 'undefined' : ''}
-                    {type === 1 ? 'Alumno' : ''}
-                    {type === 2 ? 'Teacher' : ''}
-                    {type === 3 ? 'Admin' : ''}
-                </p>
-                <div className="mt-2 flex flex-col">
-                    <a href="#" data-panel-name='tasks' className="p-2 bg-slate-100 w-full hover:bg-slate-200 hover:transition-all duration-300 active-panel" onClick={(e) => updatePanel(e)}>Mis Tareas</a>
-                    <a href="#" data-panel-name='files' className="p-2 bg-slate-100 w-full hover:bg-slate-200 transition-all duration-300 " onClick={(e) => updatePanel(e)}>Mis Archivos</a>
-                    <a href="#" data-panel-name='courses' className="p-2 bg-slate-100 w-full hover:bg-slate-200 transition-all duration-300" onClick={(e) => updatePanel(e)} >Cursos</a>
-                </div>
-
-                <div className="mt-2 flex flex-col">
-                    <a href="#" onClick={() => logoutHandle()} className="bg-red-600  w-full text-white p-2">Desconectar</a>
-
-                </div>
-            </div>
-        </>
-    )
-}
+import Student from "./PanelStudent"
+import Teacher from "./PanelTeacher"
+import Admin from "./PanelAdmin"
 
 const AdminPanel = () => {
     return (
@@ -80,25 +49,11 @@ const CoursesPanel = () => {
 const Panels = ({ activePanel }) => {
     return (
         <>
-            {activePanel === 'tasks' ? <TasksPanel /> : ''}
-            {activePanel === 'files' ? <FilesPanel /> : ''}
-            {activePanel === 'courses' ? <CoursesPanel /> : ''}
-        </>
-    )
-}
-
-const DashPanels = ({ type, activePanel }) => {
-    return (
-        <>
-            <div className=" w-9/12  ">
-                <div className="bg-gray-50 p-5 ">
-
-                    {type === 3 ? <AdminPanel /> : ''}
-                    <div className="bg-white border border-gray-100 min-h-[300px] flex flex-col items-center justify-center">
-                        <Panels activePanel={activePanel} />
-                    </div>
-                </div>
-            </div>
+            <div className="min-h-[300px] flex flex-col items-center justify-center bg-slate-800 rounded">
+                {activePanel === 'tasks' ? <TasksPanel /> : ''}
+                {activePanel === 'files' ? <FilesPanel /> : ''}
+                {activePanel === 'courses' ? <CoursesPanel /> : ''}
+            </div >
         </>
     )
 }
@@ -106,22 +61,19 @@ const DashPanels = ({ type, activePanel }) => {
 const Dashboard = () => {
 
     const [user, setUser] = useState([])
+    const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
         const loggedUserJson = window.localStorage.getItem("loggedTCC")
         if (loggedUserJson) {
             const userLogged = JSON.parse(loggedUserJson)
             setUser(userLogged)
+            setIsAdmin(userLogged.type === 3 ? true : false)
         } else {
             location.href = './login'
         }
     }, [])
 
-    const [activePanel, setActivePanel] = useState('tasks')
-
-    const updateTabeHandle = (panel) => {
-        setActivePanel(panel)
-    }
 
     const logout = () => {
         window.localStorage.clear()
@@ -135,9 +87,15 @@ const Dashboard = () => {
 
             <Content>
                 <div className="flex">
-                    <Profile name={user.name} type={user.type} logoutHandle={logout} updatePanelHandle={updateTabeHandle} />
-                    <DashPanels type={user.type} activePanel={activePanel} />
+
+                    {user.type == 1 ? <Student user={user} logoutHandle={logout} /> : ''}
+                    {user.type == 2 ? <Teacher user={user} logoutHandle={logout} /> : ''}
+                    {user.type == 3 ? <Admin user={user} logoutHandle={logout} /> : ''}
+                    <div className="p-2 w-full">
+                        <Panels activePanel='tasks' />
+                    </div>
                 </div>
+
             </Content>
         </>
     )
