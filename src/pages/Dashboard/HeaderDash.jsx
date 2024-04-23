@@ -24,7 +24,7 @@ const HeaderDash = ({ user }) => {
                             </div>
                             <div>
                                 <div className="flex gap-2 items-center">
-                                    <a href="Dashboard" className="p-2 rounded bg-opacity-40 bg-violet-950 inline-block" >Hi, {user.name}</a>
+                                    <a href="#" className="p-2 rounded bg-opacity-40 bg-violet-950 inline-block" >Hi, {user.name}</a>
                                     <div className="w-[39px]">
                                         <img src="../images/user-4-xxl.png" className=" bg-slate-500 rounded-full w-[39px] h-[39px]" alt="" />
                                     </div>
