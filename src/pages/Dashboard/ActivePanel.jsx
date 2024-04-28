@@ -6,6 +6,7 @@ import Subtitle from "../../components/Subtitle"
 import Table from "../../components/Table"
 import TableV2 from "../../components/TableV2"
 import { useEffect, useState } from "react"
+import AddVirtualRoom from "./TeacherPanels/AddVirtualRoom"
 
 const WelcomePanel = () => {
     return <>welcome panel</>
@@ -198,7 +199,7 @@ const EditProfile = (props) => {
 
 
 
-const ActivePanel = ({ panel, user, editNameHandle }) => {
+const ActivePanel = ({ panel, user, handle, logout, editNameHandle }) => {
     return (
         <>
             <div className="min-h-[300px] flex flex-col items-center justify-center bg-slate-800 rounded">
@@ -208,7 +209,8 @@ const ActivePanel = ({ panel, user, editNameHandle }) => {
                 {panel === 'courses' ? <CoursesPanel /> : ''}
                 {panel === 'admin' ? <AdminPanel /> : ''}
                 {panel === 'edit-profile' ? <EditProfile user={user} handle={editNameHandle} /> : ''}
-                {panel === 'virtual-classroom' ? <VirtualClassRoom user={user} handle={editNameHandle} /> : ''}
+                {panel === 'virtual-classroom' ? <VirtualClassRoom handleChangePanel={handle} user={user} handle={editNameHandle} /> : ''}
+                {panel === 'add-virtual-classroom' ? <AddVirtualRoom logoutHandle={logout} user={user} handle={handle} /> : ''}
             </div >
         </>
     )

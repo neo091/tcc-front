@@ -1,11 +1,17 @@
+import { useEffect, useState } from "react";
 import ButtonSky from "../../../components/ButtonSky";
 import Subtitle from "../../../components/Subtitle";
 import Table from "../../../components/Table";
 import TableV2 from "../../../components/TableV2";
 import Title from "../../../components/Title";
+import teacherService from "../../../services/teacher";
+
+import DeleteSVG from '../../../assets/svg/delete.svg'
 
 
-const VirtualClassRoom = () => {
+const VirtualClassRoom = ({ handleChangePanel, user }) => {
+
+    const [showTable, setShowTable] = useState(false)
 
     const thRooms = [
         {
@@ -20,52 +26,80 @@ const VirtualClassRoom = () => {
         {
             text: 'Alumnos'
         },
-    ]
-
-    const classRoom = [
         {
-            ID: 1,
-            tr_content: [
-                {
-                    text: 'Aula 1'
-                },
-                {
-                    text: 'Avanzado'
-                },
-                {
-                    text: 'Descripcion para el aula'
-                },
-                {
-                    text: 14
-                },
-
-
-            ]
+            text: ''
+        },
+        {
+            text: ''
         },
 
-        {
-            ID: 2,
-            tr_content: [
-                {
-                    text: 'Aula 2'
-                },
-                {
-                    text: 'Avanzado'
-                },
-                {
-                    text: 'Descripcion para el aula'
-                },
-                {
-                    text: 14
-                },
-
-
-            ]
-        },
     ]
 
-    const selectRoom = (e) => {
-        console.log(e.target.value)
+    const [classRoom, setClassRoom] = useState([])
+
+    const loadClassRooms = () => {
+        const data = {
+            id: user.id,
+            token: user.token
+        }
+
+        teacherService.getAllRooms(data).then(result => {
+
+            const dataMap = result.body.map(item => {
+                return {
+                    ID: item.aula_id,
+                    tr_content: [
+                        {
+                            text: item.nombre_aula
+                        },
+                        {
+                            text: item.nivel
+                        },
+                        {
+                            text: item.aula_descripcion
+                        },
+                        {
+                            text: 0
+                        },
+                        {
+                            text:
+                                <>
+                                    <a href="#"
+                                        className="text-red-600 w-[32px] h-[32px]"
+                                        data-id={item.aula_id}
+                                        onClick={(e) => deleteRoom(e)}>
+                                        Delete
+                                    </a>
+                                </>
+                        }
+                        ,
+                        {
+                            text: <> <a href="#">Editar</a></>
+                        }
+                    ]
+                }
+            })
+
+            setClassRoom(dataMap)
+            setShowTable(true)
+
+
+        }).catch((e) => console.log(e))
+
+    }
+
+    useEffect(() => loadClassRooms, [])
+
+    const addNewVirtualRoomHandle = (e) => {
+        e.preventDefault()
+        e.target.dataset.panelSelected = 'add-virtual-classroom'
+        handleChangePanel(e)
+    }
+
+    const deleteRoom = (e) => {
+        e.preventDefault()
+
+        console.log('delete', e.target.dataset.id)
     }
 
     return (
@@ -82,11 +116,16 @@ const VirtualClassRoom = () => {
                     </div>
 
                     <div className=" justify-end">
-                        <ButtonSky text='Agregar nueva' />
+                        <ButtonSky text='Agregar nueva' handle={addNewVirtualRoomHandle} />
                     </div>
                 </div>
+                <div id="load-more">
 
-                <TableV2 tbody={classRoom} thead={thRooms} maxPerPage={2} title='Lista de Aulas' />
+                    {
+                        showTable ? <TableV2 tbody={classRoom} thead={thRooms} maxPerPage={3} title='Lista de Aulas' /> : ''
+                    }
+                </div>
+
             </div>
         </>
     );

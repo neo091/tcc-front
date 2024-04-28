@@ -12,18 +12,17 @@ const Teacher = ({ user, logoutHandle, panel, handle, editNameHandle }) => {
                     <PanelLink text='Dashboard' panel='welcome' handle={handle} />
                     <PanelLink text='Aula Virtual' panel='virtual-classroom' handle={handle} />
                     <PanelLink text='Archivos' panel='files' handle={handle} />
-                    <PanelLink text='Editar Perfil' panel='edit-profile' handle={handle} />
+                    {/*<PanelLink text='Editar Perfil' panel='edit-profile' handle={handle} />*/}
                 </div>
 
 
                 <div className="mt-2 flex flex-col">
-                    <a href="#" onClick={() => logoutHandle()} className="bg-red-600  w-full text-white p-2">Desconectar</a>
-
+                    <a href="#" onClick={() => logoutHandle()} className="text-red-600 hover:bg-slate-800 w-ful p-2">Desconectar</a>
                 </div>
             </div>
 
             <div className="p-2 w-full">
-                <ActivePanel panel={panel} user={user} editNameHandle={editNameHandle} />
+                <ActivePanel panel={panel} logout={logoutHandle} user={user} handle={handle} editNameHandle={editNameHandle} />
             </div>
         </>
     )

@@ -23,11 +23,10 @@ const Dashboard = () => {
         }
     }, [])
 
-    const activatePanelHandle = (panel) => {
-        const selected = panel.target.dataset.panelSelected
-        console.log('Selected', selected)
+    const activatePanelHandle = (event) => {
+        event.preventDefault()
+        const selected = event.target.dataset.panelSelected
         setPanel(selected)
-
     }
 
     const logout = () => {

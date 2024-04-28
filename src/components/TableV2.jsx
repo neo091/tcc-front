@@ -51,7 +51,7 @@ const TableV2 = ({ thead, tbody, maxPerPage, title }) => {
         setTb(tbody.slice(0, actual))
     }
 
-    useEffect(() => load, [])
+    useEffect(() => load(), [])
 
     const loadMore = () => {
         console.log(total, tb.length)
