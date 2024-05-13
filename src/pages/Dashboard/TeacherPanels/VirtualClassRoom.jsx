@@ -1,17 +1,28 @@
 import { useEffect, useState } from "react";
 import ButtonSky from "../../../components/ButtonSky";
-import Subtitle from "../../../components/Subtitle";
-import Table from "../../../components/Table";
 import TableV2 from "../../../components/TableV2";
 import Title from "../../../components/Title";
 import teacherService from "../../../services/teacher";
 
-import DeleteSVG from '../../../assets/svg/delete.svg'
-
-
-const VirtualClassRoom = ({ handleChangePanel, user }) => {
+const VirtualClassRoom = () => {
 
     const [showTable, setShowTable] = useState(false)
+    const [classRoom, setClassRoom] = useState([])
+    const [user, setUser] = useState([])
+    const [isAdmin, setIsAdmin] = useState(false)
+
+    useEffect(() => {
+        const loggedUserJson = window.localStorage.getItem("loggedTCC")
+        if (loggedUserJson) {
+            const userLogged = JSON.parse(loggedUserJson)
+            setUser(userLogged)
+            setIsAdmin(userLogged.type === 3 ? true : false)
+        } else {
+            location.href = './login'
+        }
+    }, [])
+
+
 
     const thRooms = [
         {
@@ -25,17 +36,11 @@ const VirtualClassRoom = ({ handleChangePanel, user }) => {
         },
         {
             text: 'Alumnos'
-        },
-        {
-            text: ''
-        },
-        {
-            text: ''
-        },
+        }
 
     ]
 
-    const [classRoom, setClassRoom] = useState([])
+    useEffect(() => loadClassRooms, [])
 
     const loadClassRooms = () => {
         const data = {
@@ -50,6 +55,7 @@ const VirtualClassRoom = ({ handleChangePanel, user }) => {
                     ID: item.aula_id,
                     tr_content: [
                         {
+                            handle: viewHandle,
                             text: item.nombre_aula
                         },
                         {
@@ -61,21 +67,7 @@ const VirtualClassRoom = ({ handleChangePanel, user }) => {
                         {
                             text: 0
                         },
-                        {
-                            text:
-                                <>
-                                    <a href="#"
-                                        className="text-red-600 w-[32px] h-[32px]"
-                                        data-id={item.aula_id}
-                                        onClick={(e) => deleteRoom(e)}>
-                                        Delete
-                                    </a>
-                                </>
-                        }
-                        ,
-                        {
-                            text: <> <a href="#">Editar</a></>
-                        }
+
                     ]
                 }
             })
@@ -88,7 +80,6 @@ const VirtualClassRoom = ({ handleChangePanel, user }) => {
 
     }
 
-    useEffect(() => loadClassRooms, [])
 
     const addNewVirtualRoomHandle = (e) => {
         e.preventDefault()
@@ -96,11 +87,14 @@ const VirtualClassRoom = ({ handleChangePanel, user }) => {
         handleChangePanel(e)
     }
 
-    const deleteRoom = (e) => {
+    const viewHandle = (e) => {
         e.preventDefault()
-
-        console.log('delete', e.target.dataset.id)
+        e.target.dataset.panelSelected = 'edit-virtual-classroom'
+        window.localStorage.setItem('virtual-room-edit', e.target.dataset.id)
+        handleChangePanel(e)
     }
+
+
 
     return (
         <>
@@ -115,7 +109,7 @@ const VirtualClassRoom = ({ handleChangePanel, user }) => {
                         <p>Aqui puedes crear y modificar tus aulas virtuales</p>
                     </div>
 
-                    <div className=" justify-end">
+                    <div className="justify-end">
                         <ButtonSky text='Agregar nueva' handle={addNewVirtualRoomHandle} />
                     </div>
                 </div>

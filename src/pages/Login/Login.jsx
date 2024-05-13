@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Banner from '../../components/Banner'
 import Button from '../../components/Button'
 import Content from '../../components/Content'
 import EnlaceDefaultNoBg from '../../components/EnlaceDefaultNoBg'
 import Header from '../../components/Header'
-import Separador from '../../components/Separador'
 import isEmail from 'validator/lib/isEmail'
 import loginService from '../../services/auth'
 import Alert from '../../components/Alerts'
+import { Link, Navigate, redirect } from 'react-router-dom'
 
 const Input = ({ type, label, handle }) => {
     return (
@@ -18,12 +18,14 @@ const Input = ({ type, label, handle }) => {
     )
 }
 
+
 const Login = () => {
 
 
     const [hideAlert, setHideAlert] = useState(true)
     const [alert, setAlert] = useState([])
-    const [userLogin, setUserLogin] = useState([])
+    const [userLogin, setUserLogin] = useState(null)
+    const [user, setUser] = useState(null)
 
 
     const emailHandle = (text) => {
@@ -86,9 +88,10 @@ const Login = () => {
                 'loggedTCC', JSON.stringify(user)
             )
 
-            setTimeout(() => {
-                location.href = '/Dashboard'
-            }, 3000)
+
+            setTimeout(() => setUser(result.body), 3000)
+
+
 
 
         }).catch((e) => {
@@ -106,6 +109,7 @@ const Login = () => {
 
     return (
         <>
+            {user !== null && <Navigate to={"../Dashboard"} replace={true} />}
             <Header />
             <Banner text='Inicia sesión' />
             <Content>
@@ -118,7 +122,7 @@ const Login = () => {
                             <Input type='text' label='Correo electrónico' handle={emailHandle} />
                             <Input type='password' label='Contraseña' handle={passwordHandle} />
                             <div className='flex gap-3 items-center justify-center'>
-                                <Button text='Login' /> | <EnlaceDefaultNoBg text='Register' href='./register' />
+                                <Button text='Login' /> | <Link to={`${window.origin}/Register`} className=' text-center text-violet-500 underline decoration-violet-900 hover:text-violet-300 hover:decoration-violet-500 '>Register</Link>
                             </div>
 
                         </form>

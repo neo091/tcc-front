@@ -1,61 +1,37 @@
 import { useEffect, useState } from "react"
-import Content from "../../components/Content"
-import Header from "../../components/Header"
 import HeaderDash from "./HeaderDash"
-import Student from "./Student"
-import Teacher from "./Teacher"
-import Admin from "./Admin"
+import { Link, Outlet, redirect, useLoaderData } from "react-router-dom"
+
+import { getUserData } from '../../auth'
+
+export async function loader() {
+    const user = await getUserData();
+    if (!user) return redirect("../Login")
+    return { user };
+}
 
 const Dashboard = () => {
 
-    const [user, setUser] = useState([])
-    const [panel, setPanel] = useState('welcome')
-    const [isAdmin, setIsAdmin] = useState(false)
-
-    useEffect(() => {
-        const loggedUserJson = window.localStorage.getItem("loggedTCC")
-        if (loggedUserJson) {
-            const userLogged = JSON.parse(loggedUserJson)
-            setUser(userLogged)
-            setIsAdmin(userLogged.type === 3 ? true : false)
-        } else {
-            location.href = './login'
-        }
-    }, [])
-
-    const activatePanelHandle = (event) => {
-        event.preventDefault()
-        const selected = event.target.dataset.panelSelected
-        setPanel(selected)
-    }
-
-    const logout = () => {
-        window.localStorage.clear()
-        location.href = './login'
-    }
-
-    const editNameHandle = (e) => {
-        e.preventDefault()
-
-    }
-
-
     return (
         <>
-            {user ? <HeaderDash user={user} /> : <Header />}
+            <HeaderDash />
 
-            <Content>
-                <div className="flex">
+            <div className="mx-auto flex">
 
-                    {user.type == 1 ? <Student user={user} logoutHandle={logout} panel={panel} handle={activatePanelHandle} /> : ''}
-                    {user.type == 2 ? <Teacher user={user} logoutHandle={logout} panel={panel} handle={activatePanelHandle} editNameHandle={editNameHandle} /> : ''}
-                    {user.type == 3 ?
-                        <Admin user={user} logoutHandle={logout} panel={panel} handle={activatePanelHandle} />
-                        : ''}
+                {/*Sidebar*/}
+                <div className=" w-1/4 bg-slate-600 h-[100vh] fixed" >
+                    <Link to={"Dashboard"} className="p-2 w-100 block ">Dashboard</Link>
+                    <Link to={"Logout"} className="p-2 w-100 block ">Logout</Link>
 
                 </div>
+                {/*Content*/}
+                <div className="p-2 ml-[25%]">
+                    <Outlet />
+                </div>
 
-            </Content>
+
+            </div>
+
         </>
     )
 

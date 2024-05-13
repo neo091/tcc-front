@@ -1,3 +1,4 @@
+import { Link, Outlet } from "react-router-dom";
 import ActivePanel from "./ActivePanel";
 import PanelLink from "./PanelLink";
 import Profile from "./Profile";
@@ -9,10 +10,11 @@ const Teacher = ({ user, logoutHandle, panel, handle, editNameHandle }) => {
                 <Profile user={user} />
 
                 <div className="mt-2 flex flex-col">
-                    <PanelLink text='Dashboard' panel='welcome' handle={handle} />
+                    <Link to={"AulaVirtual"} className="p-2 w-full hover:bg-slate-800 transition-all duration-300">Aula Virtual</Link>
+                    {/*<PanelLink text='Dashboard' panel='welcome' handle={handle} />
                     <PanelLink text='Aula Virtual' panel='virtual-classroom' handle={handle} />
                     <PanelLink text='Archivos' panel='files' handle={handle} />
-                    {/*<PanelLink text='Editar Perfil' panel='edit-profile' handle={handle} />*/}
+                    <PanelLink text='Editar Perfil' panel='edit-profile' handle={handle} />*/}
                 </div>
 
 
@@ -22,7 +24,7 @@ const Teacher = ({ user, logoutHandle, panel, handle, editNameHandle }) => {
             </div>
 
             <div className="p-2 w-full">
-                <ActivePanel panel={panel} logout={logoutHandle} user={user} handle={handle} editNameHandle={editNameHandle} />
+                <Outlet />
             </div>
         </>
     )

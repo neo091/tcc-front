@@ -21,6 +21,19 @@ const getAllRooms = async (data) => {
 
 }
 
+const getWhitId = async (data)=>{
+    setToken(data.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+    
+
+    const response = await axios.get(`${base_url}/api/teacher/room/${data.id}`, config)
+    return response.data
+
+}
+
 const addNewVirtualRoom = async (data) => {
 
     setToken(data.user.token)
@@ -41,4 +54,4 @@ const addNewVirtualRoom = async (data) => {
 }
 
 
-export default { addNewVirtualRoom, getAllRooms }
+export default { addNewVirtualRoom, getAllRooms, getWhitId }

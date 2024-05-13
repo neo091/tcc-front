@@ -8,6 +8,7 @@ import Alert from '../../components/Alerts'
 import RegisterService from '../../services/auth'
 import isEmail from 'validator/lib/isEmail'
 import Separador from '../../components/Separador'
+import { Link } from 'react-router-dom'
 
 const Input = ({ type, label, handle }) => {
     return (
@@ -131,7 +132,7 @@ const Register = () => {
 
                             <div className='flex justify-center items-center gap-3'>
 
-                                <Button text='Register' /> | <EnlaceDefaultNoBg href="/login" text="Login" />
+                                <Button text='Register' /> | <Link to={`${window.origin}/Login`} className=' text-center text-violet-500 underline decoration-violet-900 hover:text-violet-300 hover:decoration-violet-500 '>Login</Link>
 
                             </div>
 
