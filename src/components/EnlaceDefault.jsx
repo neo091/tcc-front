@@ -1,8 +1,20 @@
-const EnlaceDefault = ({ text, href }) => {
+import { Link, NavLink } from "react-router-dom"
+
+const EnlaceDefault = ({ text, to, children }) => {
     return (
         <>
-            <a href={href} className='bg-violet-900 text-center rounded-full text-white py-2
-            hover:scale-105 duration-200 w-full px-10'>{text ? text : 'DEFAULT'}</a>
+            <NavLink to={to}
+                className={({ isActive, isPending }) =>
+                    isActive
+                        ? "bg-violet-900 text-center rounded text-white py-2 hover:scale-105 duration-200 px-10"
+                        : isPending
+                            ? "pending"
+                            : "bg-violet-900 text-center rounded text-white py-2 hover:scale-105 duration-200 px-10"
+                }
+
+            >
+                {text ? text : children}
+            </NavLink>
         </>
     )
 }

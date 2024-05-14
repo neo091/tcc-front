@@ -7,9 +7,9 @@ const Home = () => {
     return (
         <>
             <Header />
-            <div className="w-2/3 flex items-center mx-auto my-14">
+            <div className="w-2/3 lg:flex items-center mx-auto my-14">
 
-                <div className="w-2/3">
+                <div className="lg:w-2/3">
                     <h2 className=" font-extrabold text-4xl sm:text-5xl lg:text-4xl tracking-tight text-center ">APRENDE INGLÉS DE MANERA FÁCIL Y EFICIENTE</h2>
 
                     <p className="mt-6 text-lg text-slate-300 text-center max-w-3xl mx-auto ">Aquí encontrarás una variedad de recursos, consejos y estrategias diseñadas para ayudarte a dominar este idioma de manera efectiva y sin complicaciones.</p>
@@ -26,7 +26,7 @@ const Home = () => {
 
                 <div className="mt-6 sm:mt-10 flex justify-center space-x-6 text-sm">
 
-                    <EnlaceDefault text='Comenzar' href='./register' />
+                    <EnlaceDefault text='Comenzar' to='./Register' />
 
                 </div>
 

@@ -3,7 +3,7 @@ import Title from "../../components/Title";
 const Index = () => {
     return (
         <>
-            <Title text={"Default"} />
+            <Title>Dashboard</Title>
         </>
     );
 }

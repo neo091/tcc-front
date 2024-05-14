@@ -88,11 +88,7 @@ const Login = () => {
                 'loggedTCC', JSON.stringify(user)
             )
 
-
-            setTimeout(() => setUser(result.body), 3000)
-
-
-
+            setUser(result.body)
 
         }).catch((e) => {
 
@@ -109,7 +105,19 @@ const Login = () => {
 
     return (
         <>
-            {user !== null && <Navigate to={"../Dashboard"} replace={true} />}
+            {
+                user !== null
+                    ? user.type === 1
+                        ? <Navigate to={"/Dashboard"} replace={true} />
+                        : user.type === 2
+                            ? <Navigate to={"/Teacher/Home"} replace={true} />
+                            : user.type === 2
+                                ? <Navigate to={"/Admin"} replace={true} />
+                                : ''
+                    : ''
+            }
+
+
             <Header />
             <Banner text='Inicia sesión' />
             <Content>
