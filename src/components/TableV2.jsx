@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import Subtitle from "./Subtitle"
+import { Link } from "react-router-dom"
 
 const ThRoom = ({ text }) => <th scope='col' className=" px-6 py-3">{text}</th>
 
@@ -11,12 +12,17 @@ const TrRoom = (props) => {
             <tr className=" bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 {
                     content.map((item) =>
+
                         <>
-                            {item.handle ? <th key={(count++) + item.text} scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[150px] overflow-hidden text-ellipsis" >
-                                <a href="#" className="hover:underline text-blue-700" data-id={props.id} onClick={(e) => item.handle(e)}>{item.text}</a>
+                            {console.log(count++)}
+                            {item.handle ? <th scope="row" key={count++} className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[150px] overflow-hidden text-ellipsis" >
+
+                                <Link to={`${props.id}`}>{item.text}</Link>
+
+
                             </th>
                                 :
-                                <th key={(count++) + item.text} scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[150px] overflow-hidden text-ellipsis" >
+                                <th scope="row" key={count++} className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[150px] overflow-hidden text-ellipsis" >
                                     {item.text}
                                 </th>
                             }
@@ -116,7 +122,7 @@ const TableV2 = ({ thead, tbody, maxPerPage, title }) => {
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 my-6">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            {thead ? thead.map((th) => <ThRoom key={(count++) + "_" + th.text} text={th.text} />) : ''}
+                            {thead ? thead.map((th) => <ThRoom key={th.id} text={th.text} />) : ''}
                         </tr>
 
                     </thead>

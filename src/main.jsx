@@ -7,12 +7,22 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import Home from './pages/Home'
 import ErrorPage from './pages/error-page.jsx'
-import Dashboard, { loader as dashLoader } from './pages/Dashboard/Dashboard.jsx'
-import VirtualClassRoom from './pages/Dashboard/TeacherPanels/VirtualClassRoom.jsx'
-import Index from './pages/Dashboard/Index.jsx'
+
 import Login from './pages/Login/Login.jsx'
 import Register from './pages/Register/Register.jsx'
 import Logout from './pages/Dashboard/Logout.jsx'
+import NewRoom, { action as NewRoomAction } from './pages/Teacher/NewRoom.jsx'
+
+import DeleteVirtualRoom, { loader as AulaVirtualDelete } from './pages/Dashboard/Teacher/DeleteVirtualRoom.jsx'
+import Teacher, { loader as teacherLoader } from './pages/Teacher'
+import TeacherHome from './pages/Teacher/TeacherHome.jsx'
+import Rooms from './pages/Teacher/Rooms.jsx'
+import RoomsList from './pages/Teacher/RoomsList.jsx'
+import Room, { loader as RoomLoader } from './pages/Teacher/Room.jsx'
+import EditRoom, { loader as EditRoomLoader } from './pages/Teacher/EditRoom.jsx'
+import Files from './pages/Teacher/Files.jsx'
+import NewLesson, { loader as NewLessonLoader } from './pages/Teacher/NewLesson.jsx'
+import RoomDelete, { loader as RoomDeleteLoader } from './pages/Teacher/RoomDelete.jsx'
 
 const router = createBrowserRouter(
   [
@@ -22,20 +32,55 @@ const router = createBrowserRouter(
       errorElement: <ErrorPage />
     },
     {
-      path: "/Dashboard",
-      element: <Dashboard />,
-      loader: dashLoader,
+      path: "/Teacher",
+      element: <Teacher />,
+      loader: teacherLoader,
+      id: "teacher",
       children: [
-        { index: true, element: <Index /> },
+        { index: true, element: <TeacherHome /> },
+        { path: "Home", element: <TeacherHome /> },
         {
-          path: "AulaVirtual",
-          element: <VirtualClassRoom />
+          path: "Rooms",
+          element: <Rooms />,
+          children: [
+            { index: true, element: <RoomsList /> },
+            {
+              path: "new",
+              element: <NewRoom />,
+              action: NewRoomAction
+            },
+            {
+              path: ":id",
+              element: <Room />,
+              loader: RoomLoader
+            },
+            {
+              path: ":id/edit",
+              element: <EditRoom />,
+              loader: EditRoomLoader
+            },
+            {
+              path: ":id/NewLesson",
+              element: <NewLesson />,
+              loader: NewLessonLoader
+            },
+            {
+              path: ":id/delete",
+              element: <RoomDelete />,
+              loader: RoomDeleteLoader
+            }
+          ]
         },
         {
-          path: "Logout",
-          element: <Logout />
+          path: "Files",
+          element: <Files />
         }
+
       ]
+    },
+    {
+      path: "Logout",
+      element: <Logout />
     },
     {
       path: "/Login",
@@ -53,7 +98,5 @@ const router = createBrowserRouter(
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
+  <RouterProvider router={router} />,
 )

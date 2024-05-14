@@ -1,8 +1,8 @@
-const Title = ({ text }) => {
+const Title = ({ children }) => {
     return (
         <>
 
-            <h1 className=" text-3xl w-full">{text}</h1>
+            <h1 className="text-3xl w-full">{children}</h1>
 
         </>
     );
