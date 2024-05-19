@@ -13,7 +13,6 @@ import Register from './pages/Register/Register.jsx'
 import Logout from './pages/Dashboard/Logout.jsx'
 import NewRoom, { action as NewRoomAction } from './pages/Teacher/NewRoom.jsx'
 
-import DeleteVirtualRoom, { loader as AulaVirtualDelete } from './pages/Dashboard/Teacher/DeleteVirtualRoom.jsx'
 import Teacher, { loader as teacherLoader } from './pages/Teacher'
 import TeacherHome from './pages/Teacher/TeacherHome.jsx'
 import Rooms from './pages/Teacher/Rooms.jsx'

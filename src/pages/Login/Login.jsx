@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react'
-import Banner from '../../components/Banner'
+import { useState } from 'react'
 import Button from '../../components/Button'
 import Content from '../../components/Content'
-import EnlaceDefaultNoBg from '../../components/EnlaceDefaultNoBg'
 import Header from '../../components/Header'
 import isEmail from 'validator/lib/isEmail'
 import loginService from '../../services/auth'
 import Alert from '../../components/Alerts'
 import { Link, Navigate, redirect } from 'react-router-dom'
+import Title from '../../components/Title'
 
 const Input = ({ type, label, handle }) => {
     return (
@@ -16,6 +15,11 @@ const Input = ({ type, label, handle }) => {
             <input type={type} className='p-2 bg-slate-700 rounded border-none w-full' onChange={(e) => handle(e.target.value)} />
         </div>
     )
+}
+
+const ErrorType = {
+    DANGER: "danger",
+    SUCCESS: "success"
 }
 
 
@@ -52,9 +56,18 @@ const Login = () => {
     const submitHandle = (e) => {
         e.preventDefault()
 
+        if (!userLogin) {
+            showAlert({
+                type: ErrorType.DANGER, message: 'need email'
+            })
+
+            return
+        }
+
+
         if (!userLogin.email || userLogin.email === "") {
             showAlert({
-                type: 'danger', message: 'need email'
+                type: ErrorType.DANGER, message: 'need email'
             })
 
             return
@@ -62,7 +75,7 @@ const Login = () => {
 
         if (!userLogin.password || userLogin.password === "") {
             showAlert({
-                type: 'danger', message: 'need password'
+                type: ErrorType.DANGER, message: 'need password'
             })
 
             return
@@ -71,7 +84,7 @@ const Login = () => {
         if (!isEmail(userLogin.email)) {
 
             showAlert({
-                type: 'danger', message: 'invalid email'
+                type: ErrorType.DANGER, message: 'invalid email'
             })
 
             return
@@ -80,7 +93,7 @@ const Login = () => {
         loginService.login(userLogin).then(result => {
 
             showAlert({
-                type: 'success', message: 'login ok'
+                type: ErrorType.SUCCESS, message: 'login ok'
             })
 
             const user = result.body
@@ -94,10 +107,9 @@ const Login = () => {
 
             if (e.code === "ERR_BAD_RESPONSE") {
                 showAlert({
-                    type: 'danger', message: e.response.data.body.message
+                    type: ErrorType.DANGER, message: e.response.data.body.message
                 })
             }
-            console.log(e)
         })
 
     }
@@ -119,10 +131,11 @@ const Login = () => {
 
 
             <Header />
-            <Banner text='Inicia sesión' />
             <Content>
-                <div className=' flex justify-center items-center self-center'>
+                <div className=' my-16 flex justify-center items-center self-center'>
                     <div className='bg-slate-800 p-2 rounded' >
+
+                        <Title>Iniciar Sessión</Title>
 
                         <Alert type={alert.type} message={alert.message} hide={hideAlert} />
 
