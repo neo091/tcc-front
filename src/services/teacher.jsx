@@ -77,6 +77,25 @@ const deleteRoom = async (id) => {
 
 }
 
+const edit = async (data, id) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const newData = {
+        nombre_aula: data.name,
+        nivel: data.level,
+        aula_descripcion: data.desc
+    }
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.put(`${base_url}/api/teacher/room/${id}`, newData, config)
+    return response.data
+}
+
 
 // fake a cache so we don't slow down stuff we've already seen
 let fakeCache = {};
@@ -97,4 +116,4 @@ async function fakeNetwork(key) {
 }
 
 
-export default { deleteRoom, add, getAllRooms, getWhitId }
+export default { deleteRoom, add, edit, getAllRooms, getWhitId }

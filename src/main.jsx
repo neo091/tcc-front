@@ -19,7 +19,7 @@ import TeacherHome from './pages/Teacher/TeacherHome.jsx'
 import Rooms from './pages/Teacher/Rooms.jsx'
 import RoomsList from './pages/Teacher/RoomsList.jsx'
 import Room, { loader as RoomLoader } from './pages/Teacher/Room.jsx'
-import EditRoom, { loader as EditRoomLoader } from './pages/Teacher/EditRoom.jsx'
+import EditRoom, { loader as EditRoomLoader, action as EditAction } from './pages/Teacher/EditRoom.jsx'
 import Files from './pages/Teacher/Files.jsx'
 import NewLesson, { loader as NewLessonLoader } from './pages/Teacher/NewLesson.jsx'
 import RoomDelete, { loader as RoomDeleteLoader } from './pages/Teacher/RoomDelete.jsx'
@@ -57,7 +57,8 @@ const router = createBrowserRouter(
             {
               path: ":id/edit",
               element: <EditRoom />,
-              loader: EditRoomLoader
+              loader: EditRoomLoader,
+              action: EditAction
             },
             {
               path: ":id/NewLesson",

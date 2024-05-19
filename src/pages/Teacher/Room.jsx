@@ -1,6 +1,9 @@
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, Navigate, redirect, useLoaderData } from "react-router-dom";
 import teacher from "../../services/teacher";
 import Title from "../../components/Title";
+import Enlace from "../../components/Enlace";
+import { useState } from "react";
+import Modal from "../../components/Modal";
 
 export const loader = async ({ params }) => {
 
@@ -16,34 +19,52 @@ const Room = () => {
 
     const { body } = useLoaderData()
 
-    const { nombre_aula, nivel, aula_descripcion } = body
+    const { nombre_aula, nivel, aula_descripcion, aula_id } = body
+
+
+    const [showModal, setShowModal] = useState(false)
+    const [deleteRoom, setDeleteRoom] = useState(false)
+
+    const toggleShow = (e) => {
+        setShowModal(!showModal)
+    }
+
+    const confirmHanlde = (e) => {
+        setShowModal(!showModal)
+        console.log('borrar')
+
+        setDeleteRoom(true)
+    }
 
 
 
     return (
         <>
+            {
+                showModal && <Modal handle={toggleShow} confirm={confirmHanlde} cancelHandle={toggleShow} />
+            }
+            {
+                deleteRoom && <Navigate to={"delete"} />
+            }
 
+            <div className="w-full sm:w-2/3 lg:w-2/4  mx-auto">
+                <div className="sm:flex xl:flex items-center gap-2">
 
-            <div className="w-[80%] mx-auto">
-                <div className="flex-row sm:flex xl:flex  items-center gap-3">
-                    <h1 className=" text-5xl font-extrabold">{nombre_aula}</h1>
+                    <h1 className="text-5xl font-extrabold my-4">{nombre_aula}</h1>
 
-                    <div className="flex gap-1">
-                        <Link to={"./edit"} className="d-block bg-blue-800 p-3 rounded">EDITAR</Link>
-                        <Link to={"./edit"} className="d-block bg-red-800 p-3 rounded">BORRAR</Link>
-                    </div>
+                    <Enlace to={"./edit"}>Editar</Enlace>
+
+                    <Enlace modal handle={toggleShow} type={"danger"}>Borrar</Enlace>
 
                 </div>
                 <p className="mt-3">{nivel}</p>
                 <p className="whitespace-pre-wrap text-[20px] mt-3">{aula_descripcion}</p>
 
 
-                <div className="flex-1 sm:flex xl:flex gap-3 mt-10">
-                    <h1 className=" text-2xl font-extrabold">Lecciones</h1>
+                <div className="sm:flex xl:flex  items-center gap-2">
+                    <h1 className="text-4xl font-extrabold my-4">Lecciones</h1>
 
-                    <div className="flex gap-1">
-                        <Link to={"./NewLesson"} className="d-block bg-blue-800 p-3 rounded">Nueva lección</Link>
-                    </div>
+                    <Enlace to={"./NewLesson"}>Crear Leccion</Enlace>
 
                 </div>
 

@@ -8,6 +8,7 @@ import EnlaceDefault from "../../components/EnlaceDefault";
 import Subtitle from "../../components/Subtitle";
 import Alert from "../../components/Alerts";
 import Button from "../../components/Button";
+import Enlace from "../../components/Enlace";
 
 
 const Th = ({ children }) => {
@@ -72,12 +73,9 @@ const RoomsList = () => {
 
     return (
         <>
-            <div className="flex-row sm:flex xl:flex row-gap-2 gap-3 items-center  w-full">
-                <h1 className=" text-2xl">Aula Virtual</h1>
-                <div className="my-4 w-full">
-                    <EnlaceDefault to={"new"}>Agregar</EnlaceDefault>
-                </div>
-
+            <div className=" flex gap-3 items-center p-2 my-2">
+                <h1 className="text-2xl">Aula Virtual</h1>
+                <Enlace to={"new"}>Agregar</Enlace>
             </div>
 
 
@@ -97,9 +95,6 @@ const RoomsList = () => {
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" className="px-6 py-3">
-                                    #
-                                </th>
 
                                 <th scope="col" className="px-6 py-3">
                                     Nombre
@@ -107,10 +102,6 @@ const RoomsList = () => {
 
                                 <th scope="col" className="px-6 py-3">
                                     Nivel
-                                </th>
-
-                                <th scope="col" className="px-6 py-3">
-                                    Descripcion
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Accion
@@ -124,14 +115,12 @@ const RoomsList = () => {
                                 classRoom.map((item) =>
 
                                     <tr key={item.id}>
-                                        <Th>{item.id}</Th>
                                         <Th>
-                                            <Link to={`${item.id}`}>{item.name}</Link>
+                                            <Link to={`${item.id}`} className=" font-semibold underline" >{item.name}</Link>
                                         </Th>
                                         <Th>{item.level}</Th>
-                                        <Th>{item.desc}</Th>
                                         <Th>
-                                            <Link to={`${item.id}/delete`}>Eliminar</Link>
+                                            <Link to={`${item.id}`} className="py-2 px-4 border-2 border-white rounded w-full ">Ver</Link>
                                         </Th>
                                     </tr>
 

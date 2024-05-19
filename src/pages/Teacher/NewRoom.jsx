@@ -18,7 +18,7 @@ const NewRoom = () => {
     return (
         <>
 
-            <div className="p-4 w-[100%] sm:w-[80%] xl:w-[30%] mx-auto">
+            <div className="w-full sm:w-2/3 lg:w-2/4  mx-auto">
 
                 <Subtitle text='Agregar nueva Aula Virtual' />
                 <p>Rellena todos los campos antes de enviar.</p>
@@ -35,10 +35,7 @@ const NewRoom = () => {
 
 
                     <textarea cols="30" rows="4" className="p-2 w-full " name="desc" placeholder="Descripcion breve sobre esta aula"></textarea>
-
-                    <button className={"bg-violet-900 hover:bg-violet-700 rounded shadow-[inset_0px_-6px_0px_0px_#00000050] text-white py-2 px-5  w-full "}>
-                        Agregar
-                    </button>
+                    <Button>Crear Aula</Button>
                 </Form>
 
             </div>
