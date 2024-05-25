@@ -28,7 +28,7 @@ const Enlace = (props) => {
         console.log('Modal type')
 
         return (
-            <a href={""} onClick={(e) => {
+            <a href={to} onClick={(e) => {
                 e.preventDefault()
                 config.handle(e)
             }} className={`shadow-[inset_0px_-6px_0px_0px_#00000050] block sm:inline-block xl:inline lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500 ${classText}`}>
@@ -39,7 +39,7 @@ const Enlace = (props) => {
 
         return (
             <>
-                <Link to={to} className={`shadow-[inset_0px_-6px_0px_0px_#00000050] block sm:inline-block xl:inline lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500 ${classText}`}>
+                <Link to={to} className={`shadow-[inset_0px_-6px_0px_0px_#00000050] block sm:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500 ${classText}`}>
                     {text ? text : children}
                 </Link>
             </>

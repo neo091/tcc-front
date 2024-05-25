@@ -1,30 +1,16 @@
-import { useState } from "react"
-import { Form, useLoaderData } from "react-router-dom"
-import Subtitle from "../../components/Subtitle"
+import { Form, redirect, useLoaderData } from "react-router-dom"
+
+import { createLesson } from "../../services/teacher"
 
 
 
-export const loader = ({ params }) => {
+export const loader = async ({ params }) => {
 
-    return { id: params.id }
+    const result = await createLesson(params.id)
+    return redirect(`/Teacher/Rooms/${params.id}/lessons/${result.body.insertId}/edit`)
 }
 
-
-
-const NewLesson = () => {
-
-    const { id } = useLoaderData()
-
-    return (
-        <>
-
-            <div className="w-full sm:w-2/3 lg:w-2/4  mx-auto">
-
-            </div>
-        </>
-
-    );
-}
+const NewLesson = () => { return }
 
 
 export default NewLesson;

@@ -51,8 +51,6 @@ const Login = () => {
         setTimeout(() => { setHideAlert(true) }, duration || 5000)
     }
 
-
-
     const submitHandle = (e) => {
         e.preventDefault()
 

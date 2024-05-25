@@ -22,6 +22,8 @@ import EditRoom, { loader as EditRoomLoader, action as EditAction } from './page
 import Files from './pages/Teacher/Files.jsx'
 import NewLesson, { loader as NewLessonLoader } from './pages/Teacher/NewLesson.jsx'
 import RoomDelete, { loader as RoomDeleteLoader } from './pages/Teacher/RoomDelete.jsx'
+import EditLesson, { loader as editLessonLoader, action as editLessonAction } from './pages/Teacher/EditLesson.jsx'
+import { DeleteLesson } from './pages/Teacher/Lessons.jsx'
 
 const router = createBrowserRouter(
   [
@@ -63,6 +65,16 @@ const router = createBrowserRouter(
               path: ":id/NewLesson",
               element: <NewLesson />,
               loader: NewLessonLoader
+            },
+            {
+              path: ":id/lessons/:lessonId/edit",
+              element: <EditLesson />,
+              loader: editLessonLoader,
+              action: editLessonAction
+            },
+            {
+              path: ":id/lessons/:lessonId/delete",
+              element: <DeleteLesson />
             },
             {
               path: ":id/delete",

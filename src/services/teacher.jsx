@@ -24,10 +24,7 @@ const getAllRooms = async (data) => {
 
 const getWhitId = async (id) => {
 
-    await fakeNetwork()
-
     const user = await getUserData()
-
 
     setToken(user.token)
 
@@ -96,24 +93,56 @@ const edit = async (data, id) => {
     return response.data
 }
 
+const getLessons = async (id_room) => {
+    const user = await getUserData()
 
-// fake a cache so we don't slow down stuff we've already seen
-let fakeCache = {};
+    setToken(user.token)
 
-async function fakeNetwork(key) {
-    if (!key) {
-        fakeCache = {};
+    const config = {
+        headers: { Authorization: token }
     }
 
-    if (fakeCache[key]) {
-        return;
-    }
-
-    fakeCache[key] = true;
-    return new Promise(res => {
-        setTimeout(res, Math.random() * 800);
-    });
+    const response = await axios.get(`${base_url}/api/teacher/lessons/${id_room}/all`, config)
+    return response.data
 }
 
+export const createLesson = async (id_room) => {
+    const user = await getUserData()
 
-export default { deleteRoom, add, edit, getAllRooms, getWhitId }
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.post(`${base_url}/api/teacher/lessons/create/${id_room}`, {}, config)
+    return response.data
+}
+
+export const getLesson = async (lessonId) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.get(`${base_url}/api/teacher/lessons/${lessonId}`, config)
+    return response.data
+}
+
+export async function updateLesson(lessonId, data) {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.post(`${base_url}/api/teacher/lessons/update/${lessonId}`, data, config)
+    return response.data
+}
+
+export default { deleteRoom, add, edit, getAllRooms, getWhitId, getLessons }
