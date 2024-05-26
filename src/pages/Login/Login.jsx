@@ -121,7 +121,7 @@ const Login = () => {
                         ? <Navigate to={"/Dashboard"} replace={true} />
                         : user.type === 2
                             ? <Navigate to={"/Teacher/Home"} replace={true} />
-                            : user.type === 2
+                            : user.type === 3
                                 ? <Navigate to={"/Admin"} replace={true} />
                                 : ''
                     : ''
