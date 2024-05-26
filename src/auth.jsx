@@ -1,5 +1,4 @@
 export async function getUserData() {
-    await fakeNetwork()
     const loggedUserJson = await window.localStorage.getItem("loggedTCC")
     const userLogged = JSON.parse(loggedUserJson)
     return userLogged
