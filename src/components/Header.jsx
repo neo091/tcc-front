@@ -69,11 +69,11 @@ const Header = ({ handle }) => {
                         <div>
                             {logged ?
                                 sessionType === 1
-                                    ? <LoggedLinks to={"/Dashboard"}>Dashboard</LoggedLinks>
+                                    ? <LoggedLinks to={"/Dashboard/Home"}>Dashboard</LoggedLinks>
                                     : sessionType === 2
-                                        ? <LoggedLinks to={"/Teacher"}>Teacher</LoggedLinks>
+                                        ? <LoggedLinks to={"/Teacher/Home"}>Teacher</LoggedLinks>
                                         : sessionType === 3
-                                            ? <LoggedLinks to={"/Admin"}>Admin</LoggedLinks>
+                                            ? <LoggedLinks to={"/Admin/Home"}>Admin</LoggedLinks>
                                             : ''
                                 : <LoginRegisterLinks />
                             }

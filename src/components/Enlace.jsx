@@ -25,13 +25,12 @@ const Enlace = (props) => {
     }
 
     if (config.modal) {
-        console.log('Modal type')
 
         return (
             <a href={to} onClick={(e) => {
                 e.preventDefault()
                 config.handle(e)
-            }} className={`shadow-[inset_0px_-6px_0px_0px_#00000050] block sm:inline-block xl:inline lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500 ${classText}`}>
+            }} className={`shadow-[inset_0px_-6px_0px_0px_#00000050] block sm:inline-block xl:inline-block lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500 ${classText}`}>
                 {children}
             </a>
         )

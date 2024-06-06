@@ -10,7 +10,7 @@ import ErrorPage from './pages/error-page.jsx'
 
 import Login from './pages/Login/Login.jsx'
 import Register from './pages/Register/Register.jsx'
-import Logout from './pages/Dashboard/Logout.jsx'
+import Logout from './pages/Logout.jsx'
 import NewRoom, { action as NewRoomAction } from './pages/Teacher/NewRoom.jsx'
 
 import Teacher, { loader as teacherLoader } from './pages/Teacher'
@@ -23,7 +23,10 @@ import Files from './pages/Teacher/Files.jsx'
 import NewLesson, { loader as NewLessonLoader } from './pages/Teacher/NewLesson.jsx'
 import RoomDelete, { loader as RoomDeleteLoader } from './pages/Teacher/RoomDelete.jsx'
 import EditLesson, { loader as editLessonLoader, action as editLessonAction } from './pages/Teacher/EditLesson.jsx'
-import { DeleteLesson } from './pages/Teacher/Lessons.jsx'
+import { DeleteLesson, loader as DeleteLessonLoader } from './pages/Teacher/Lessons.jsx'
+import Dashboard, { loader as dashloader } from './pages/Dashboard/Index.jsx'
+import HomeDash from './pages/Dashboard/Home.jsx'
+import InglishTest from './pages/Dashboard/Test.jsx'
 
 const router = createBrowserRouter(
   [
@@ -74,7 +77,8 @@ const router = createBrowserRouter(
             },
             {
               path: ":id/lessons/:lessonId/delete",
-              element: <DeleteLesson />
+              element: <DeleteLesson />,
+              loader: DeleteLessonLoader
             },
             {
               path: ":id/delete",
@@ -88,6 +92,16 @@ const router = createBrowserRouter(
           element: <Files />
         }
 
+      ]
+    },
+    {
+      path: "Dashboard",
+      element: <Dashboard />,
+      loader: dashloader,
+      children: [
+        { index: true, element: <HomeDash /> },
+        { path: "Home", element: <HomeDash /> },
+        { path: "Test", element: <InglishTest /> },
       ]
     },
     {

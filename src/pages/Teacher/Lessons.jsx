@@ -1,9 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { deleteLesson } from "../../services/teacher";
+
+
+export const loader = ({ params }) => {
+    const lessonId = params.lessonId
+    console.log(lessonId)
+    return { lessonId: lessonId }
+}
 
 export const DeleteLesson = () => {
 
     const navigate = useNavigate()
+    const { lessonId } = useLoaderData()
 
     Swal.fire({
         title: "Are you sure?",
@@ -17,11 +26,22 @@ export const DeleteLesson = () => {
 
 
         if (result.isConfirmed) {
-            Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-            }).then((result) => { navigate(-1) })
+
+            deleteLesson(lessonId).then(result => {
+
+                console.log(result)
+
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Se ha borrado correctamente",
+                    showConfirmButton: false,
+                    timer: 1000
+                }).then((result) => {
+                    navigate(-1)
+                })
+            })
+
         } else {
             navigate(-1)
         }

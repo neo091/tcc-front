@@ -68,7 +68,7 @@ const LeccionContent = ({ leccion }) => {
         <>
             <div className="p-2 bg-gray-800 rounded my-4">
 
-                <p>{desc}</p>
+                <h3 className=" text-2xl font-semibold">{desc}</h3>
 
                 <Enlace to={`./lessons/${leccion.leccion_id}/edit`}>Editar</Enlace>
                 <Enlace to={`./lessons/${leccion.leccion_id}/delete`} type={"danger"}>Borrar</Enlace>

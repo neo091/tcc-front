@@ -23,7 +23,6 @@ const Teacher = () => {
 
 
     const openSidebarHandle = () => {
-        console.log('Open')
         setShowSidebar(!showSideBar)
     }
 
