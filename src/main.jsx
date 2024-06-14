@@ -30,6 +30,7 @@ import InglishTest from './pages/Dashboard/Test.jsx'
 
 const router = createBrowserRouter(
   [
+
     {
       path: "/",
       element: <Home />,
@@ -101,7 +102,7 @@ const router = createBrowserRouter(
       children: [
         { index: true, element: <HomeDash /> },
         { path: "Home", element: <HomeDash /> },
-        { path: "Test", element: <InglishTest /> },
+        { path: "Test", element: <InglishTest /> }
       ]
     },
     {

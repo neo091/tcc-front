@@ -22,9 +22,7 @@ const ErrorType = {
     SUCCESS: "success"
 }
 
-
 const Login = () => {
-
 
     const [hideAlert, setHideAlert] = useState(true)
     const [alert, setAlert] = useState([])

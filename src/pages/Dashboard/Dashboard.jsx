@@ -7,7 +7,6 @@ import { ProfilePicture, ProfileInfo, ProfileUserType } from "../../components/P
 import Header from "../../components/Header";
 import SidebarLinks from "../../components/SidebarLinks";
 
-
 export async function loader() {
     const user = await getUserData();
     if (!user || user === undefined) return redirect("../Login")
