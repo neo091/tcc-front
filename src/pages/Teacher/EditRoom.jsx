@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react'
 import teacerService from '../../services/teacher'
 import Subtitle from '../../components/Subtitle'
-import ButtonSky from '../../components/ButtonSky'
 import Alert from "../../components/Alerts";
 import Button from '../../components/Button';
-import { useLoaderData } from 'react-router-dom';
+import { Form, redirect, useLoaderData } from 'react-router-dom';
 import TopBarProgress from 'react-topbar-progress-indicator';
-
+import Enlace from '../../components/Enlace';
+import teacher from '../../services/teacher';
 
 TopBarProgress.config({
     barColors: {
@@ -22,6 +22,16 @@ TopBarProgress.config({
 
 export const loader = async ({ params }) => {
     return { id: params.id }
+}
+
+export const action = async ({ request, params }) => {
+
+    const formData = await request.formData()
+    const updates = Object.fromEntries(formData)
+
+    const result = await teacher.edit(updates, params.id)
+
+    return !result.error ? redirect(`/Teacher/Rooms/${params.id}`) : {}
 }
 
 const EditRoom = (props) => {
@@ -56,36 +66,43 @@ const EditRoom = (props) => {
 
     return (
         <>
-            {showLoader && <TopBarProgress />}
-            {!showLoader && <div className="p-4 ">
-                <Subtitle text='Agregar nueva Aula Virtual' />
-                <p>Rellena todos los campos antes de enviar.</p>
+            <div className='w-full sm:w-2/3 lg:w-2/4  mx-auto'>
 
-                {
-                    showAlert ? <Alert message={alert.message} type={alert.type} /> : ''
-                }
-                <form action="/" id="create-room-form" method="POST">
-                    <div className="my-2">
-                        <input type="text" onChange={(e) => nameHandle(e)} placeholder='Nombre Aula' defaultValue={room.nombre_aula} className="text-black p-2 w-full" />
-                    </div>
+                {showLoader && <TopBarProgress />}
+                {!showLoader && <div className="p-4 ">
+                    <Subtitle text='Agregar nueva Aula Virtual' />
+                    <p>Rellena todos los campos antes de enviar.</p>
 
-                    <div className="my-2 text-black">
-                        <select className="p-2 w-full">
-                            <option value="Principiante">Principiante</option>
-                            <option value="Intermedio">Intermedio</option>
-                            <option value="Alto">Alto</option>
-                        </select>
-                    </div>
+                    {
+                        showAlert ? <Alert message={alert.message} type={alert.type} /> : ''
+                    }
+                    <Form method="POST">
+                        <div className="my-2">
+                            <input name='name' type="text" onChange={(e) => nameHandle(e)} placeholder='Nombre Aula' defaultValue={room.nombre_aula} className="text-black p-2 w-full" />
+                        </div>
 
-                    <div className="my-2 text-black ">
-                        <textarea cols="30" rows="4" className="p-2 w-full" placeholder="Descripcion breve sobre esta aula" defaultValue={room.aula_descripcion}></textarea>
-                    </div>
+                        <div className="my-2 text-black" >
+                            <select className="p-2 w-full" name='level'>
+                                <option value="Principiante">Principiante</option>
+                                <option value="Intermedio">Intermedio</option>
+                                <option value="Alto">Alto</option>
+                            </select>
+                        </div>
 
-                    <div className="w-full">
-                        <Button text="Editar" /> <Button text="Borrar" type='danger' />
-                    </div>
-                </form>
-            </div>}
+                        <div className="my-2 text-black ">
+                            <textarea name='desc' cols="30" rows="4" className="p-2 w-full" placeholder="Descripcion breve sobre esta aula" defaultValue={room.aula_descripcion}></textarea>
+                        </div>
+
+                        <div className="w-full flex gap-3">
+                            <Button text="Editar" />
+                            <Enlace to={"/Teacher/Rooms"}>Cancelar</Enlace>
+                        </div>
+                    </Form>
+                </div>}
+
+
+            </div>
+
         </>
     )
 }

@@ -1,36 +1,138 @@
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, Navigate, redirect, useLoaderData } from "react-router-dom";
 import teacher from "../../services/teacher";
-import Title from "../../components/Title";
+import Enlace from "../../components/Enlace";
+import { useState } from "react";
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
 
 export const loader = async ({ params }) => {
 
-    const getRoom = await teacher.getWhitId(params.id)
+    const room = await teacher.getWhitId(params.id)
+    const lessons = await teacher.getLessons(params.id)
 
-    return getRoom
+    return { room: room.body, lessons: lessons.body }
 
+}
+
+
+const LeccionContent = ({ leccion }) => {
+
+    let desc = leccion.descripcion
+
+
+    if (desc === null) {
+        desc = `Sin descripción - ${leccion.leccion_id}`
+    }
+
+
+    const getMonthInSpanish = (month) => {
+
+        const mes = [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Setiembre",
+            "Octubre",
+            "Nobiembre",
+            "Diciembre",
+        ]
+
+        return mes[month]
+    }
+
+
+    const fechaLimite = (fecha) => {
+        const today = new Date()
+        const date = new Date(fecha)
+
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        const hours = date.getHours().toString().padStart(2, "0");
+        const minutes = date.getMinutes().toString().padStart(2, "0");
+
+        const hoy = day === today.getDate().toString().padStart(2, "0")
+            ? "Hoy"
+            : `${day} ${getMonthInSpanish(date.getMonth())}`
+
+        return `Fecha Límite: ${hoy} antes de ${hours}:${minutes}`;
+    }
+
+
+    return (
+        <>
+            <div className="p-2 bg-gray-800 rounded my-4">
+
+                <h3 className=" text-2xl font-semibold">{desc}</h3>
+
+                <Enlace to={`./lessons/${leccion.leccion_id}/edit`}>Editar</Enlace>
+                <Enlace to={`./lessons/${leccion.leccion_id}/delete`} type={"danger"}>Borrar</Enlace>
+
+                <div className=" text-right">
+                    {fechaLimite(leccion.fecha_limite)}
+                </div>
+
+            </div>
+        </>
+    )
 }
 
 
 const Room = () => {
 
 
-    const { body } = useLoaderData()
+    const { room, lessons } = useLoaderData()
 
-    const { nombre_aula, nivel, aula_descripcion } = body
+    const { nombre_aula, nivel, aula_descripcion, aula_id } = room
+
+
+    const [showModal, setShowModal] = useState(false)
+    const [deleteRoom, setDeleteRoom] = useState(false)
+
+    const [lecciones, setLecciones] = useState(lessons)
+
+    const toggleShow = (e) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                }).then((result) => setDeleteRoom(true))
+            }
+        });
+    }
 
 
 
     return (
         <>
+            {
+                deleteRoom && <Navigate to={"delete"} />
+            }
 
+            <div className="w-full sm:w-2/3 lg:w-2/4  mx-auto">
+                <div className="sm:flex xl:flex items-center gap-2">
 
-            <div className="w-[80%] mx-auto">
-                <div className="flex-row sm:flex xl:flex  items-center gap-3">
-                    <h1 className=" text-5xl font-extrabold">{nombre_aula}</h1>
+                    <h1 className="text-5xl font-extrabold my-4">{nombre_aula}</h1>
 
-                    <div className="flex gap-1">
-                        <Link to={"./edit"} className="d-block bg-blue-800 p-3 rounded">EDITAR</Link>
-                        <Link to={"./edit"} className="d-block bg-red-800 p-3 rounded">BORRAR</Link>
+                    <div>
+                        <Enlace to={"./edit"}>Editar</Enlace>
+
+                        <Enlace modal handle={toggleShow} type={"danger"}>Borrar</Enlace>
                     </div>
 
                 </div>
@@ -38,12 +140,19 @@ const Room = () => {
                 <p className="whitespace-pre-wrap text-[20px] mt-3">{aula_descripcion}</p>
 
 
-                <div className="flex-1 sm:flex xl:flex gap-3 mt-10">
-                    <h1 className=" text-2xl font-extrabold">Lecciones</h1>
+                <div className="sm:flex xl:flex  items-center gap-2">
+                    <h1 className="text-4xl font-extrabold my-4">Lecciones</h1>
 
-                    <div className="flex gap-1">
-                        <Link to={"./NewLesson"} className="d-block bg-blue-800 p-3 rounded">Nueva lección</Link>
-                    </div>
+                    <Enlace to={"./NewLesson"}>Crear Leccion</Enlace>
+
+                </div>
+
+
+                <div className="flex-row items-center">
+
+                    {
+                        lecciones.map(leccion => <LeccionContent key={leccion.leccion_id} leccion={leccion} />)
+                    }
 
                 </div>
 

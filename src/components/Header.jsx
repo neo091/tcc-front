@@ -5,8 +5,8 @@ import { getUserData } from "../auth"
 const LoginRegisterLinks = () => {
     return (
         <>
-            <Link to={"/Login"} className="inline-block text-sm px-4 py-2 leading-none border rounded border-white hover:bg-black hover:text-white hover:border-transparent  mt-4 lg:mt-0  ">Login</Link>
-            <Link to={"/Register"} className="inline-block text-sm px-4 py-2 leading-none  mt-4 lg:mt-0">Register</Link>
+            <Link to={"/Login"} className="inline-block text-sm px-4 py-2 leading-none border rounded border-white hover:bg-black hover:text-white hover:border-transparent  ">Login</Link>
+            <Link to={"/Register"} className="inline-block text-sm px-4 py-2 leading-none ">Register</Link>
 
         </>
     )
@@ -14,7 +14,7 @@ const LoginRegisterLinks = () => {
 
 const LoggedLinks = ({ to, children }) => {
     return (
-        <Link to={to} className="inline-block text-sm px-4 py-2 leading-none border rounded border-white hover:bg-black hover:text-white hover:border-transparent  mt-4 lg:mt-0">
+        <Link to={to} className="inline-block text-sm px-4 py-2 leading-none border rounded border-white hover:bg-black hover:text-white hover:border-transparent lg:mt-0">
             {children}
         </Link>
     )
@@ -51,29 +51,33 @@ const Header = ({ handle }) => {
                                 <span v="font-semibold text-xl tracking-tight">TCC</span>
                             </Link>
                         </div>
-                        <div className="block lg:hidden">
-                            <button onClick={(e) => openSidebar()} className="flex items-center px-3 py-2 border rounded  border-black  ">
-                                <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
-                            </button>
-                        </div>
+                        {
+                            logged
+                            && <div className="block lg:hidden">
+                                <button onClick={(e) => openSidebar()} className="flex items-center px-3 py-2 border rounded  border-black  ">
+                                    <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
+                                </button>
+                            </div>
+                        }
                         <div className="w-full flex-grow hidden lg:flex lg:items-center lg:w-auto sm:hidden md:hidden">
                             <div className="text-sm lg:flex-grow">
-
-                                <Link to={"/"} className="block mt-4 lg:inline-block lg:mt-0 hover:font-semibold mr-4">Home</Link>
+                                <Link to={"/"} className="block lg:inline-block hover:font-semibold mr-4">Home</Link>
                             </div>
-                            <div>
-                                {logged ?
-                                    sessionType === 1
-                                        ? <LoggedLinks to={"/Dashboard"}>Dashboard</LoggedLinks>
-                                        : sessionType === 2
-                                            ? <LoggedLinks to={"/Teacher"}>Teacher</LoggedLinks>
-                                            : sessionType === 3
-                                                ? <LoggedLinks to={"/Admin"}>Admin</LoggedLinks>
-                                                : ''
-                                    : <LoginRegisterLinks />
-                                }
 
-                            </div>
+                        </div>
+
+                        <div>
+                            {logged ?
+                                sessionType === 1
+                                    ? <LoggedLinks to={"/Dashboard/Home"}>Dashboard</LoggedLinks>
+                                    : sessionType === 2
+                                        ? <LoggedLinks to={"/Teacher/Home"}>Teacher</LoggedLinks>
+                                        : sessionType === 3
+                                            ? <LoggedLinks to={"/Admin/Home"}>Admin</LoggedLinks>
+                                            : ''
+                                : <LoginRegisterLinks />
+                            }
+
                         </div>
                     </nav>
 

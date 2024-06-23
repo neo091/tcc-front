@@ -8,10 +8,10 @@ const Button = ({ text, type, children }) => {
 
     }
 
-    let classText = 'bg-violet-900 hover:bg-violet-700'
+    let classText = 'bg-violet-600 hover:bg-violet-500 '
 
     if (config.type === "warning") {
-        classText = "bg-yellow-600 hover:bg-yellow-700"
+        classText = "bg-yellow-600 hover:bg-yellow-500"
     }
 
     if (config.type === "danger") {
@@ -21,7 +21,7 @@ const Button = ({ text, type, children }) => {
 
     return (
         <>
-            <button className={classText + "rounded shadow-[inset_0px_-6px_0px_0px_#00000050] text-white py-2 px-5  w-full "} {...children}>{text ? text : children}</button>
+            <button className={`w-full shadow-[inset_0px_-6px_0px_0px_#00000050] inline-block my-2 text-white py-2 px-5 transition-all duration-500 ${classText}`}>{text ? text : children}</button>
         </>
     )
 }

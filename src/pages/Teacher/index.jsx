@@ -1,4 +1,4 @@
-import { Link, Outlet, redirect, useLoaderData, useNavigation } from "react-router-dom";
+import { Outlet, redirect, useLoaderData, useNavigation } from "react-router-dom";
 import { getUserData } from "../../auth";
 import Header from "../../components/Header";
 import { ProfileInfo, ProfilePicture, ProfileUserType } from "../../components/Profile"
@@ -23,7 +23,6 @@ const Teacher = () => {
 
 
     const openSidebarHandle = () => {
-        console.log('Open')
         setShowSidebar(!showSideBar)
     }
 

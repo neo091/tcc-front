@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react'
-import Banner from '../../components/Banner'
+import { useState } from 'react'
 import Button from '../../components/Button'
 import Content from '../../components/Content'
-import EnlaceDefaultNoBg from '../../components/EnlaceDefaultNoBg'
 import Header from '../../components/Header'
 import isEmail from 'validator/lib/isEmail'
 import loginService from '../../services/auth'
 import Alert from '../../components/Alerts'
 import { Link, Navigate, redirect } from 'react-router-dom'
+import Title from '../../components/Title'
 
 const Input = ({ type, label, handle }) => {
     return (
@@ -18,9 +17,12 @@ const Input = ({ type, label, handle }) => {
     )
 }
 
+const ErrorType = {
+    DANGER: "danger",
+    SUCCESS: "success"
+}
 
 const Login = () => {
-
 
     const [hideAlert, setHideAlert] = useState(true)
     const [alert, setAlert] = useState([])
@@ -47,14 +49,21 @@ const Login = () => {
         setTimeout(() => { setHideAlert(true) }, duration || 5000)
     }
 
-
-
     const submitHandle = (e) => {
         e.preventDefault()
 
+        if (!userLogin) {
+            showAlert({
+                type: ErrorType.DANGER, message: 'need email'
+            })
+
+            return
+        }
+
+
         if (!userLogin.email || userLogin.email === "") {
             showAlert({
-                type: 'danger', message: 'need email'
+                type: ErrorType.DANGER, message: 'need email'
             })
 
             return
@@ -62,7 +71,7 @@ const Login = () => {
 
         if (!userLogin.password || userLogin.password === "") {
             showAlert({
-                type: 'danger', message: 'need password'
+                type: ErrorType.DANGER, message: 'need password'
             })
 
             return
@@ -71,7 +80,7 @@ const Login = () => {
         if (!isEmail(userLogin.email)) {
 
             showAlert({
-                type: 'danger', message: 'invalid email'
+                type: ErrorType.DANGER, message: 'invalid email'
             })
 
             return
@@ -80,7 +89,7 @@ const Login = () => {
         loginService.login(userLogin).then(result => {
 
             showAlert({
-                type: 'success', message: 'login ok'
+                type: ErrorType.SUCCESS, message: 'login correcto, redirigiendo...'
             })
 
             const user = result.body
@@ -88,16 +97,22 @@ const Login = () => {
                 'loggedTCC', JSON.stringify(user)
             )
 
+
             setUser(result.body)
 
         }).catch((e) => {
 
             if (e.code === "ERR_BAD_RESPONSE") {
                 showAlert({
-                    type: 'danger', message: e.response.data.body.message
+                    type: ErrorType.DANGER, message: e.response.data.body.message
                 })
             }
-            console.log(e)
+
+            if (e.code === "ERR_NETWORK") {
+                showAlert({
+                    type: ErrorType.DANGER, message: "Error de Servidor"
+                })
+            }
         })
 
     }
@@ -111,7 +126,7 @@ const Login = () => {
                         ? <Navigate to={"/Dashboard"} replace={true} />
                         : user.type === 2
                             ? <Navigate to={"/Teacher/Home"} replace={true} />
-                            : user.type === 2
+                            : user.type === 3
                                 ? <Navigate to={"/Admin"} replace={true} />
                                 : ''
                     : ''
@@ -119,10 +134,11 @@ const Login = () => {
 
 
             <Header />
-            <Banner text='Inicia sesión' />
             <Content>
-                <div className=' flex justify-center items-center self-center'>
+                <div className=' my-16 flex justify-center items-center self-center'>
                     <div className='bg-slate-800 p-2 rounded' >
+
+                        <Title>Iniciar Sessión</Title>
 
                         <Alert type={alert.type} message={alert.message} hide={hideAlert} />
 

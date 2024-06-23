@@ -4,72 +4,56 @@ import { Link, NavLink, Outlet, redirect, useLoaderData } from "react-router-dom
 
 import { getUserData } from '../../auth'
 import { ProfilePicture, ProfileInfo, ProfileUserType } from "../../components/Profiel";
-
+import Header from "../../components/Header";
+import SidebarLinks from "../../components/SidebarLinks";
 
 export async function loader() {
     const user = await getUserData();
-    if (!user) return redirect("../Login")
+    if (!user || user === undefined) return redirect("../Login")
     return { user };
 }
-
-
-
-const SidebarLinks = ({ to, text }) => {
-    return (
-        <>
-            <Link to={to} className="p-2 w-100 block  hover:bg-violet-800">
-                {text}
-            </Link>
-        </>
-    )
-}
-
-
 
 const Dashboard = () => {
 
     const { user } = useLoaderData()
 
+    const [showSideBar, setShowSidebar] = useState(true)
+
+
+    const openSidebarHandle = () => {
+        setShowSidebar(!showSideBar)
+    }
+
     return (
         <>
-            <HeaderDash />
+            <Header handle={openSidebarHandle} />
 
-            <div className="mx-auto flex">
+            <div className="mx-auto">
 
                 {/*Sidebar*/}
-                <div className=" d-none w-[100%] lg:w-[20%] md:w-[20%] h-[100vh] fixed" >
+                <div className={`bg-slate-950 ${showSideBar && "hidden"} w-full sm:w-[20%] xl:w-[20%] sm:block h-[100vh] fixed p-2`}>
 
                     <div className="p-2">
-                        <ProfilePicture src='../images/user-4-xxl.png' />
+                        <ProfilePicture src={"http://localhost:5173/images/user.png"} />
                         <ProfileInfo name={user.name} />
                         <ProfileUserType type={user.type} />
-
                     </div>
 
-                    <SidebarLinks text={"Dashboard"} to={"/Dashboard"} />
-                    <SidebarLinks text={"Aula Virtual"} to={"./AulaVirtual"} />
+                    <SidebarLinks text={"Home"} to={"./Home"} handle={openSidebarHandle} />
+                    <SidebarLinks text={"Aula Virtual"} to={"./Rooms"} handle={openSidebarHandle} />
+                    <SidebarLinks text={"Archivos"} to={"./Files"} handle={openSidebarHandle} />
 
-
-                    {/*Student Area*/}
-
-
-                    {/*Teacher Area*/}
-
-
-                    {/*Admin Area*/}
-
-
-
-                    <Link to={"Logout"} className="p-2 w-100 block ">Logout</Link>
+                    <SidebarLinks text={"Logout"} to={"/Logout"} />
 
                 </div>
                 {/*Content*/}
-                <div className=" p-4 ml-[20%] flex-1">
-                    <Outlet />
+                <div className=" p-4 sm:ml-[20%] xl:ml-[20%]">
+                    {navigation.state === "loading" ? <TopBarProgress /> : <Outlet />}
                 </div>
 
-
             </div>
+
+
 
         </>
     )

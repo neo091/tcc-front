@@ -1,5 +1,6 @@
 
 import axios from 'axios'
+import fileDownload from "js-file-download"
 import { getUserData } from '../auth'
 
 const base_url = import.meta.env.VITE_AUTH_URI || 'http://localhost:4000'
@@ -24,10 +25,7 @@ const getAllRooms = async (data) => {
 
 const getWhitId = async (id) => {
 
-    await fakeNetwork()
-
     const user = await getUserData()
-
 
     setToken(user.token)
 
@@ -77,24 +75,146 @@ const deleteRoom = async (id) => {
 
 }
 
+const edit = async (data, id) => {
+    const user = await getUserData()
 
-// fake a cache so we don't slow down stuff we've already seen
-let fakeCache = {};
+    setToken(user.token)
 
-async function fakeNetwork(key) {
-    if (!key) {
-        fakeCache = {};
+    const newData = {
+        nombre_aula: data.name,
+        nivel: data.level,
+        aula_descripcion: data.desc
     }
 
-    if (fakeCache[key]) {
-        return;
+    const config = {
+        headers: { Authorization: token }
     }
 
-    fakeCache[key] = true;
-    return new Promise(res => {
-        setTimeout(res, Math.random() * 800);
-    });
+    const response = await axios.put(`${base_url}/api/teacher/room/${id}`, newData, config)
+    return response.data
 }
 
+const getLessons = async (id_room) => {
+    const user = await getUserData()
 
-export default { deleteRoom, add, getAllRooms, getWhitId }
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.get(`${base_url}/api/teacher/lessons/${id_room}/all`, config)
+    return response.data
+}
+
+export const createLesson = async (id_room) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.post(`${base_url}/api/teacher/lessons/create/${id_room}`, {}, config)
+    return response.data
+}
+
+export const getLesson = async (lessonId) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.get(`${base_url}/api/teacher/lessons/${lessonId}`, config)
+    return response.data
+}
+
+export const deleteLesson = async (lesson_id) => {
+    const user = await getUserData()
+    setToken(user.token)
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    return await axios.delete(`${base_url}/api/teacher/lessons/delete/${lesson_id}`, config)
+}
+
+export const getLessonFiles = async (lessonId) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.get(`${base_url}/api/teacher/lessons/files/${lessonId}/all`, config)
+    return response.data
+}
+
+export async function updateLesson(lessonId, data) {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.post(`${base_url}/api/teacher/lessons/update/${lessonId}`, data, config)
+    return response.data
+}
+
+export const uploadFile = async (file, aula_id, leccion_id) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token, "Content-Type": "multipart/form-data", }
+    }
+
+    let formData = new FormData()
+
+    formData.append("file", file)
+
+    const response = axios.post(`${base_url}/api/files/upload/${aula_id}/${leccion_id}`, formData, config)
+    return response
+
+}
+
+const downloadFileFromServer = async (file_id) => {
+
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token },
+        responseType: "blob"
+    }
+
+
+    const response = axios
+        .get(`${base_url}/api/files/download/${file_id}`, config)
+
+    return response
+}
+
+const deleteFileFromServer = async (file_id) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    return axios.get(`${base_url}/api/files/delete/${file_id}`, config)
+}
+
+export default { deleteRoom, add, edit, getAllRooms, getWhitId, getLessons, deleteLesson, uploadFile, downloadFileFromServer, deleteFileFromServer }

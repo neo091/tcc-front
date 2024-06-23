@@ -1,13 +1,23 @@
+import axios from "axios"
+
+const backend_url = import.meta.env.VITE_AUTH_URI || 'http://localhost:4000'
+
+let token = null
+
+const setToken = newToken => {
+    token = `Bearer ${newToken}`
+}
+
 export async function getUserData() {
-    await fakeNetwork()
+
     const loggedUserJson = await window.localStorage.getItem("loggedTCC")
     const userLogged = JSON.parse(loggedUserJson)
+
     return userLogged
 }
 
 export async function destryoUser() {
     window.localStorage.clear()
-
     return {}
 }
 
