@@ -27,6 +27,7 @@ import { DeleteLesson, loader as DeleteLessonLoader } from './pages/Teacher/Less
 import Dashboard, { loader as dashloader } from './pages/Dashboard/Index.jsx'
 import HomeDash from './pages/Dashboard/Home.jsx'
 import InglishTest from './pages/Dashboard/Test.jsx'
+import TestPage from './pages/Test-Page.jsx'
 
 const router = createBrowserRouter(
   [
@@ -118,11 +119,14 @@ const router = createBrowserRouter(
       path: "/Register",
       element: <Register />,
       errorElement: <ErrorPage />
+    },
+    {
+      path: "/test-page",
+      element: <TestPage />,
+      errorElement: <ErrorPage />
     }
   ]
 )
-
-
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <RouterProvider router={router} />,

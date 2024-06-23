@@ -6,6 +6,7 @@ export const useTestStore = create(persist((set, get) => ({
     questions: [],
     currentTest: 0,
     replied: 0,
+    history: [],
     fetchQuestions: async (limit) => {
         const res = await fetch('http://localhost:5173/questions.json')
         const json = await res.json()
@@ -13,6 +14,15 @@ export const useTestStore = create(persist((set, get) => ({
         const questions = json.sort(() => Math.random() - 0.5).slice(0, limit)
 
         set({ questions: questions })
+    },
+    addToHistory: (newHistory) => {
+
+        const { history } = get()
+
+        set({ history: [...history, newHistory] })
+    },
+    resetHistory: () => {
+        set({ historial: [] })
     },
     selectTest: (testId, testIndex) => {
         const { questions } = get()

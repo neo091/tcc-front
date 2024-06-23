@@ -89,13 +89,14 @@ const Login = () => {
         loginService.login(userLogin).then(result => {
 
             showAlert({
-                type: ErrorType.SUCCESS, message: 'login ok'
+                type: ErrorType.SUCCESS, message: 'login correcto, redirigiendo...'
             })
 
             const user = result.body
             window.localStorage.setItem(
                 'loggedTCC', JSON.stringify(user)
             )
+
 
             setUser(result.body)
 
@@ -104,6 +105,12 @@ const Login = () => {
             if (e.code === "ERR_BAD_RESPONSE") {
                 showAlert({
                     type: ErrorType.DANGER, message: e.response.data.body.message
+                })
+            }
+
+            if (e.code === "ERR_NETWORK") {
+                showAlert({
+                    type: ErrorType.DANGER, message: "Error de Servidor"
                 })
             }
         })

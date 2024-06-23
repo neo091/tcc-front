@@ -24,6 +24,7 @@ const Finished = () => {
 
     const [resume, setResume] = useState(null)
     const [recomendations, setRecomendations] = useState(null)
+    const addToHistory = useTestStore(state => state.addToHistory)
 
     const loadQuestions = () => {
         getQuestions().then(result => console.log(result))
@@ -33,21 +34,20 @@ const Finished = () => {
     const questionsObject = JSON.stringify(questions)
 
     const loadRecomendations = async (rec) => {
-        console.log('cargando recomendaciones')
         if (recomendations != null) {
             return
         } else {
             await getRecomendations(JSON.stringify(rec)).then(response => {
                 setRecomendations(response.body.res.recomendacion)
+                addToHistory(rec)
 
-                console.log(response.body.res.recomendacion)
+                console.log(rec)
             })
         }
     }
 
 
     const loadResume = async () => {
-        console.log('cargando resumen')
 
         if (resume != null) {
             return

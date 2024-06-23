@@ -238,5 +238,125 @@
             "d) hat"
         ],
         "answer": 2
-    }
+    },
+    {
+        "id": 21,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'grande' en inglés?",
+        "options": [
+          "a) big",
+          "b) small",
+          "c) tiny",
+          "d) little"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 22,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'mar' en inglés?",
+        "options": [
+          "a) river",
+          "b) lake",
+          "c) sea",
+          "d) ocean"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 23,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'auto' en inglés?",
+        "options": [
+          "a) car",
+          "b) bike",
+          "c) bus",
+          "d) train"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 24,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'puerta' en inglés?",
+        "options": [
+          "a) window",
+          "b) roof",
+          "c) door",
+          "d) floor"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 25,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'flor' en inglés?",
+        "options": [
+          "a) flower",
+          "b) tree",
+          "c) grass",
+          "d) leaf"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 26,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'familia' en inglés?",
+        "options": [
+          "a) friends",
+          "b) family",
+          "c) neighbors",
+          "d) colleagues"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 27,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'hermano' en inglés?",
+        "options": [
+          "a) sister",
+          "b) cousin",
+          "c) uncle",
+          "d) brother"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 28,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'caminar' en inglés?",
+        "options": [
+          "a) run",
+          "b) jump",
+          "c) walk",
+          "d) swim"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 29,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'zapatos' en inglés?",
+        "options": [
+          "a) hat",
+          "b) shoes",
+          "c) gloves",
+          "d) socks"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 30,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'feliz cumpleaños' en inglés?",
+        "options": [
+          "a) Merry Christmas",
+          "b) Happy New Year",
+          "c) Happy Birthday",
+          "d) Happy Holidays"
+        ],
+        "answer": 2
+      }
 ]

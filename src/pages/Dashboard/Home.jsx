@@ -33,9 +33,10 @@ const Home = () => {
     const navigate = useNavigate()
     const fetchQuestions = useTestStore(state => state.fetchQuestions)
     const questions = useTestStore(state => state.questions)
+    const historial = useTestStore(state => state.historial)
 
     const loadQuestionsHandle = () => {
-        fetchQuestions(3).then(() => navigate('/Dashboard/test'))
+        fetchQuestions(10).then(() => navigate('/Dashboard/test'))
     }
 
     const continueHandle = () => {
@@ -45,6 +46,7 @@ const Home = () => {
     return (
         <>
             <Title>Dashboard</Title>
+
             {
                 questions.length > 0 && <PendingTest handle={continueHandle} />
             }
