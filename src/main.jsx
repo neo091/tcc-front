@@ -28,6 +28,7 @@ import Dashboard, { loader as dashloader } from './pages/Dashboard/Index.jsx'
 import HomeDash from './pages/Dashboard/Home.jsx'
 import InglishTest from './pages/Dashboard/Test.jsx'
 import TestPage from './pages/Test-Page.jsx'
+import FilesStudent from './pages/Dashboard/Files.jsx'
 
 const router = createBrowserRouter(
   [
@@ -103,7 +104,8 @@ const router = createBrowserRouter(
       children: [
         { index: true, element: <HomeDash /> },
         { path: "Home", element: <HomeDash /> },
-        { path: "Test", element: <InglishTest /> }
+        { path: "Test", element: <InglishTest /> },
+        { path: "Files", element: <FilesStudent /> }
       ]
     },
     {
