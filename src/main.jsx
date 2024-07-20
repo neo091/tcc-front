@@ -29,6 +29,8 @@ import HomeDash from './pages/Dashboard/Home.jsx'
 import InglishTest from './pages/Dashboard/Test.jsx'
 import TestPage from './pages/Test-Page.jsx'
 import FilesStudent from './pages/Dashboard/Files.jsx'
+import AddSection from './pages/Teacher/lessons/add-section.jsx'
+import Students from './pages/Teacher/Students.jsx'
 
 const router = createBrowserRouter(
   [
@@ -73,6 +75,10 @@ const router = createBrowserRouter(
               loader: NewLessonLoader
             },
             {
+              path: ":id/lessons/:lessonId/students",
+              element: <Students />,
+            },
+            {
               path: ":id/lessons/:lessonId/edit",
               element: <EditLesson />,
               loader: editLessonLoader,
@@ -87,7 +93,11 @@ const router = createBrowserRouter(
               path: ":id/delete",
               element: <RoomDelete />,
               loader: RoomDeleteLoader
-            }
+            },
+            {
+              path: ":id/lessons/:lessonId/edit/addSection",
+              element: <AddSection />
+            },
           ]
         },
         {
