@@ -6,6 +6,7 @@ import Swal from "sweetalert2"
 import { useEffect, useRef, useState } from "react"
 import fileDownload from "js-file-download"
 import parseHTML from 'html-react-parser'
+import AudioButton from "../../components/AudioButton"
 
 
 
@@ -35,9 +36,9 @@ const AddSectionButton = ({ handle, type, children }) => {
     )
 }
 
+
+
 const SectionTypes = ({ type, value, editHandle, id }) => {
-
-
 
     const [imageUrl, setImageUrl] = useState(null)
     const [audioUrl, setAudioUrl] = useState(null)
@@ -87,7 +88,6 @@ const SectionTypes = ({ type, value, editHandle, id }) => {
         })
     }
 
-
     return (
         <>
             {type === 1 && <div onClick={optionsModalHandle} className="p-2 hover:bg-slate-600 hover:cursor-pointer">
@@ -97,10 +97,10 @@ const SectionTypes = ({ type, value, editHandle, id }) => {
                 <h2 className="font-bold text-2xl ">{value}</h2>
             </div>}
             {type === 3 && <p className="mt-2">
-                {<img src={value} />}
+                {<img src={value} onClick={optionsModalHandle} />}
             </p>}
 
-            {type === "audio" && <p className="mt-2"></p>}
+            {type === 4 && <AudioButton url={value} />}
         </>
     )
 }
@@ -108,8 +108,6 @@ const SectionTypes = ({ type, value, editHandle, id }) => {
 const EditLesson = () => {
 
     const { body, contents } = useLoaderData()
-
-    //console.log(body)
 
     const [filesToUpload, setFilesToUpload] = useState([])
     const [myFiles, setMyFiles] = useState([])
@@ -254,11 +252,13 @@ const EditLesson = () => {
             await teacher.uploadFile(file, body.room, body.id).then(result => {
 
                 console.log(result.data.body)
-                const insertID = result.data.body.inserID
-                fetch(`http://localhost:4000/api/files/${insertID}`)
+                const { insertId } = result.data.body
+                fetch(`http://localhost:4000/api/files/${insertId}`)
                     .then(response => response.json())
                     .then(data => {
-                        const url = data.body.url
+                        console.log(data)
+
+                        const url = `http://localhost:4000/uploads/${data.body[0].name}`
 
                         teacher.addLessonContent({ type: 3, value: url }, body.id).then(result => {
                             setSections([...sections, { ID: sections.length + 1, type: 3, value: url }])
@@ -275,7 +275,7 @@ const EditLesson = () => {
     }
 
     const addAudioSection = async () => {
-        const { value: file } = await Swal.fire({
+        const { value: fileUpload } = await Swal.fire({
             title: "Select audio",
             input: "file",
             inputAttributes: {
@@ -284,9 +284,18 @@ const EditLesson = () => {
             }
         });
 
-        if (file) {
+        if (fileUpload) {
 
-            setSections([...sections, { ID: sections.length + 1, type: 4, value: file }])
+            //subir archio de audio
+            const upload = await teacher.uploadAudioFile(fileUpload, body.room, body.id)
+            //obtenemos el id de el archivo insertado
+            const { insertId } = upload.body.result
+            const { file } = upload.body.data
+
+            await teacher.addLessonContent({ type: 4, value: `http://localhost:4000/uploads/${file.filename}` }, body.id)
+
+            setSections([...sections, { ID: sections.length + 1, type: 4, value: `http://localhost:4000/uploads/${file.filename}` }])
+
         }
     }
 

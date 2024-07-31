@@ -16,6 +16,8 @@ export async function getUserData() {
     return userLogged
 }
 
+//crear una funcion de prueba para verificar erroress de session
+
 export async function destryoUser() {
     window.localStorage.clear()
     return {}

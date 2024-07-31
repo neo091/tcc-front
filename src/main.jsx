@@ -4,7 +4,6 @@ import './index.css'
 
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
-
 import Home from './pages/Home'
 import ErrorPage from './pages/error-page.jsx'
 
@@ -13,6 +12,7 @@ import Register from './pages/Register/Register.jsx'
 import Logout from './pages/Logout.jsx'
 import NewRoom, { action as NewRoomAction } from './pages/Teacher/NewRoom.jsx'
 
+//Teacher Sections
 import Teacher, { loader as teacherLoader } from './pages/Teacher'
 import TeacherHome from './pages/Teacher/TeacherHome.jsx'
 import Rooms from './pages/Teacher/Rooms.jsx'
@@ -24,13 +24,22 @@ import NewLesson, { loader as NewLessonLoader } from './pages/Teacher/NewLesson.
 import RoomDelete, { loader as RoomDeleteLoader } from './pages/Teacher/RoomDelete.jsx'
 import EditLesson, { loader as editLessonLoader, action as editLessonAction } from './pages/Teacher/EditLesson.jsx'
 import { DeleteLesson, loader as DeleteLessonLoader } from './pages/Teacher/Lessons.jsx'
+import Students from './pages/Teacher/Students.jsx'
+//---//
+
+//Dash Section -> 
 import Dashboard, { loader as dashloader } from './pages/Dashboard/Index.jsx'
 import HomeDash from './pages/Dashboard/Home.jsx'
 import InglishTest from './pages/Dashboard/Test.jsx'
 import TestPage from './pages/Test-Page.jsx'
 import FilesStudent from './pages/Dashboard/Files.jsx'
 import AddSection from './pages/Teacher/lessons/add-section.jsx'
-import Students from './pages/Teacher/Students.jsx'
+import DashboardRooms, { loader as dashLoader } from './pages/Dashboard/Rooms.jsx'
+import DashboardRoomsView, { loader as RoomsViewLoader } from './pages/Dashboard/RoomsView.jsx'
+import DashboardLessonView, { loader as LessonViewLoader } from './pages/Dashboard/LessonView.jsx'
+import DashboardCourses, { loader as CoursesLoader } from './pages/Dashboard/Courses.jsx'
+import DashboardCourse, { loader as CourseLoader } from './pages/Dashboard/Course.jsx'
+
 
 const router = createBrowserRouter(
   [
@@ -115,7 +124,12 @@ const router = createBrowserRouter(
         { index: true, element: <HomeDash /> },
         { path: "Home", element: <HomeDash /> },
         { path: "Test", element: <InglishTest /> },
-        { path: "Files", element: <FilesStudent /> }
+        { path: "Files", element: <FilesStudent /> },
+        { path: "Rooms", element: <DashboardRooms />, loader: dashLoader },
+        { path: "Rooms/:id", element: <DashboardRoomsView />, loader: RoomsViewLoader },
+        { path: "Lesson/:id", element: <DashboardLessonView />, loader: LessonViewLoader },
+        { path: "Courses", element: <DashboardCourses />, loader: CoursesLoader },
+        { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader }
       ]
     },
     {

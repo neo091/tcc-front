@@ -192,6 +192,23 @@ export const uploadFile = async (file, aula_id, leccion_id) => {
     return response
 }
 
+const uploadAudioFile = async (file, aula_id, leccion_id) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token, "Content-Type": "multipart/form-data", }
+    }
+
+    let formData = new FormData()
+
+    formData.append("file", file)
+
+    const response = await axios.post(`${base_url}/api/files/upload/audio/${aula_id}/${leccion_id}`, formData, config)
+    return response.data
+}
+
 const downloadFileFromServer = async (file_id) => {
 
     const user = await getUserData()
@@ -250,6 +267,14 @@ const getLessonContents = async (lesson) => {
     return response.data
 }
 
+
+const getFile = async (id) => {
+    const response = await axios.get(`${base_url}/api/files/${id}`)
+    return response.data
+}
+
+
+
 export default {
     deleteRoom,
     add,
@@ -263,4 +288,6 @@ export default {
     deleteFileFromServer,
     addLessonContent,
     getLessonContents,
+    uploadAudioFile,
+    getFile
 }
