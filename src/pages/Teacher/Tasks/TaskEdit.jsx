@@ -1,22 +1,19 @@
 import { useLoaderData } from "react-router-dom"
 
-
 export const loader = ({ params }) => {
 
-    const { id } = params
-    return { id: id }
+    const { id, taskId } = params
+    return { id: id, taskId: taskId }
 }
-
 
 const TaskEdit = () => {
 
-
-    const { id } = useLoaderData()
+    const { id, taskId } = useLoaderData()
 
 
     return (
         <div>
-            TaskEdit {id}
+            TaskEdit {id}, {taskId}
         </div>
     );
 }
