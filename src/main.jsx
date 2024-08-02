@@ -25,6 +25,10 @@ import RoomDelete, { loader as RoomDeleteLoader } from './pages/Teacher/RoomDele
 import EditLesson, { loader as editLessonLoader, action as editLessonAction } from './pages/Teacher/EditLesson.jsx'
 import { DeleteLesson, loader as DeleteLessonLoader } from './pages/Teacher/Lessons.jsx'
 import Students from './pages/Teacher/Students.jsx'
+
+import TaskNew, { loader as NewTaskLoader } from './pages/Teacher/Tasks/TaskNew.jsx'
+import TaskEdit, { loader as TaskEditLoader } from './pages/Teacher/Tasks/TaskEdit.jsx'
+
 //---//
 
 //Dash Section -> 
@@ -106,6 +110,16 @@ const router = createBrowserRouter(
             {
               path: ":id/lessons/:lessonId/edit/addSection",
               element: <AddSection />
+            },
+            {
+              path: ":id/NewTask",
+              element: <TaskNew />,
+              loader: NewTaskLoader
+            },
+            {
+              path: ":id/TaskEdit/:taskId",
+              element: <TaskEdit />,
+              loader: TaskEditLoader
             },
           ]
         },

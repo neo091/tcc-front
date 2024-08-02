@@ -34,7 +34,7 @@ const NewRoom = () => {
                     </div>
 
 
-                    <textarea cols="30" rows="4" className="p-2 w-full " name="desc" placeholder="Descripcion breve sobre esta aula"></textarea>
+                    <textarea cols="30" rows="4" className="p-2 w-full text-black " name="desc" placeholder="Descripcion breve sobre esta aula"></textarea>
                     <Button>Crear Aula</Button>
                 </Form>
 

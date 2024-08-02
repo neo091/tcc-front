@@ -31,8 +31,26 @@ const LeccionContent = ({ leccion }) => {
                 <h3 className=" text-xl font-semibold">{title}</h3>
                 <p>{desc}</p>
 
-                <Enlace to={`./lessons/${leccion.id}/edit`}>Editar</Enlace>
-                <Enlace to={`./lessons/${leccion.id}/delete`} type={"danger"}>Borrar</Enlace>
+                <div className="flex">
+                    <Enlace to={`./lessons/${leccion.id}/edit`}>Editar</Enlace>
+                    <Enlace to={`./lessons/${leccion.id}/delete`} type={"danger"}>Borrar</Enlace>
+                </div>
+            </div>
+        </>
+    )
+}
+
+const Task = ({ task }) => {
+    return (
+        <>
+            <div className="p-2 bg-gray-800 rounded my-4">
+
+                <h3 className=" text-xl font-semibold">TAREA {task.id}</h3>
+
+                <div className="flex">
+                    <Enlace to={`./edit`}>Editar</Enlace>
+                    <Enlace to={`./delete`} type={"danger"}>Borrar</Enlace>
+                </div>
             </div>
         </>
     )
@@ -41,6 +59,7 @@ const LeccionContent = ({ leccion }) => {
 
 const Room = () => {
 
+    const [tabSelected, setTabSelected] = useState(1)
 
     const { room, lessons } = useLoaderData()
 
@@ -71,6 +90,49 @@ const Room = () => {
     }
 
 
+    const [tareas, setTareas] = useState(
+        [
+            {
+                id: 1,
+                tarea_content: [
+                    {
+                        id: 1,
+                        type: 1,
+                        value: "Hola mundo"
+                    },
+                    {
+                        id: 2,
+                        type: 1,
+                        value: "Hola mundo 2"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                tarea_content: [
+                    {
+                        id: 1,
+                        type: 1,
+                        value: "Hola mundo"
+                    },
+                    {
+                        id: 2,
+                        type: 1,
+                        value: "Hola mundo 2"
+                    }
+                ]
+            }
+        ]
+    )
+
+
+    const selectTableHandle = (e, tab) => {
+        e.preventDefault()
+        setTabSelected(tab)
+
+    }
+
+
     return (
         <>
             {
@@ -78,16 +140,12 @@ const Room = () => {
             }
 
             <div className="w-full sm:w-2/3 lg:w-2/4  mx-auto">
-                <div className="sm:flex xl:flex items-center gap-2">
+                <h1 className="text-4xl font-extrabold my-4">{nombre_aula}</h1>
 
-                    <h1 className="text-5xl font-extrabold my-4">{nombre_aula}</h1>
+                <div className="flex gap-2">
+                    <Enlace to={"./edit"}>Editar</Enlace>
 
-                    <div>
-                        <Enlace to={"./edit"}>Editar</Enlace>
-
-                        <Enlace modal handle={toggleShow} type={"danger"}>Borrar</Enlace>
-                    </div>
-
+                    <Enlace type={"danger"}>Borrar</Enlace>
                 </div>
                 <p className="mt-3">{nivel}</p>
                 <p className="whitespace-pre-wrap text-[20px] mt-3">{aula_descripcion}</p>
@@ -97,6 +155,24 @@ const Room = () => {
 
                     <Enlace to={"./NewLesson"}>Crear Leccion</Enlace>
                     <Enlace to={"./NewTask"}>Crear Tarea</Enlace>
+                    <Enlace to={"./NewTask"}>Generar Exámen</Enlace>
+
+                </div>
+
+
+                <div className="flex justify-between">
+
+                    <a href="#" onClick={(e) => selectTableHandle(e, 1)} className="w-full bg-yellow-600 hover:bg-yellow-700  block sm:inline-block xl:inline-block lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500">
+                        Lecciones
+                    </a>
+
+                    <a href="#" onClick={(e) => selectTableHandle(e, 2)} className="w-full bg-purple-600 hover:bg-purple-700  block sm:inline-block xl:inline-block lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500">
+                        Tareas
+                    </a>
+
+                    <a href="#" onClick={(e) => selectTableHandle(e, 2)} className="w-full bg-red-600 hover:bg-red-700  block sm:inline-block xl:inline-block lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500">
+                        Examenes
+                    </a>
 
                 </div>
 
@@ -104,7 +180,12 @@ const Room = () => {
                 <div className="flex-row items-center">
 
                     {
-                        lecciones.map(leccion => <LeccionContent key={leccion.id} leccion={leccion} />)
+                        tabSelected === 1 && lecciones.map(leccion => <LeccionContent key={leccion.id} leccion={leccion} />)
+                    }
+
+                    {
+
+                        tabSelected === 2 && tareas.map(tarea => <Task key={tarea.id} task={tarea} />)
                     }
 
                 </div>
