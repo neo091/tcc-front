@@ -3,9 +3,7 @@ import teacher from "../../services/teacher"
 
 export const loader = async ({ params }) => {
 
-    const delRoom = await teacher.deleteRoom(params.id).then(result => result).catch((e) => console.log(e))
-
-    console.log(delRoom.body)
+    await teacher.deleteRoom(params.id).then(result => result).catch((e) => console.log(e))
     return redirect("/Teacher/Rooms")
 
 }

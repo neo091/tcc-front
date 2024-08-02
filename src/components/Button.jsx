@@ -1,4 +1,4 @@
-const Button = ({ text, type, children }) => {
+const Button = ({ text, type, children, handle }) => {
 
     const config = {
 
@@ -21,7 +21,12 @@ const Button = ({ text, type, children }) => {
 
     return (
         <>
-            <button className={`w-full shadow-[inset_0px_-6px_0px_0px_#00000050] inline-block my-2 text-white py-2 px-5 transition-all duration-500 ${classText}`}>{text ? text : children}</button>
+            {
+                handle
+                    ? <button onClick={() => handle()} className={`w-full shadow-[inset_0px_-6px_0px_0px_#00000050] inline-block my-2 text-white py-2 px-5 transition-all duration-500 ${classText}`}>{text ? text : children}</button>
+                    : <button className={`w-full shadow-[inset_0px_-6px_0px_0px_#00000050] inline-block my-2 text-white py-2 px-5 transition-all duration-500 ${classText}`}>{text ? text : children}</button>
+            }
+
         </>
     )
 }

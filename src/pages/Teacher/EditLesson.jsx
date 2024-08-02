@@ -4,14 +4,18 @@ import Button from "../../components/Button"
 import Enlace from "../../components/Enlace"
 import Swal from "sweetalert2"
 import { useEffect, useRef, useState } from "react"
-import Title from "../../components/Title"
 import fileDownload from "js-file-download"
+import parseHTML from 'html-react-parser'
+import AudioButton from "../../components/AudioButton"
+
 
 
 export const loader = async ({ params }) => {
 
-    const result = await getLesson(params.lessonId)
-    return { body: result.body.respuesta }
+    const res = await getLesson(params.lessonId)
+    const contents = await teacher.getLessonContents(params.lessonId)
+
+    return { body: res.body.result, contents }
 }
 
 export const action = async ({ request, params }) => {
@@ -24,27 +28,91 @@ export const action = async ({ request, params }) => {
 }
 
 
+const AddSectionButton = ({ handle, type, children }) => {
+    return (
+        <button onClick={() => handle(type)} className={`shadow-[inset_0px_-6px_0px_0px_#00000050] inline my-2 text-white py-2 px-5 transition-all duration-500 bg-violet-600 hover:bg-violet-500`}>
+            {children}
+        </button>
+    )
+}
+
+
+
+const SectionTypes = ({ type, value, editHandle, id }) => {
+
+    const [imageUrl, setImageUrl] = useState(null)
+    const [audioUrl, setAudioUrl] = useState(null)
+
+    const optionsModalHandle = () => {
+        Swal.fire({
+            title: "You want to make changes?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Edit",
+            denyButtonText: `Delete`
+        }).then(async (result) => {
+
+
+            if (result.isConfirmed) {
+                const { value: text } = await Swal.fire({
+                    title: "Edit section",
+                    input: "textarea",
+                    inputValue: value
+                });
+
+                if (text) {
+                    //await teacher.addLessonContent({ type: 1, value: text }, body.id)
+                    //setSections([...sections, { ID: sections.length + 1, type: 1, value: text }])
+
+                    Swal.fire({
+                        title: "Edited",
+                        timer: 1500,
+                        icon: "success",
+                        showConfirmButton: false
+                    })
+
+
+                    editHandle({ value: text, ID: id, type: type })
+                }
+            }
+
+
+            if (result.isDenied) {
+                Swal.fire({
+                    title: "Deleted",
+                    timer: 1500,
+                    icon: "success",
+                    showConfirmButton: false
+                })
+            }
+        })
+    }
+
+    return (
+        <>
+            {type === 1 && <div onClick={optionsModalHandle} className="p-2 hover:bg-slate-600 hover:cursor-pointer">
+                {parseHTML(value)}
+            </div>}
+            {type === 2 && <div className="p-2 hover:bg-slate-600 hover:cursor-pointer" onClick={optionsModalHandle}>
+                <h2 className="font-bold text-2xl ">{value}</h2>
+            </div>}
+            {type === 3 && <p className="mt-2">
+                {<img src={value} onClick={optionsModalHandle} />}
+            </p>}
+
+            {type === 4 && <AudioButton url={value} />}
+        </>
+    )
+}
+
 const EditLesson = () => {
 
-    const { body } = useLoaderData()
+    const { body, contents } = useLoaderData()
 
     const [filesToUpload, setFilesToUpload] = useState([])
     const [myFiles, setMyFiles] = useState([])
 
     const inputFileRef = useRef()
-
-
-    const getFiles = () => {
-        console.log(body)
-        getLessonFiles(body.leccion_id).then(result => {
-            setMyFiles(result.body)
-        })
-    }
-
-    useEffect(() => {
-        getFiles()
-    }, [])
-
 
     const convertToDateTimeLocalString = (fecha_limite) => {
         const date = new Date(fecha_limite)
@@ -96,12 +164,9 @@ const EditLesson = () => {
     }
 
     const uploadFileHandle = async (file) => {
-        await teacher.uploadFile(file, body.aula_id, body.leccion_id).then(result => {
+        await teacher.uploadFile(file, body.room, body.id).then(result => {
 
-            setFilesToUpload(filesToUpload.filter(({ name }) => name !== file.name))
-
-            getFiles()
-
+            return result
 
         }).catch((e) => console.log(e.message))
 
@@ -114,7 +179,7 @@ const EditLesson = () => {
 
     }
 
-    const deleteHandle = async (file) => {
+    const deleteFileHandle = async (file) => {
 
         Swal.fire({
             icon: "info",
@@ -140,73 +205,194 @@ const EditLesson = () => {
 
     }
 
+    const [sections, setSections] = useState([])
 
+    useEffect(() => setSections(contents.body.result), [])
+
+    const addTextSection = async () => {
+        const { value: text } = await Swal.fire({
+            title: "Add text section",
+            input: "textarea",
+            inputPlaceholder: "Enter your text here!"
+        });
+
+
+        if (text) {
+            await teacher.addLessonContent({ type: 1, value: text }, body.id)
+            setSections([...sections, { ID: sections.length + 1, type: 1, value: text }])
+        }
+    }
+
+    const addTitleSection = async () => {
+        const { value: title } = await Swal.fire({
+            title: "Add title section",
+            input: "text",
+            inputPlaceholder: "Enter your title here!"
+        });
+
+
+        if (title) {
+            await teacher.addLessonContent({ type: 2, value: title }, body.id)
+            setSections([...sections, { ID: sections.length + 1, type: 2, value: title }])
+        }
+    }
+
+    const addImageSection = async () => {
+        const { value: file } = await Swal.fire({
+            title: "Select image",
+            input: "file",
+            inputAttributes: {
+                "accept": "image/*",
+                "aria-label": "Upload your profile picture"
+            }
+        });
+
+        if (file) {
+
+            await teacher.uploadFile(file, body.room, body.id).then(result => {
+
+                console.log(result.data.body)
+                const { insertId } = result.data.body
+                fetch(`http://localhost:4000/api/files/${insertId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+
+                        const url = `http://localhost:4000/uploads/${data.body[0].name}`
+
+                        teacher.addLessonContent({ type: 3, value: url }, body.id).then(result => {
+                            setSections([...sections, { ID: sections.length + 1, type: 3, value: url }])
+                        }).catch((e) => {
+                            console.log(e)
+                        })
+                    });
+
+            }).catch((e) => console.log(e.message))
+
+
+            //setSections([...sections, { ID: sections.length + 1, type: 3, value: file }])
+        }
+    }
+
+    const addAudioSection = async () => {
+        const { value: fileUpload } = await Swal.fire({
+            title: "Select audio",
+            input: "file",
+            inputAttributes: {
+                "accept": "mp3/*",
+                "aria-label": "Upload your audio"
+            }
+        });
+
+        if (fileUpload) {
+
+            //subir archio de audio
+            const upload = await teacher.uploadAudioFile(fileUpload, body.room, body.id)
+            //obtenemos el id de el archivo insertado
+            const { insertId } = upload.body.result
+            const { file } = upload.body.data
+
+            await teacher.addLessonContent({ type: 4, value: `http://localhost:4000/uploads/${file.filename}` }, body.id)
+
+            setSections([...sections, { ID: sections.length + 1, type: 4, value: `http://localhost:4000/uploads/${file.filename}` }])
+
+        }
+    }
+
+
+    const addSectionHandle = async (type) => {
+
+
+        if (type && type === "text") {
+            addTextSection()
+        }
+
+        if (type && type === "title") {
+            addTitleSection()
+        }
+
+        if (type && type === "image") {
+            addImageSection()
+        }
+
+        if (type && type === "audio") {
+            addAudioSection()
+        }
+    }
+
+    const editHandle = (data) => {
+
+        const edited = sections.filter(section => {
+            if (section.ID === data.ID) {
+                section.ID = data.ID
+                section.type = data.type
+                section.value = data.value
+                return { ID: data.ID, type: data.type, value: data.value }
+            } else {
+                return section
+            }
+        })
+        setSections(edited)
+        console.log(edited)
+
+    }
+
+    const deleteSectionHandle = () => {
+
+    }
 
     return (
         <>
             <div className='w-full sm:w-2/3 lg:w-2/4  mx-auto'>
+
+
                 <Form method="POST">
+
                     <div className="my-2">
-                        <input name='tipo_leccion' type="text" placeholder='tipo lección' defaultValue={body.tipo_leccion} className="text-black p-2 w-full" />
+                        <input name='title' type="text" placeholder='Titulo de la lección' defaultValue={body.title} className="text-black p-2 w-full" />
                     </div>
 
                     <div className="my-2">
-                        <input name='fecha_limite' type="datetime-local" defaultValue={convertToDateTimeLocalString(body.fecha_limite)} className="text-black p-2 w-full" />
+                        <textarea name='desc'
+                            cols="30" rows="4"
+                            className="p-2 w-full text-black" placeholder="Descripcion breve sobre esta lección" defaultValue={body.desc}></textarea>
                     </div>
-
-                    <div className="my-2">
-                        <textarea name='descripcion' cols="30" rows="4" className="p-2 w-full text-black" placeholder="Descripcion breve sobre esta aula" defaultValue={body.descripcion}></textarea>
-                    </div>
-
 
                     <div className="w-full flex gap-3">
                         <Button text="GUARDAR" />
                     </div>
 
-
                 </Form>
 
-
-
-                <div>
-                    {
-                        filesToUpload.map(file => (
-                            <p className="bg-slate-800 p-2 text-center overflow-hidden " key={file.name}>{file.name} <button className=" bg-violet-700 p-2 inline-block rounded" onClick={() => uploadFileHandle(file)}>Subir</button></p>
-                        ))
-                    }
-                </div>
-
-
-
-                <form>
-                    <Title>Subir Archivos</Title>
-                    <input type="file" ref={inputFileRef} onChange={fileUploadChange} hidden />
-
-                    <div onClick={() => modalHandle()} className=" hover:cursor-pointer my-4 p-4 border-dashed rounded border-violet-500 border-[5px] text-center uppercase font-bold text-violet-500">
-                        <p>Click Aquí para subir archivo</p>
-                    </div>
-                </form>
-
-                <div>
-                    <h2 className=" font-semibold">Archivos:</h2>
-                    {
-                        myFiles.length > 0
-                            ? myFiles.map(file => (
-                                <p className="bg-slate-800 p-2 text-center overflow-hidden " key={file.name}>
-                                    {file.name.substring(file.name.indexOf("-") + 1, file.name.length)}
-                                    <button onClick={() => deleteHandle(file)} className=" bg-red-600 p-2 inline-block rounded mx-2 font-bolder uppercase">Borrar</button>
-                                    <button onClick={() => downloadFileHandle(file)} className=" bg-violet-700 p-2 inline-block rounded mx-2 font-bolder uppercase">Descargar</button>
-                                </p>
-                            ))
-                            : <div className=" bg-slate-800 p-4 text-center uppercase font-bold">
-                                <p>No files</p>
-                            </div>
-                    }
-                </div>
-
-
+                <Enlace to={`../${body.room}/lessons/${body.id}/students`}>Alumnos</Enlace>
 
             </div>
+
+            <div className="w-full sm:w-2/3 lg:w-2/4  mx-auto">
+                <h2 className="my-3 font-semibold text-xl">Secciones de la lección</h2>
+
+                <AddSectionButton type={"text"} handle={addSectionHandle}>
+                    Text
+                </AddSectionButton>
+
+                <AddSectionButton type={"title"} handle={addSectionHandle}>
+                    Title
+                </AddSectionButton>
+
+                <AddSectionButton type={"image"} handle={addSectionHandle}>
+                    Image
+                </AddSectionButton>
+
+                <AddSectionButton type={"audio"} handle={addSectionHandle}>
+                    Audio
+                </AddSectionButton>
+
+                <div className="">
+                    {sections.map((section) => <SectionTypes key={section.ID} type={section.type} value={section.value} editHandle={editHandle} id={section.ID} />)}
+                </div>
+            </div >
+
+
 
         </>
     )
