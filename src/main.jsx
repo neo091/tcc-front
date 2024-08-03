@@ -44,10 +44,8 @@ import DashboardLessonView, { loader as LessonViewLoader } from './pages/Dashboa
 import DashboardCourses, { loader as CoursesLoader } from './pages/Dashboard/Courses.jsx'
 import DashboardCourse, { loader as CourseLoader } from './pages/Dashboard/Course.jsx'
 
-
 const router = createBrowserRouter(
   [
-
     {
       path: "/",
       element: <Home />,
