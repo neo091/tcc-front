@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getUserData } from "../auth"
+import { useAuthStore } from "../store/authStore"
 
 const LoginRegisterLinks = () => {
     return (
@@ -23,18 +23,7 @@ const LoggedLinks = ({ to, children }) => {
 
 const Header = ({ handle }) => {
 
-    const [logged, setLogged] = useState(false)
-    const [sessionType, setSessionType] = useState(null)
-
-    useEffect(() => {
-        getUserData().then(result => {
-            if (result) {
-                setLogged(true)
-                setSessionType(result.type)
-            }
-
-        }).catch((e) => console.log(e))
-    }, [])
+    const { session, isLoggin } = useAuthStore()
 
     const openSidebar = () => {
         handle()
@@ -52,7 +41,7 @@ const Header = ({ handle }) => {
                             </Link>
                         </div>
                         {
-                            logged
+                            isLoggin
                             && <div className="block lg:hidden">
                                 <button onClick={(e) => openSidebar()} className="flex items-center px-3 py-2 border rounded  border-black  ">
                                     <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
@@ -67,12 +56,12 @@ const Header = ({ handle }) => {
                         </div>
 
                         <div>
-                            {logged ?
-                                sessionType === 1
+                            {isLoggin ?
+                                session.type === 1
                                     ? <LoggedLinks to={"/Dashboard/Home"}>Dashboard</LoggedLinks>
-                                    : sessionType === 2
+                                    : session.type === 2
                                         ? <LoggedLinks to={"/Teacher/Home"}>Teacher</LoggedLinks>
-                                        : sessionType === 3
+                                        : session.type === 3
                                             ? <LoggedLinks to={"/Admin/Home"}>Admin</LoggedLinks>
                                             : ''
                                 : <LoginRegisterLinks />

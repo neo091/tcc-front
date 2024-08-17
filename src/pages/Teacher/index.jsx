@@ -1,26 +1,18 @@
-import { Outlet, redirect, useLoaderData, useNavigation } from "react-router-dom";
-import { getUserData } from "../../auth";
+import { Outlet, useNavigation } from "react-router-dom";
 import Header from "../../components/Header";
 import { ProfileInfo, ProfilePicture, ProfileUserType } from "../../components/Profile"
 import SidebarLinks from "../../components/SidebarLinks"
 import TopBarProgress from "react-topbar-progress-indicator";
 import { useState } from "react";
-
-export async function loader() {
-    const user = await getUserData();
-    if (!user) return redirect("/Login")
-    return { user };
-}
-
+import { useAuthStore } from "../../store/authStore";
 
 const Teacher = () => {
 
-    const { user } = useLoaderData()
+    const { session } = useAuthStore()
 
     const navigation = useNavigation()
 
     const [showSideBar, setShowSidebar] = useState(true)
-
 
     const openSidebarHandle = () => {
         setShowSidebar(!showSideBar)
@@ -29,9 +21,7 @@ const Teacher = () => {
     return (
 
         <>
-
             <Header handle={openSidebarHandle} />
-
 
             <div className="mx-auto">
 
@@ -40,8 +30,8 @@ const Teacher = () => {
 
                     <div className="p-2">
                         <ProfilePicture src={"http://localhost:5173/images/user.png"} />
-                        <ProfileInfo name={user.name} />
-                        <ProfileUserType type={user.type} />
+                        <ProfileInfo name={session.name} />
+                        <ProfileUserType type={session.type} />
 
                     </div>
 
@@ -60,7 +50,6 @@ const Teacher = () => {
             </div>
 
         </>
-
 
     );
 }

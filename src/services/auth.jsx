@@ -12,4 +12,9 @@ const login = async (user) => {
     return response.data
 }
 
+export const doLogin = async (data) => {
+    const response = await axios.post(`${base_url}/api/login`, data)
+    return response.data
+}
+
 export default { register, login }

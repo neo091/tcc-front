@@ -4,14 +4,12 @@ import Enlace from "../../components/Enlace";
 import { useState } from "react";
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
+import { useAuthStore } from "../../store/authStore";
 
 export const loader = async ({ params }) => {
-
     const room = await teacher.getWhitId(params.id)
     const lessons = await teacher.getLessons(params.id)
-
     return { room: room.body, lessons: lessons.body }
-
 }
 
 

@@ -9,6 +9,7 @@ import Subtitle from "../../components/Subtitle";
 import Alert from "../../components/Alerts";
 import Button from "../../components/Button";
 import Enlace from "../../components/Enlace";
+import { useAuthStore } from "../../store/authStore";
 
 
 const Th = ({ children }) => {
@@ -22,7 +23,7 @@ const Th = ({ children }) => {
 
 const RoomsList = () => {
 
-    const { user } = useRouteLoaderData("teacher")
+    const { session } = useAuthStore()
 
     const [showTable, setShowTable] = useState(false)
     const [classRoom, setClassRoom] = useState([])
@@ -32,8 +33,8 @@ const RoomsList = () => {
 
     const loadClassRooms = () => {
         const data = {
-            id: user.id,
-            token: user.token
+            id: session.id,
+            token: session.token
         }
 
         teacherService.getAllRooms(data).then(result => {
@@ -74,8 +75,8 @@ const RoomsList = () => {
     return (
         <>
             <div className=" flex gap-3 items-center p-2 my-2">
-                <h1 className="text-2xl">Aula Virtual</h1>
-                <Enlace to={"new"}>Agregar</Enlace>
+                <h1 className="text-2xl flex-1">Aula Virtual</h1>
+                <Link to={"new"} className=" bg-violet-600 hover:bg-violet-70 shadow-[inset_0px_-6px_0px_0px_#00000050] block sm:inline-block xl:inline-block lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500">Agregar</Link>
             </div>
 
 

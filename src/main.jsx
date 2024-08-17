@@ -13,7 +13,7 @@ import Logout from './pages/Logout.jsx'
 import NewRoom, { action as NewRoomAction } from './pages/Teacher/NewRoom.jsx'
 
 //Teacher Sections
-import Teacher, { loader as teacherLoader } from './pages/Teacher'
+import Teacher from './pages/Teacher'
 import TeacherHome from './pages/Teacher/TeacherHome.jsx'
 import Rooms from './pages/Teacher/Rooms.jsx'
 import RoomsList from './pages/Teacher/RoomsList.jsx'
@@ -54,7 +54,6 @@ const router = createBrowserRouter(
     {
       path: "/Teacher",
       element: <Teacher />,
-      loader: teacherLoader,
       id: "teacher",
       children: [
         { index: true, element: <TeacherHome /> },

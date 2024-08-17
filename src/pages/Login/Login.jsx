@@ -3,7 +3,7 @@ import Button from '../../components/Button'
 import Content from '../../components/Content'
 import Header from '../../components/Header'
 import isEmail from 'validator/lib/isEmail'
-import loginService from '../../services/auth'
+import { doLogin } from '../../services/auth'
 import Alert from '../../components/Alerts'
 import { Link, Navigate, redirect } from 'react-router-dom'
 import Title from '../../components/Title'
@@ -30,13 +30,13 @@ const Login = () => {
     const [userLogin, setUserLogin] = useState(null)
     const [user, setUser] = useState(null)
 
-    const emailHandle = (text) => {
-        setUserLogin({ ...userLogin, email: text })
-    }
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
 
-    const passwordHandle = (text) => {
-        setUserLogin({ ...userLogin, password: text })
-    }
+    const { session, isLoggin, setSession, setIsLoggin, resetSession } = useAuthStore()
+
+    const emailHandle = (text) => setEmail(text)
+    const passwordHandle = (text) => setPassword(text)
 
     const showAlert = ({ type, message, duration }) => {
 
@@ -93,12 +93,16 @@ const Login = () => {
             })
 
             const user = result.body
-            window.localStorage.setItem(
-                'loggedTCC', JSON.stringify(user)
-            )
+
+            console.log(user)
 
 
-            setUser(result.body)
+            // window.localStorage.setItem(
+            //     'loggedTCC', JSON.stringify(user)
+            // )
+
+
+            // setUser(result.body)
 
         }).catch((e) => {
 
@@ -117,21 +121,57 @@ const Login = () => {
 
     }
 
+    const LoginHandle = async (event) => {
+        event.preventDefault()
 
-    return (
-        <>
-            {
-                user !== null
-                    ? user.type === 1
-                        ? <Navigate to={"/Dashboard"} replace={true} />
-                        : user.type === 2
-                            ? <Navigate to={"/Teacher/Home"} replace={true} />
-                            : user.type === 3
-                                ? <Navigate to={"/Admin"} replace={true} />
-                                : ''
-                    : ''
+        if (email) {
+            if (!isEmail(email)) {
+                showAlert({ type: ErrorType.DANGER, message: 'need a valid email please!' })
+                return
+            }
+        } else {
+            showAlert({ type: ErrorType.DANGER, message: 'need a email please!' })
+            return
+        }
+
+        if (!password) {
+            showAlert({ type: ErrorType.DANGER, message: 'need a password please!' })
+            return
+        }
+
+        if (isLoggin) {
+            showAlert({ type: ErrorType.DANGER, message: 'is loggin!' })
+            return
+        }
+
+        const result = await doLogin({
+            email,
+            password
+        }).catch((e) => {
+            if (e.code == "ERR_BAD_RESPONSE") {
+                showAlert({ type: ErrorType.DANGER, message: `Error ${e.response.data.status}, ${e.response.data.body.message}` })
             }
 
+            if (e.code == "ERR_NETWORK") {
+                showAlert({ type: ErrorType.DANGER, message: `Error` })
+            }
+
+            return
+        })
+
+        setSession(result.body)
+        setIsLoggin(true)
+
+        window.localStorage.setItem(
+            'loggedTCC', JSON.stringify(result.body)
+        )
+
+    }
+    return (
+        <>
+            {isLoggin && session.type === 1 && <Navigate to={"/Dashboard"} replace={true} />}
+            {isLoggin && session.type === 2 && <Navigate to={"/Teacher/Home"} replace={true} />}
+            {isLoggin && session.type === 3 && <Navigate to={"/Admin"} replace={true} />}
 
             <Header />
             <Content>
@@ -142,7 +182,7 @@ const Login = () => {
 
                         <Alert type={alert.type} message={alert.message} hide={hideAlert} />
 
-                        <form action="/Dashboard" method='POST' onSubmit={(e) => submitHandle(e)} >
+                        <form action="/Dashboard" method='POST' onSubmit={(e) => LoginHandle(e)} >
                             <Input type='text' label='Correo electrónico' handle={emailHandle} />
                             <Input type='password' label='Contraseña' handle={passwordHandle} />
                             <div className='flex gap-3 items-center justify-center'>
