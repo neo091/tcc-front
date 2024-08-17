@@ -7,7 +7,9 @@ export const useAuthStore = create(
         isLoggin: false,
         setSession: (data) => {
             set({ session: data })
-        }
+        },
+        setIsLoggin: (data) => set({ isLoggin: data }),
+        resetSession: () => set({ session: [], isLoggin: false })
 
     }), { 'name': 'auth' })
 )

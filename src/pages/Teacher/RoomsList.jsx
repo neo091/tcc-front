@@ -9,6 +9,7 @@ import Subtitle from "../../components/Subtitle";
 import Alert from "../../components/Alerts";
 import Button from "../../components/Button";
 import Enlace from "../../components/Enlace";
+import { useAuthStore } from "../../store/authStore";
 
 
 const Th = ({ children }) => {
@@ -22,7 +23,7 @@ const Th = ({ children }) => {
 
 const RoomsList = () => {
 
-    const { user } = useRouteLoaderData("teacher")
+    const { session } = useAuthStore()
 
     const [showTable, setShowTable] = useState(false)
     const [classRoom, setClassRoom] = useState([])
@@ -32,8 +33,8 @@ const RoomsList = () => {
 
     const loadClassRooms = () => {
         const data = {
-            id: user.id,
-            token: user.token
+            id: session.id,
+            token: session.token
         }
 
         teacherService.getAllRooms(data).then(result => {
