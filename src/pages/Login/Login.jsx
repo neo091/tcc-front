@@ -7,6 +7,7 @@ import loginService from '../../services/auth'
 import Alert from '../../components/Alerts'
 import { Link, Navigate, redirect } from 'react-router-dom'
 import Title from '../../components/Title'
+import { useAuthStore } from '../../store/authStore'
 
 const Input = ({ type, label, handle }) => {
     return (
@@ -28,7 +29,6 @@ const Login = () => {
     const [alert, setAlert] = useState([])
     const [userLogin, setUserLogin] = useState(null)
     const [user, setUser] = useState(null)
-
 
     const emailHandle = (text) => {
         setUserLogin({ ...userLogin, email: text })
