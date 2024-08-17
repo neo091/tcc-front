@@ -4,10 +4,11 @@ import teacerService from '../../services/teacher'
 import Subtitle from '../../components/Subtitle'
 import Alert from "../../components/Alerts";
 import Button from '../../components/Button';
-import { Form, redirect, useLoaderData } from 'react-router-dom';
+import { Form, Link, redirect, useLoaderData } from 'react-router-dom';
 import TopBarProgress from 'react-topbar-progress-indicator';
 import Enlace from '../../components/Enlace';
 import teacher from '../../services/teacher';
+import { useRoomsStore } from '../../store/roomsStore';
 
 TopBarProgress.config({
     barColors: {
@@ -37,6 +38,7 @@ export const action = async ({ request, params }) => {
 const EditRoom = (props) => {
 
     const { id } = useLoaderData()
+    const { setIsNew } = useRoomsStore()
 
     //constate para las alertas
     const [alert, setAlert] = useState([])
@@ -62,6 +64,10 @@ const EditRoom = (props) => {
 
     const nameHandle = (e) => {
 
+    }
+
+    const isNewHandle = () => {
+        setIsNew(true)
     }
 
     return (
@@ -94,8 +100,8 @@ const EditRoom = (props) => {
                         </div>
 
                         <div className="w-full flex gap-3">
-                            <Button text="Editar" />
-                            <Enlace to={"/Teacher/Rooms"}>Cancelar</Enlace>
+                            <button onClick={() => isNewHandle()} className="bg-sky-600 inline-block px-6 py-4 w-full my-2 hover:bg-sky-400">Editar</button>
+                            <Link to={"/Teacher/Rooms"} className="bg-red-600 inline-block px-6 py-4 w-full my-2 hover:bg-red-400 text-center">Cancelar</Link>
                         </div>
                     </Form>
                 </div>}

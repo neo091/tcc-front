@@ -3,6 +3,7 @@ import Subtitle from "../../components/Subtitle";
 import FormControl from '../../components/FormControl'
 import Button from "../../components/Button";
 import teacherService from "../../services/teacher"
+import { useRoomsStore } from "../../store/roomsStore";
 
 export const action = async ({ request, params }) => {
 
@@ -11,14 +12,22 @@ export const action = async ({ request, params }) => {
 
     const newRoom = await teacherService.add(updates)
 
+
     return redirect(`/Teacher/Rooms/${newRoom.body.insertId}`)
 }
 
 const NewRoom = () => {
+
+    const { setIsNew } = useRoomsStore()
+
+    const isNewHandle = () => {
+        setIsNew(true)
+    }
+
     return (
         <>
 
-            <div className="w-full sm:w-2/3 lg:w-2/4  mx-auto">
+            <div className="w-full sm:w-2/3 lg:w-2/4 mx-auto">
 
                 <Subtitle text='Agregar nueva Aula Virtual' />
                 <p>Rellena todos los campos antes de enviar.</p>
@@ -35,7 +44,7 @@ const NewRoom = () => {
 
 
                     <textarea cols="30" rows="4" className="p-2 w-full text-black " name="desc" placeholder="Descripcion breve sobre esta aula"></textarea>
-                    <Button>Crear Aula</Button>
+                    <button onClick={(e) => isNewHandle()} className="bg-sky-600 inline-block px-6 py-4 w-full my-2 hover:bg-sky-400">Crear</button>
                 </Form>
 
             </div>
