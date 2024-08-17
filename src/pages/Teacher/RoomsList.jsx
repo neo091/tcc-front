@@ -75,8 +75,8 @@ const RoomsList = () => {
     return (
         <>
             <div className=" flex gap-3 items-center p-2 my-2">
-                <h1 className="text-2xl">Aula Virtual</h1>
-                <Enlace to={"new"}>Agregar</Enlace>
+                <h1 className="text-2xl flex-1">Aula Virtual</h1>
+                <Link to={"new"} className=" bg-violet-600 hover:bg-violet-70 shadow-[inset_0px_-6px_0px_0px_#00000050] block sm:inline-block xl:inline-block lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500">Agregar</Link>
             </div>
 
 
