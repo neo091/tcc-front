@@ -5,13 +5,11 @@ import Swal from "sweetalert2";
 import { useLoaderData } from "react-router-dom";
 import { getUserData } from "../../auth";
 
-
 export const loader = async () => {
     const user = await getUserData()
 
     return { user }
 }
-
 
 const EnrollButton = ({ onPress, children, ...props }) => {
     return (
@@ -27,18 +25,12 @@ const Room = ({ room, handle }) => {
 
     return (
         <>
-            <div className='p-2 bg-slate-800 rounded sm:flex xl:flex flex-row gap-5 items-center  '>
-                <div className=' h-[200px] sm:w-[600px] xl:w-[500px] ' style={
 
-                    {
-                        backgroundImage: `url('${InglesImage}')`,
-                        backgroundPosition: 'center',
-                        backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat'
-                    }
-                }>
-                </div>
-                <div>
+            <div className='flex gap-2 items-center my-2'>
+
+                <img src={InglesImage} alt="" className='w-80' />
+
+                <div className='flex-1 space-y-2'>
                     <Title>{nombre_aula}</Title>
                     <p>{aula_descripcion}</p>
                     <EnrollButton onPress={handle} data-id={aula_id} >
@@ -128,7 +120,6 @@ const Courses = () => {
     return (
         <div>
             {courses.map(course => <Room key={course.aula_id} room={course} handle={enrollHandle} />)}
-
         </div>
     );
 }

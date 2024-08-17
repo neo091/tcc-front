@@ -7,6 +7,7 @@ import loginService from '../../services/auth'
 import Alert from '../../components/Alerts'
 import { Link, Navigate, redirect } from 'react-router-dom'
 import Title from '../../components/Title'
+import { useAuthStore } from '../../store/authStore'
 
 const Input = ({ type, label, handle }) => {
     return (
@@ -28,7 +29,6 @@ const Login = () => {
     const [alert, setAlert] = useState([])
     const [userLogin, setUserLogin] = useState(null)
     const [user, setUser] = useState(null)
-
 
     const emailHandle = (text) => {
         setUserLogin({ ...userLogin, email: text })
@@ -135,7 +135,7 @@ const Login = () => {
 
             <Header />
             <Content>
-                <div className=' my-16 flex justify-center items-center self-center'>
+                <div className=' my-16 flex justify-center'>
                     <div className='bg-slate-800 p-2 rounded' >
 
                         <Title>Iniciar Sessión</Title>
@@ -146,7 +146,7 @@ const Login = () => {
                             <Input type='text' label='Correo electrónico' handle={emailHandle} />
                             <Input type='password' label='Contraseña' handle={passwordHandle} />
                             <div className='flex gap-3 items-center justify-center'>
-                                <Button text='Login' /> | <Link to={`${window.origin}/Register`} className=' text-center text-violet-500 underline decoration-violet-900 hover:text-violet-300 hover:decoration-violet-500 '>Register</Link>
+                                <Button text='Login' /> <Link to={`${window.origin}/Register`} className=' text-center text-violet-500 underline decoration-violet-900 hover:text-violet-300 hover:decoration-violet-500 '>Register</Link>
                             </div>
 
                         </form>
