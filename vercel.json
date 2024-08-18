@@ -1,8 +1,11 @@
 {
-    "routes": [
+    "github": {
+        "silent": true
+    },
+    "rewrites": [
         {
-            "src": "/",
-            "dest": "/"
+            "source": "(.*)",
+            "destination": "/index.html"
         }
     ]
 }
