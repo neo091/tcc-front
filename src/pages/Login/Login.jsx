@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import Button from '../../components/Button'
-import Content from '../../components/Content'
 import Header from '../../components/Header'
 import isEmail from 'validator/lib/isEmail'
 import { doLogin } from '../../services/auth'
@@ -13,8 +11,11 @@ import { ErrorType } from '../../services/helpers'
 const Input = (props) => {
     const { label, type, handle } = props
     return (
-        <div className='my-4'>
-            <input type={type} placeholder={label} className='p-2 bg-slate-700 rounded border-none w-full' onChange={(e) => handle(e.target.value)} />
+        <div className='my-6'>
+            <label htmlFor="email" className="block font-medium leading-6 text-white-900">
+                {label}
+            </label>
+            <input type={type} className='p-2 mt-2 bg-slate-700 rounded border-none w-full' onChange={(e) => handle(e.target.value)} />
         </div>
     )
 }
@@ -99,20 +100,21 @@ const Login = () => {
                 <Header />
 
                 <div className='h-full flex items-center justify-center '>
-                    <div className='bg-slate-800 p-2 rounded w-96' >
+                    <div className=' p-2 rounded w-96 flex flex-col gap-3' >
 
-                        <Title>Iniciar sesión</Title>
+                        <img src="images/logo.png" alt="" />
+
+                        <h2 className='text-center text-2xl font-bold uppercase'>Iniciar Sesión</h2>
 
                         <Alert type={alert.type} message={alert.message} hide={hideAlert} />
 
                         <form action="/Dashboard" method='POST' onSubmit={(e) => LoginHandle(e)} >
                             <Input type='text' label='Correo electrónico' handle={emailHandle} />
                             <Input type='password' label='Contraseña' handle={passwordHandle} />
-                            <div className='flex gap-3 items-center justify-between'>
-                                <button className='bg-sky-600 p-2 flex-1'>Login</button>
-                                <Link to={`${window.origin}/Register`} className='flex-1 text-center border-sky-600 border p-2 rounded'>Register</Link>
+                            <div className='flex  flex-col gap-3 items-center'>
+                                <button className='bg-sky-600 p-2 w-full'>Login</button>
+                                <Link to={'/'}>Olvidaste tu contraseña?</Link>
                             </div>
-
                         </form>
                     </div>
                 </div>

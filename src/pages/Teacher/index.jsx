@@ -42,7 +42,10 @@ const Teacher = () => {
                 <div className="hidden sm:block w-72 bg-slate-800 absolute lg:static h-screen">
 
                     <div className="text-3xl py-7 px-4">
-                        <a href="/">TCC</a>
+                        <a href="/">
+
+                            <img src="/images/logo.png" alt="" />
+                        </a>
                     </div>
 
                     <div className="flex flex-col overflow-y-auto">
