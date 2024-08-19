@@ -134,7 +134,7 @@ const Teacher = () => {
                         </div>
 
                     </header>
-                    <div className="px-7">
+                    <div className="px-7 py-4">
                         <Outlet />
                     </div>
                 </div>

@@ -8,32 +8,25 @@ import Alert from '../../components/Alerts'
 import { Link, Navigate, redirect } from 'react-router-dom'
 import Title from '../../components/Title'
 import { useAuthStore } from '../../store/authStore'
+import { ErrorType } from '../../services/helpers'
 
-const Input = ({ type, label, handle }) => {
+const Input = (props) => {
+    const { label, type, handle } = props
     return (
         <div className='my-4'>
-            <label>{label}</label>
-            <input type={type} className='p-2 bg-slate-700 rounded border-none w-full' onChange={(e) => handle(e.target.value)} />
+            <input type={type} placeholder={label} className='p-2 bg-slate-700 rounded border-none w-full' onChange={(e) => handle(e.target.value)} />
         </div>
     )
 }
-
-const ErrorType = {
-    DANGER: "danger",
-    SUCCESS: "success"
-}
-
 const Login = () => {
 
     const [hideAlert, setHideAlert] = useState(true)
     const [alert, setAlert] = useState([])
-    const [userLogin, setUserLogin] = useState(null)
-    const [user, setUser] = useState(null)
 
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
 
-    const { session, isLoggin, setSession, setIsLoggin, resetSession } = useAuthStore()
+    const { session, isLogin, setSession, setIsLogin } = useAuthStore()
 
     const emailHandle = (text) => setEmail(text)
     const passwordHandle = (text) => setPassword(text)
@@ -47,78 +40,6 @@ const Login = () => {
         })
 
         setTimeout(() => { setHideAlert(true) }, duration || 5000)
-    }
-
-    const submitHandle = (e) => {
-        e.preventDefault()
-
-        if (!userLogin) {
-            showAlert({
-                type: ErrorType.DANGER, message: 'need email'
-            })
-
-            return
-        }
-
-
-        if (!userLogin.email || userLogin.email === "") {
-            showAlert({
-                type: ErrorType.DANGER, message: 'need email'
-            })
-
-            return
-        }
-
-        if (!userLogin.password || userLogin.password === "") {
-            showAlert({
-                type: ErrorType.DANGER, message: 'need password'
-            })
-
-            return
-        }
-
-        if (!isEmail(userLogin.email)) {
-
-            showAlert({
-                type: ErrorType.DANGER, message: 'invalid email'
-            })
-
-            return
-        }
-
-        loginService.login(userLogin).then(result => {
-
-            showAlert({
-                type: ErrorType.SUCCESS, message: 'login correcto, redirigiendo...'
-            })
-
-            const user = result.body
-
-            console.log(user)
-
-
-            // window.localStorage.setItem(
-            //     'loggedTCC', JSON.stringify(user)
-            // )
-
-
-            // setUser(result.body)
-
-        }).catch((e) => {
-
-            if (e.code === "ERR_BAD_RESPONSE") {
-                showAlert({
-                    type: ErrorType.DANGER, message: e.response.data.body.message
-                })
-            }
-
-            if (e.code === "ERR_NETWORK") {
-                showAlert({
-                    type: ErrorType.DANGER, message: "Error de Servidor"
-                })
-            }
-        })
-
     }
 
     const LoginHandle = async (event) => {
@@ -139,7 +60,7 @@ const Login = () => {
             return
         }
 
-        if (isLoggin) {
+        if (isLogin) {
             showAlert({ type: ErrorType.DANGER, message: 'is loggin!' })
             return
         }
@@ -160,7 +81,7 @@ const Login = () => {
         })
 
         setSession(result.body)
-        setIsLoggin(true)
+        setIsLogin(true)
 
         window.localStorage.setItem(
             'loggedTCC', JSON.stringify(result.body)
@@ -169,30 +90,33 @@ const Login = () => {
     }
     return (
         <>
-            {isLoggin && session.type === 1 && <Navigate to={"/Dashboard"} replace={true} />}
-            {isLoggin && session.type === 2 && <Navigate to={"/Teacher/Home"} replace={true} />}
-            {isLoggin && session.type === 3 && <Navigate to={"/Admin"} replace={true} />}
+            {isLogin && session.type === 1 && <Navigate to={"/Dashboard"} replace={true} />}
+            {isLogin && session.type === 2 && <Navigate to={"/Teacher/Home"} replace={true} />}
+            {isLogin && session.type === 3 && <Navigate to={"/Admin"} replace={true} />}
 
-            <Header />
-            <Content>
-                <div className=' my-16 flex justify-center'>
-                    <div className='bg-slate-800 p-2 rounded' >
+            <div className='h-lvh flex flex-col'>
 
-                        <Title>Iniciar Sessión</Title>
+                <Header />
+
+                <div className='h-full flex items-center justify-center '>
+                    <div className='bg-slate-800 p-2 rounded w-96' >
+
+                        <Title>Iniciar sesión</Title>
 
                         <Alert type={alert.type} message={alert.message} hide={hideAlert} />
 
                         <form action="/Dashboard" method='POST' onSubmit={(e) => LoginHandle(e)} >
                             <Input type='text' label='Correo electrónico' handle={emailHandle} />
                             <Input type='password' label='Contraseña' handle={passwordHandle} />
-                            <div className='flex gap-3 items-center justify-center'>
-                                <Button text='Login' /> <Link to={`${window.origin}/Register`} className=' text-center text-violet-500 underline decoration-violet-900 hover:text-violet-300 hover:decoration-violet-500 '>Register</Link>
+                            <div className='flex gap-3 items-center justify-between'>
+                                <button className='bg-sky-600 p-2 flex-1'>Login</button>
+                                <Link to={`${window.origin}/Register`} className='flex-1 text-center border-sky-600 border p-2 rounded'>Register</Link>
                             </div>
 
                         </form>
                     </div>
                 </div>
-            </Content>
+            </div>
         </>
     )
 

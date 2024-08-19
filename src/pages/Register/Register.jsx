@@ -9,12 +9,12 @@ import RegisterService from '../../services/auth'
 import isEmail from 'validator/lib/isEmail'
 import Separador from '../../components/Separador'
 import { Link } from 'react-router-dom'
+import Title from '../../components/Title'
 
 const Input = ({ type, label, handle }) => {
     return (
         <div className='my-4'>
-            <label>{label}</label>
-            <input type={type} className='p-2 bg-slate-700 rounded w-full' onChange={(e) => handle(e.target.value)} />
+            <input type={type} placeholder={label} className='p-2 bg-slate-700 rounded w-full' onChange={(e) => handle(e.target.value)} />
         </div>
     )
 }
@@ -116,14 +116,15 @@ const Register = () => {
 
     return (
         <>
-            <Header />
-            <Banner text='Registro de Usuarios' />
 
-            <Content>
+            <div className='h-lvh flex flex-col'>
+                <Header />
                 <Alert type={alertType} message={alertMessage} hide={hideAlert} />
-                <div className='flex justify-center items-center'>
 
-                    <div className=' bg-slate-800 p-2 '>
+                <div className='h-full flex items-center justify-center'>
+                    <div className=' bg-slate-800 p-2 w-96 '>
+
+                        <Title>Crear cuenta</Title>
 
                         <form action="/register-success" method='POST' onSubmit={(e) => registerSubmit(e)}>
                             <Input type="text" label="Nombre" handle={nameHandle} />
@@ -132,16 +133,16 @@ const Register = () => {
 
                             <div className='flex justify-center items-center gap-3'>
 
-                                <Button text='Register' /> | <Link to={`${window.origin}/Login`} className=' text-center text-violet-500 underline decoration-violet-900 hover:text-violet-300 hover:decoration-violet-500 '>Login</Link>
+                                <button className='bg-sky-600 p-2 flex-1'>Regsiter</button>
+                                <Link to={`${window.origin}/Login`} className='flex-1 text-center border-sky-600 border p-2 rounded'>Login</Link>
 
                             </div>
 
-
-
                         </form>
                     </div>
+
                 </div>
-            </Content>
+            </div>
 
 
         </>

@@ -1,12 +1,7 @@
 import { Outlet } from 'react-router-dom';
 
-
 const Rooms = () => {
-    return (
-        <>
-            <Outlet />
-        </>
-    );
+    return <Outlet />
 }
 
 export default Rooms;

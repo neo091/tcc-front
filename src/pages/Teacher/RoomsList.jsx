@@ -25,8 +25,6 @@ const RoomsList = () => {
         if (!isNew) {
             return
         }
-        console.log('load rooms')
-
 
         const data = {
             id: session.id,
