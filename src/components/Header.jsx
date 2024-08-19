@@ -31,47 +31,27 @@ const Header = ({ handle }) => {
 
     return (
         <>
-            <header className=" w-full p-2 bg-gradient-to-r from-violet-950 to-violet-800 text-white ">
-                <div className=" lg:w-2/3 mx-auto">
-
-                    <nav className="flex items-center justify-between flex-wrap p-2">
-                        <div className="flex items-center flex-shrink-0 mr-6">
-                            <Link to={"/"}>
-                                <span v="font-semibold text-xl tracking-tight">TCC</span>
-                            </Link>
+            <header className='bg-slate-800 sticky'>
+                <div className='w-3/4 mx-auto'>
+                    <div className='flex items-center'>
+                        <div className='p-4'>
+                            TCC
                         </div>
-                        {
-                            isLoggin
-                            && <div className="block lg:hidden">
-                                <button onClick={(e) => openSidebar()} className="flex items-center px-3 py-2 border rounded  border-black  ">
-                                    <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
-                                </button>
-                            </div>
-                        }
-                        <div className="w-full flex-grow hidden lg:flex lg:items-center lg:w-auto sm:hidden md:hidden">
-                            <div className="text-sm lg:flex-grow">
-                                <Link to={"/"} className="block lg:inline-block hover:font-semibold mr-4">Home</Link>
-                            </div>
-
+                        <div className='flex-1'>
+                            <nav>
+                                <ul className='flex items-center justify-center'>
+                                    <li><a href="/" className='p-4 block hover:bg-slate-700'>Home</a></li>
+                                </ul>
+                            </nav>
                         </div>
 
                         <div>
-                            {isLoggin ?
-                                session.type === 1
-                                    ? <LoggedLinks to={"/Dashboard/Home"}>Dashboard</LoggedLinks>
-                                    : session.type === 2
-                                        ? <LoggedLinks to={"/Teacher/Home"}>Teacher</LoggedLinks>
-                                        : session.type === 3
-                                            ? <LoggedLinks to={"/Admin/Home"}>Admin</LoggedLinks>
-                                            : ''
-                                : <LoginRegisterLinks />
-                            }
-
+                            <ul className='flex items-center gap-4'>
+                                <li><a href="/Login" className='p-2 block bg-sky-600 rounded'>Login</a></li>
+                                <li><a href="/Register" className='p-2 block border border-transparent hover:border-sky-600 rounded transition-all duration-500'>Registro</a></li>
+                            </ul>
                         </div>
-                    </nav>
-
-
-
+                    </div>
                 </div>
             </header>
         </>
