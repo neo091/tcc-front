@@ -113,7 +113,7 @@ const Register = () => {
         })
 
     }
-
+    /*
     return (
         <>
             <Header />
@@ -145,7 +145,39 @@ const Register = () => {
 
 
         </>
-    )
+    )*/
+        return (
+            <>
+                <Header />
+                <Banner text='Registro de Usuarios' />
+    
+                <Content>
+                    <Alert type={alertType} message={alertMessage} hide={hideAlert} />
+                    <div className='flex justify-center items-center'>
+    
+                        <div className=' bg-slate-800 p-2 '>
+    
+                            <form action="/register-success" method='POST' onSubmit={(e) => registerSubmit(e)}>
+                                <Input type="text" label="Nombre" handle={nameHandle} />
+                                <Input type="text" label="Correo electrónico" handle={emailHandle} />
+                                <Input type="password" label="Contraseña" handle={passwordHandle} />
+    
+                                <div className='flex justify-center items-center gap-3'>
+    
+                                    <Button text='Register' /> | <Link to={`${window.origin}/Login`} className=' text-center text-violet-500 underline decoration-violet-900 hover:text-violet-300 hover:decoration-violet-500 '>Login</Link>
+    
+                                </div>
+    
+    
+    
+                            </form>
+                        </div>
+                    </div>
+                </Content>
+    
+    
+            </>
+        )
 
 }
 
