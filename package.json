@@ -15,6 +15,7 @@
     "ag-charts-react": "^10.0.2",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "axios": "^1.7.4",
 =======
     "axios": "1.7.4",
@@ -23,6 +24,16 @@
     "axios": "1.6.8",
     "cloudflared": "^0.5.3",
 >>>>>>> 874a7b7 (cambioo diseño login.)
+=======
+    "axios": "1.7.4",
+=======
+    "axios": "1.6.8",
+    "cloudflared": "^0.5.3",
+>>>>>>> origin/oliverp1
+=======
+    "axios": "^1.7.4",
+>>>>>>> origin/marcos-login-p4
+>>>>>>> 761a5af55f897242761552a12bd1fa328ea1409e
     "dompurify": "^3.1.6",
     "html-react-parser": "^5.1.10",
     "isomorphic-dompurify": "^2.13.0",

@@ -43,6 +43,82 @@ const Login = () => {
         setTimeout(() => { setHideAlert(true) }, duration || 5000)
     }
 
+<<<<<<< HEAD
+    const submitHandle = (e) => {
+        e.preventDefault()
+
+        if (!userLogin) {
+            showAlert({
+                type: ErrorType.DANGER, message: 'need email'
+            })
+
+            return
+        }
+
+
+        if (!userLogin.email || userLogin.email === "") {
+            showAlert({
+                type: ErrorType.DANGER, message: 'need email'
+            })
+
+            return
+        }
+
+        if (!userLogin.password || userLogin.password === "") {
+            showAlert({
+                type: ErrorType.DANGER, message: 'need password'
+            })
+
+            return
+        }
+
+        if (!isEmail(userLogin.email)) {
+
+            showAlert({
+                type: ErrorType.DANGER, message: 'invalid email'
+            })
+
+            return
+        }
+
+        loginService.login(userLogin).then(result => {
+
+            showAlert({
+                type: ErrorType.SUCCESS, message: 'login correcto, redirigiendo...'
+            })
+
+            const user = result.body
+
+            console.log(user)
+
+
+            // window.localStorage.setItem(
+            //     'loggedTCC', JSON.stringify(user)
+            // )
+
+
+            // setUser(result.body)
+
+        }).catch((e) => {
+
+            if (e.code === "ERR_BAD_RESPONSE") {
+                showAlert({
+                    type: ErrorType.DANGER, message: e.response.data.body.message
+                })
+            }
+
+            if (e.code === "ERR_NETWORK") {
+                showAlert({
+                    type: ErrorType.DANGER, message: "Error de Servidor"
+                })
+            }
+        })
+
+    }
+
+<<<<<<< HEAD
+=======
+>>>>>>> origin/marcos-login-p4
     const LoginHandle = async (event) => {
         event.preventDefault()
 
@@ -72,6 +148,21 @@ const Login = () => {
         }).catch((e) => {
             if (e.code == "ERR_BAD_RESPONSE") {
                 showAlert({ type: ErrorType.DANGER, message: `Error ${e.response.data.status}, ${e.response.data.body.message}` })
+=======
+    /*
+    return (
+        <>
+            {
+                user !== null
+                    ? user.type === 1
+                        ? <Navigate to={"/Dashboard"} replace={true} />
+                        : user.type === 2
+                            ? <Navigate to={"/Teacher/Home"} replace={true} />
+                            : user.type === 3
+                                ? <Navigate to={"/Admin"} replace={true} />
+                                : ''
+                    : ''
+>>>>>>> origin/oliverp1
             }
 
             if (e.code == "ERR_NETWORK") {

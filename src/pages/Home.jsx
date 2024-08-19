@@ -224,7 +224,11 @@ const Home = () => {
                         </div>
                         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                             <a href="login" className="text-sm font-semibold leading-6 text-gray-900">
+<<<<<<< HEAD
 >>>>>>> 874a7b7 (cambioo diseño login.)
+=======
+>>>>>>> origin/oliverp1
+>>>>>>> 761a5af55f897242761552a12bd1fa328ea1409e
                                 Log in <span aria-hidden="true">&rarr;</span>
                             </a>
                         </div>
