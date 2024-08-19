@@ -43,6 +43,85 @@ const Login = () => {
         setTimeout(() => { setHideAlert(true) }, duration || 5000)
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    const submitHandle = (e) => {
+        e.preventDefault()
+
+        if (!userLogin) {
+            showAlert({
+                type: ErrorType.DANGER, message: 'need email'
+            })
+
+            return
+        }
+
+
+        if (!userLogin.email || userLogin.email === "") {
+            showAlert({
+                type: ErrorType.DANGER, message: 'need email'
+            })
+
+            return
+        }
+
+        if (!userLogin.password || userLogin.password === "") {
+            showAlert({
+                type: ErrorType.DANGER, message: 'need password'
+            })
+
+            return
+        }
+
+        if (!isEmail(userLogin.email)) {
+
+            showAlert({
+                type: ErrorType.DANGER, message: 'invalid email'
+            })
+
+            return
+        }
+
+        loginService.login(userLogin).then(result => {
+
+            showAlert({
+                type: ErrorType.SUCCESS, message: 'login correcto, redirigiendo...'
+            })
+
+            const user = result.body
+
+            console.log(user)
+
+
+            // window.localStorage.setItem(
+            //     'loggedTCC', JSON.stringify(user)
+            // )
+
+
+            // setUser(result.body)
+
+        }).catch((e) => {
+
+            if (e.code === "ERR_BAD_RESPONSE") {
+                showAlert({
+                    type: ErrorType.DANGER, message: e.response.data.body.message
+                })
+            }
+
+            if (e.code === "ERR_NETWORK") {
+                showAlert({
+                    type: ErrorType.DANGER, message: "Error de Servidor"
+                })
+            }
+        })
+
+    }
+
+<<<<<<< HEAD
+=======
+>>>>>>> origin/marcos-login-p4
+>>>>>>> 43f41b786b3d08fa987023fe83ef621924b4ea36
     const LoginHandle = async (event) => {
         event.preventDefault()
 
@@ -72,6 +151,21 @@ const Login = () => {
         }).catch((e) => {
             if (e.code == "ERR_BAD_RESPONSE") {
                 showAlert({ type: ErrorType.DANGER, message: `Error ${e.response.data.status}, ${e.response.data.body.message}` })
+=======
+    /*
+    return (
+        <>
+            {
+                user !== null
+                    ? user.type === 1
+                        ? <Navigate to={"/Dashboard"} replace={true} />
+                        : user.type === 2
+                            ? <Navigate to={"/Teacher/Home"} replace={true} />
+                            : user.type === 3
+                                ? <Navigate to={"/Admin"} replace={true} />
+                                : ''
+                    : ''
+>>>>>>> origin/oliverp1
             }
 
             if (e.code == "ERR_NETWORK") {
@@ -94,6 +188,9 @@ const Login = () => {
 
     /*
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 43f41b786b3d08fa987023fe83ef621924b4ea36
 >>>>>>> 874a7b7 (cambioo diseño login.)
     return (
         <>
@@ -121,6 +218,7 @@ const Login = () => {
                                 <button className='bg-sky-600 p-2 w-full'>Login</button>
                                 <Link to={'/'}>Olvidaste tu contraseña?</Link>
                             </div>
+<<<<<<< HEAD
                         </form>
                     </div>
                 </div>
@@ -200,10 +298,12 @@ const Login = () => {
 
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> 43f41b786b3d08fa987023fe83ef621924b4ea36
                         </form>
                     </div>
                 </div>
-            </Content>
+            </div>
         </>
     )^*/
     return (
@@ -275,7 +375,10 @@ const Login = () => {
           </div>
         </div>
 
+<<<<<<< HEAD
 >>>>>>> 874a7b7 (cambioo diseño login.)
+=======
+>>>>>>> 43f41b786b3d08fa987023fe83ef621924b4ea36
         <div>
           <Button
             text='Login'
