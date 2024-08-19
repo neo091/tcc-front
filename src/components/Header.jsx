@@ -35,11 +35,11 @@ const Header = ({ handle }) => {
                 <div className='w-3/4 mx-auto'>
                     <div className='flex items-center'>
                         <div className='p-4'>
-                            TCC
+                            <img src="images/logo.png" className="w-40" alt="" />
                         </div>
                         <div className='flex-1'>
                             <nav>
-                                <ul className='flex items-center justify-center'>
+                                <ul className='flex items-center'>
                                     <li><a href="/" className='p-4 block hover:bg-slate-700'>Home</a></li>
                                 </ul>
                             </nav>
