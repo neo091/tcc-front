@@ -33,7 +33,7 @@ const Login = () => {
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
 
-    const { session, isLoggin, setSession, setIsLoggin, resetSession } = useAuthStore()
+    const { session, isLogin, setSession, setIsLogin, resetSession } = useAuthStore()
 
     const emailHandle = (text) => setEmail(text)
     const passwordHandle = (text) => setPassword(text)
@@ -49,77 +49,6 @@ const Login = () => {
         setTimeout(() => { setHideAlert(true) }, duration || 5000)
     }
 
-    const submitHandle = (e) => {
-        e.preventDefault()
-
-        if (!userLogin) {
-            showAlert({
-                type: ErrorType.DANGER, message: 'need email'
-            })
-
-            return
-        }
-
-
-        if (!userLogin.email || userLogin.email === "") {
-            showAlert({
-                type: ErrorType.DANGER, message: 'need email'
-            })
-
-            return
-        }
-
-        if (!userLogin.password || userLogin.password === "") {
-            showAlert({
-                type: ErrorType.DANGER, message: 'need password'
-            })
-
-            return
-        }
-
-        if (!isEmail(userLogin.email)) {
-
-            showAlert({
-                type: ErrorType.DANGER, message: 'invalid email'
-            })
-
-            return
-        }
-
-        loginService.login(userLogin).then(result => {
-
-            showAlert({
-                type: ErrorType.SUCCESS, message: 'login correcto, redirigiendo...'
-            })
-
-            const user = result.body
-
-            console.log(user)
-
-
-            // window.localStorage.setItem(
-            //     'loggedTCC', JSON.stringify(user)
-            // )
-
-
-            // setUser(result.body)
-
-        }).catch((e) => {
-
-            if (e.code === "ERR_BAD_RESPONSE") {
-                showAlert({
-                    type: ErrorType.DANGER, message: e.response.data.body.message
-                })
-            }
-
-            if (e.code === "ERR_NETWORK") {
-                showAlert({
-                    type: ErrorType.DANGER, message: "Error de Servidor"
-                })
-            }
-        })
-
-    }
 
     const LoginHandle = async (event) => {
         event.preventDefault()
@@ -139,7 +68,7 @@ const Login = () => {
             return
         }
 
-        if (isLoggin) {
+        if (isLogin) {
             showAlert({ type: ErrorType.DANGER, message: 'is loggin!' })
             return
         }
@@ -160,7 +89,7 @@ const Login = () => {
         })
 
         setSession(result.body)
-        setIsLoggin(true)
+        setIsLogin(true)
 
         window.localStorage.setItem(
             'loggedTCC', JSON.stringify(result.body)
@@ -169,30 +98,31 @@ const Login = () => {
     }
     return (
         <>
-            {isLoggin && session.type === 1 && <Navigate to={"/Dashboard"} replace={true} />}
-            {isLoggin && session.type === 2 && <Navigate to={"/Teacher/Home"} replace={true} />}
-            {isLoggin && session.type === 3 && <Navigate to={"/Admin"} replace={true} />}
+            {isLogin && session.type === 1 && <Navigate to={"/Dashboard"} replace={true} />}
+            {isLogin && session.type === 2 && <Navigate to={"/Teacher/Home"} replace={true} />}
+            {isLogin && session.type === 3 && <Navigate to={"/Admin"} replace={true} />}
 
             <Header />
-            <Content>
-                <div className=' my-16 flex justify-center'>
-                    <div className='bg-slate-800 p-2 rounded' >
+            <div className=' my-16 flex justify-center'>
+                <div className=' p-2 rounded' >
 
-                        <Title>Iniciar Sessión</Title>
+                    <img src="/images/logo.png" alt="" />
 
-                        <Alert type={alert.type} message={alert.message} hide={hideAlert} />
+                    <h1 className='text-center text-2xl font-semibold'>Iniciar Sessión</h1>
 
-                        <form action="/Dashboard" method='POST' onSubmit={(e) => LoginHandle(e)} >
-                            <Input type='text' label='Correo electrónico' handle={emailHandle} />
-                            <Input type='password' label='Contraseña' handle={passwordHandle} />
-                            <div className='flex gap-3 items-center justify-center'>
-                                <Button text='Login' /> <Link to={`${window.origin}/Register`} className=' text-center text-violet-500 underline decoration-violet-900 hover:text-violet-300 hover:decoration-violet-500 '>Register</Link>
-                            </div>
+                    <Alert type={alert.type} message={alert.message} hide={hideAlert} />
 
-                        </form>
-                    </div>
+                    <form action="/Dashboard" method='POST' onSubmit={(e) => LoginHandle(e)} >
+                        <Input type='text' label='Correo electrónico' handle={emailHandle} />
+                        <Input type='password' label='Contraseña' handle={passwordHandle} />
+                        <div className='flex flex-col gap-3 items-center justify-center'>
+                            <Button text='Login' />
+                            <Link> Olvidaste tu Contraseña?</Link>
+                        </div>
+
+                    </form>
                 </div>
-            </Content>
+            </div>
         </>
     )
 
