@@ -26,7 +26,8 @@ const Dashboard = () => {
 
     const openSidebarHandle = () => {
         setShowSidebar(!showSideBar)
-    }
+    } 
+    //hola
 
     return (
         <>
