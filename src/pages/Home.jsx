@@ -1,26 +1,8 @@
-/*
-import { useState } from "react"
-import Content from "../components/Content"
-import EnlaceDefault from "../components/EnlaceDefault"
-import Header from "../components/Header"
-
-import { Dialog, DialogPanel } from '@headlessui/react'
-
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-
-const navigation = [
-    { name: 'Product', href: '#' },
-    { name: 'Features', href: '#' },
-    { name: 'Marketplace', href: '#' },
-    { name: 'Company', href: '#' },
-]
-
+import React from 'react';
 
 const Home = () => {
-
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
     return (
+<<<<<<< HEAD
         <>
 
             <div className="bg-white">
@@ -527,3 +509,12 @@ const Home = () => {
 }
 
 export default Home
+=======
+        <div>
+            home
+        </div>
+    );
+}
+
+export default Home;
+>>>>>>> origin/marcos-fix

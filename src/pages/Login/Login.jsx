@@ -1,25 +1,7 @@
-import { useState } from 'react'
-import Header from '../../components/Header'
-import isEmail from 'validator/lib/isEmail'
-import { doLogin } from '../../services/auth'
-import Alert from '../../components/Alerts'
-import { Link, Navigate, redirect } from 'react-router-dom'
-import Title from '../../components/Title'
-import { useAuthStore } from '../../store/authStore'
-import { ErrorType } from '../../services/helpers'
+import React from 'react';
 
-const Input = (props) => {
-    const { label, type, handle } = props
-    return (
-        <div className='my-6'>
-            <label htmlFor="email" className="block font-medium leading-6 text-white-900">
-                {label}
-            </label>
-            <input type={type} className='p-2 mt-2 bg-slate-700 rounded border-none w-full' onChange={(e) => handle(e.target.value)} />
-        </div>
-    )
-}
 const Login = () => {
+<<<<<<< HEAD
 
     const [hideAlert, setHideAlert] = useState(true)
     const [alert, setAlert] = useState([])
@@ -338,22 +320,13 @@ const Login = () => {
       <Alert type={alert.type} message={alert.message} hide={hideAlert} />
 
       <form action="/Dashboard" method="POST" className="space-y-6" onSubmit={(e) => submitHandle(e)}>
+=======
+    return (
+>>>>>>> origin/marcos-fix
         <div>
-          <label htmlFor="email" className="block text-sm font-medium leading-6 text-white-900">
-            Correo electrónico
-          </label>
-          <div className="mt-2">
-            <Input
-              id="email"
-              name="email"
-              type="text"
-              required
-              autoComplete="email"
-              handle={emailHandle}
-              className="block w-full rounded-md border-0 py-1.5 text-white-900 shadow-sm ring-1 ring-inset ring-white-300 placeholder:text-white-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
-          </div>
+            asd
         </div>
+<<<<<<< HEAD
 
         <div>
           <div className="flex items-center justify-between">
@@ -404,6 +377,9 @@ const Login = () => {
 
 
 
+=======
+    );
+>>>>>>> origin/marcos-fix
 }
 
-export default Login
+export default Login;
