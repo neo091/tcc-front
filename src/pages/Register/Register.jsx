@@ -7,15 +7,12 @@ import Header from '../../components/Header'
 import Alert from '../../components/Alerts'
 import RegisterService from '../../services/auth'
 import isEmail from 'validator/lib/isEmail'
-import Separador from '../../components/Separador'
+
 import { Link } from 'react-router-dom'
-import Title from '../../components/Title'
 
 const Input = ({ type, label, handle }) => {
     return (
-        <div className='my-4'>
-            <input type={type} placeholder={label} className='p-2 bg-slate-700 rounded w-full' onChange={(e) => handle(e.target.value)} />
-        </div>
+        <input type={type} placeholder={label} className='p-2 bg-slate-700 rounded w-full' onChange={(e) => handle(e.target.value)} />
     )
 }
 
@@ -147,38 +144,29 @@ const Register = () => {
 
         </>
     )*/
-        return (
-            <>
-                <Header />
-                <Banner text='Registro de Usuarios' />
-    
-                <Content>
+    return (
+        <>
+            <Header />
+            <div className='flex items-center justify-center'>
+
+                <div className=' py-6'>
+                    <img src="/images/logo.png" alt="" />
                     <Alert type={alertType} message={alertMessage} hide={hideAlert} />
-                    <div className='flex justify-center items-center'>
-    
-                        <div className=' bg-slate-800 p-2 '>
-    
-                            <form action="/register-success" method='POST' onSubmit={(e) => registerSubmit(e)}>
-                                <Input type="text" label="Nombre" handle={nameHandle} />
-                                <Input type="text" label="Correo electrónico" handle={emailHandle} />
-                                <Input type="password" label="Contraseña" handle={passwordHandle} />
-    
-                                <div className='flex justify-center items-center gap-3'>
-    
-                                    <Button text='Register' /> | <Link to={`${window.origin}/Login`} className=' text-center text-violet-500 underline decoration-violet-900 hover:text-violet-300 hover:decoration-violet-500 '>Login</Link>
-    
-                                </div>
-    
-    
-    
-                            </form>
+                    <form action="/register-success" method='POST' onSubmit={(e) => registerSubmit(e)}>
+                        <div className='flex flex-col text-center justify-center gap-6'>
+                            <h1 className='text-center text-2xl font-semibold'>Registro de Usuarios</h1>
+                            <Input type="text" label="Nombre" handle={nameHandle} />
+                            <Input type="text" label="Correo electrónico" handle={emailHandle} />
+                            <Input type="password" label="Contraseña" handle={passwordHandle} />
+
+                            <button className='bg-sky-600 inline-block p-2' >Register</button>
+                            <Link to={"/Login"}>Ya tienes una cuneta? Acceder</Link>
                         </div>
-                    </div>
-                </Content>
-    
-    
-            </>
-        )
+                    </form>
+                </div>
+            </div>
+        </>
+    )
 
 }
 

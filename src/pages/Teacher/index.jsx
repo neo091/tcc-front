@@ -41,7 +41,7 @@ const Teacher = () => {
             <div className="flex h-screen overflow-hidden">
                 <div className="hidden sm:block w-72 bg-slate-800 absolute lg:static h-screen">
 
-                    <div className="text-3xl py-7 px-4">
+                    <div className="text-3xl py-7 px-4 w-60">
                         <a href="/">
 
                             <img src="/images/logo.png" alt="" />

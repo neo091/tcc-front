@@ -46,9 +46,13 @@ const Header = ({ handle }) => {
                         </div>
 
                         <div>
-                            <ul className='flex items-center gap-4'>
-                                <li><a href="/Login" className='p-2 block bg-sky-600 rounded'>Login</a></li>
-                                <li><a href="/Register" className='p-2 block border border-transparent hover:border-sky-600 rounded transition-all duration-500'>Registro</a></li>
+                            <ul className='flex items-center gap-2'>
+                                <li>
+                                    <Link to={'/Login'} className='py-2 px-6 block bg-sky-600 rounded'>Login</Link>
+                                </li>
+                                <li>
+                                    <Link to={'/Register'} className='py-2 px-6 block border border-transparent hover:border-sky-600 rounded transition-all duration-500'>Register</Link>
+                                </li>
                             </ul>
                         </div>
                     </div>

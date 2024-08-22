@@ -1,26 +1,18 @@
 import { useState } from 'react'
 import Button from '../../components/Button'
-import Content from '../../components/Content'
 import Header from '../../components/Header'
 import isEmail from 'validator/lib/isEmail'
 import { doLogin } from '../../services/auth'
 import Alert from '../../components/Alerts'
 import { Link, Navigate, redirect } from 'react-router-dom'
-import Title from '../../components/Title'
 import { useAuthStore } from '../../store/authStore'
+
+import { ErrorType } from '../../services/helpers'
 
 const Input = ({ type, label, handle }) => {
     return (
-        <div className='my-4'>
-            <label>{label}</label>
-            <input type={type} className='p-2 bg-slate-700 rounded border-none w-full' onChange={(e) => handle(e.target.value)} />
-        </div>
+        <input type={type} placeholder={label} className='p-2 bg-slate-700 border-none w-full' onChange={(e) => handle(e.target.value)} />
     )
-}
-
-const ErrorType = {
-    DANGER: "danger",
-    SUCCESS: "success"
 }
 
 const Login = () => {
@@ -108,18 +100,20 @@ const Login = () => {
 
                     <img src="/images/logo.png" alt="" />
 
-                    <h1 className='text-center text-2xl font-semibold'>Iniciar Sessión</h1>
 
                     <Alert type={alert.type} message={alert.message} hide={hideAlert} />
 
                     <form action="/Dashboard" method='POST' onSubmit={(e) => LoginHandle(e)} >
-                        <Input type='text' label='Correo electrónico' handle={emailHandle} />
-                        <Input type='password' label='Contraseña' handle={passwordHandle} />
-                        <div className='flex flex-col gap-3 items-center justify-center'>
-                            <Button text='Login' />
-                            <Link> Olvidaste tu Contraseña?</Link>
-                        </div>
 
+                        <div className='flex flex-col justify-center text-center gap-6'>
+
+                            <h1 className='text-center text-2xl font-semibold'>Iniciar Sessión</h1>
+                            <Input type='text' label='Correo electrónico' handle={emailHandle} />
+                            <Input type='password' label='Contraseña' handle={passwordHandle} />
+                            <button className='bg-sky-600 inline-block p-2' >Login</button>
+                            <Link> Olvidaste tu Contraseña?</Link>
+
+                        </div>
                     </form>
                 </div>
             </div>

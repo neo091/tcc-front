@@ -1,36 +1,38 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { deleteLesson } from "../../services/teacher";
+import { useEffect } from "react";
 
 
 export const loader = ({ params }) => {
     const lessonId = params.lessonId
+    const id = params.id
     console.log(lessonId)
-    return { lessonId: lessonId }
+    return { lessonId: lessonId, id }
 }
 
 export const DeleteLesson = () => {
 
     const navigate = useNavigate()
-    const { lessonId } = useLoaderData()
+    const { lessonId, id } = useLoaderData()
 
-    Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
+    useEffect(() => ConfirmDelete(), [])
 
 
-        if (result.isConfirmed) {
+    const ConfirmDelete = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
 
-            deleteLesson(lessonId).then(result => {
+            if (result.isConfirmed) {
 
-                console.log(result)
-
+                await deleteLesson(lessonId)
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -38,13 +40,15 @@ export const DeleteLesson = () => {
                     showConfirmButton: false,
                     timer: 1000
                 }).then((result) => {
-                    navigate(-1)
+                    navigate(`../${id}`)
                 })
-            })
 
-        } else {
-            navigate(-1)
-        }
-    });
+            } else {
+                navigate(`../${id}`)
+            }
+        });
+    }
+
+
 
 }
