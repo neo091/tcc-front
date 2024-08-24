@@ -4,7 +4,6 @@ import Chart from "react-apexcharts";
 
 const TeacherHome = () => {
 
-
     const state = {
         options: {
             chart: {
@@ -104,9 +103,6 @@ const TeacherHome = () => {
         },
         series: [30, 55, 41]
     }
-
-
-
 
     const barState = {
         options: {
