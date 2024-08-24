@@ -1,8 +1,4 @@
 import { Link, Outlet, useNavigation } from "react-router-dom";
-import Header from "../../components/Header";
-import { ProfileInfo, ProfilePicture, ProfileUserType } from "../../components/Profile"
-import SidebarLinks from "../../components/SidebarLinks"
-import TopBarProgress from "react-topbar-progress-indicator";
 import { useState } from "react";
 import { useAuthStore } from "../../store/authStore";
 
@@ -39,7 +35,7 @@ const Teacher = () => {
 
         <>
             <div className="flex h-screen overflow-hidden">
-                <div className="hidden sm:block w-72 bg-slate-800 absolute lg:static h-screen">
+                <div className="hidden lg:block w-72 bg-slate-800 absolute lg:static h-screen">
 
                     <div className="text-3xl py-7 px-4 w-60">
                         <a href="/">

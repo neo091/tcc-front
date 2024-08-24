@@ -3,7 +3,7 @@ import React from 'react';
 
 const CounterSection = () => {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid lg:grid-flow-col md:grid-cols-2 lg:grid-cols-4 gap-6">
 
             <div className=" bg-slate-800 p-6">
 

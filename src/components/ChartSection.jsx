@@ -1,5 +1,7 @@
 import React from 'react';
 import Chart from "react-apexcharts";
+import { Card, CardTitle } from './Card';
+import Exam from './Exam';
 
 
 const ChartSection = () => {
@@ -187,14 +189,14 @@ const ChartSection = () => {
     var LineOptions = {
         theme: {
             mode: 'dark',
-            palette: 'palette2',
+            palette: 'palette1',
         },
         series: [{
-            name: 'series1',
-            data: [31, 40, 28, 51, 42, 119, 100]
+            name: 'Aula 1',
+            data: [31, 40, 28, 51, 42, 119]
         }, {
             name: 'series2',
-            data: [11, 32, 45, 32, 34, 52, 41]
+            data: [11, 32, 45, 32, 34, 52]
         }],
         chart: {
             type: 'area',
@@ -206,15 +208,15 @@ const ChartSection = () => {
             zoom: {
                 enabled: false
             },
-            sparkline: {
-                enabled: true // this is either display the lines
-            },
+            // sparkline: {
+            //     enabled: true // this is either display the lines
+            // },
             toolbar: {
                 show: false
             }
         },
         legend: {
-            show: false,
+            show: true,
             markers: {
                 size: 7,
                 shape: undefined,
@@ -258,7 +260,6 @@ const ChartSection = () => {
             palette: 'palette2',
         },
         chart: {
-            //height: 280,
             type: 'bar',
             stacked: true,
             background: "none",
@@ -283,6 +284,7 @@ const ChartSection = () => {
         xaxis: {
             categories: ['A', 'S', 'O', 'N', 'D', 'E', 'F'],
         },
+
         fill: {
             opacity: 1
         },
@@ -301,39 +303,44 @@ const ChartSection = () => {
         }
     }
 
-
     return (
-        <div className="grid md:grid-cols-6 gap-6 ">
-
-            <div className=" bg-slate-800 col-span-2 p-4">
-                <div className="min-h-60">
-                    <div>
-                        <h2 className="text-2xl font-bold">Promedio de Aprendizaje</h2>
+        <div className="grid grid-cols-12 gap-6 ">
+            <Card extraCss={'col-span-12 xl:col-span-9'}>
+                <div className='p-2'>
+                    <CardTitle>Promedio de Aprendizaje</CardTitle>
+                    <div className='h-[392px]'>
+                        <Chart options={LineOptions} series={LineOptions.series} type="area" height='392px' />
                     </div>
 
-                    <Chart options={optionsBars} series={optionsBars.series} type="bar" />
                 </div>
-            </div>
+            </Card>
 
-            <div className=" bg-slate-800 col-span-2 p-4">
-                <div className="min-h-60">
-                    <div>
-                        <h2 className="text-2xl font-bold">Exámenes Generados</h2>
+            <Card extraCss={'col-span-12 xl:col-span-3'}>
+                <div className='p-2'>
+                    <CardTitle>Promedio General</CardTitle>
+                    <div className='h-[392px]'>
+                        <Chart options={optionsBars} series={optionsBars.series} type="bar" height="392px" />
+                    </div>
+                </div>
+            </Card>
+            <Card extraCss={'col-span-12 xl:col-span-4'}>
+                <div className='p-2'>
+                    <CardTitle>Exámenes Generados</CardTitle>
+                    <div className='min-h-[392px]'>
+                        <Chart options={donutState.options} series={donutState.series} type="donut" height="392px" />
                     </div>
 
-                    <Chart options={donutState.options} series={donutState.series} type="donut" />
                 </div>
-            </div>
+            </Card>
 
-            <div className=" bg-slate-800 col-span-2 p-4">
+            <Card extraCss={'col-span-12 xl:col-span-8'}>
+                <div className='p-6'>
+                    <CardTitle>Lista Exámenes Generados</CardTitle>
 
-                <div>
-                    <h2 className="text-2xl font-bold">Promedio de Aprendizaje</h2>
+                    <Exam />
+
                 </div>
-
-                <Chart options={LineOptions} series={LineOptions.series} type="area" />
-            </div>
-
+            </Card>
         </div>
     );
 }

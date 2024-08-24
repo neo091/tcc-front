@@ -43,6 +43,7 @@ import DashboardRoomsView, { loader as RoomsViewLoader } from './pages/Dashboard
 import DashboardLessonView, { loader as LessonViewLoader } from './pages/Dashboard/LessonView.jsx'
 import DashboardCourses, { loader as CoursesLoader } from './pages/Dashboard/Courses.jsx'
 import DashboardCourse, { loader as CourseLoader } from './pages/Dashboard/Course.jsx'
+import Demo from './pages/Demo.jsx'
 
 const router = createBrowserRouter(
   [
@@ -161,7 +162,12 @@ const router = createBrowserRouter(
       path: "/test-page",
       element: <TestPage />,
       errorElement: <ErrorPage />
-    }
+    },
+    {
+      path: "/Demo",
+      element: <Demo />,
+      errorElement: <ErrorPage />
+    },
   ]
 )
 
