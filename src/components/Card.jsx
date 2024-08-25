@@ -2,7 +2,15 @@ import React from 'react';
 
 export function CardTitle({ title, children }) {
     return (
-        <h2 className="text-2xl font-bold">{title ? title : children}</h2>
+        <h2 className="text-2xl font-bold flex-1">{title ? title : children}</h2>
+    )
+}
+
+export function CardHeader({ children }) {
+    return (
+        <div className="py-4 px-6 border-b border-slate-700 flex items-center">
+            {children}
+        </div>
     )
 }
 

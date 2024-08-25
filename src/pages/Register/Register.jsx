@@ -153,14 +153,21 @@ const Register = () => {
                     <img src="/images/logo.png" alt="" />
                     <Alert type={alertType} message={alertMessage} hide={hideAlert} />
                     <form action="/register-success" method='POST' onSubmit={(e) => registerSubmit(e)}>
-                        <div className='flex flex-col text-center justify-center gap-6'>
-                            <h1 className='text-center text-2xl font-semibold'>Registro de Usuarios</h1>
+                        <div className='flex flex-col gap-6 p-6 bg-slate-800 border-slate-700 border'>
+                            <h1 className='text-center text-2xl font-semibold'>Registro</h1>
                             <Input type="text" label="Nombre" handle={nameHandle} />
                             <Input type="text" label="Correo electrónico" handle={emailHandle} />
                             <Input type="password" label="Contraseña" handle={passwordHandle} />
 
+                            <div className='flex'>
+                                <div className='flex-1'>
+                                    <input type="checkbox" /> Acepto <Link className='text-sky-600'>Términos y condiciones.</Link>
+                                </div>
+
+                            </div>
+
                             <button className='bg-sky-600 inline-block p-2' >Register</button>
-                            <Link to={"/Login"}>Ya tienes una cuneta? Acceder</Link>
+                            <p>Ya tienes una cuneta? <Link to={"/Login"} className='text-sky-600 ml-2'>Iniciar Sesión</Link></p>
                         </div>
                     </form>
                 </div>

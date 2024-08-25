@@ -6,7 +6,7 @@ const TeacherHome = () => {
 
     return (
         <>
-            <div className="xl:mx-6 flex flex-col gap-4">
+            <div className="flex flex-col gap-4">
                 <CounterSection />
                 <ChartSection />
                 <ChatSection />

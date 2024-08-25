@@ -95,23 +95,28 @@ const Login = () => {
             {isLogin && session.type === 3 && <Navigate to={"/Admin"} replace={true} />}
 
             <Header />
-            <div className=' my-16 flex justify-center'>
-                <div className=' p-2 rounded' >
-
+            <div className='flex justify-center'>
+                <div className='my-6'>
                     <img src="/images/logo.png" alt="" />
-
 
                     <Alert type={alert.type} message={alert.message} hide={hideAlert} />
 
                     <form action="/Dashboard" method='POST' onSubmit={(e) => LoginHandle(e)} >
 
-                        <div className='flex flex-col justify-center text-center gap-6'>
+                        <div className='flex flex-col gap-6 p-6 bg-slate-800 border-slate-700 border'>
 
-                            <h1 className='text-center text-2xl font-semibold'>Iniciar Sessión</h1>
+                            <h1 className='text-center text-2xl font-semibold'>Iniciar Sesión</h1>
                             <Input type='text' label='Correo electrónico' handle={emailHandle} />
                             <Input type='password' label='Contraseña' handle={passwordHandle} />
+                            <div className='flex'>
+                                <div className='flex-1'>
+                                    <input type="checkbox" /> Recordarme
+                                </div>
+                                <Link className='text-sky-600'>¿Olvidaste tu Contraseña?</Link>
+                            </div>
                             <button className='bg-sky-600 inline-block p-2' >Login</button>
-                            <Link> Olvidaste tu Contraseña?</Link>
+
+                            <p>¿Aun no tienes una cuenta? <Link to={"/Register"} className='text-sky-600 ml-2'>Registrar</Link></p>
 
                         </div>
                     </form>

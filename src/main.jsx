@@ -134,7 +134,6 @@ const router = createBrowserRouter(
       loader: dashloader,
       children: [
         { index: true, element: <HomeDash /> },
-        { path: "Home", element: <HomeDash /> },
         { path: "Test", element: <InglishTest /> },
         { path: "Files", element: <FilesStudent /> },
         { path: "Rooms", element: <DashboardRooms />, loader: dashLoader },
