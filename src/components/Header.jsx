@@ -1,23 +1,13 @@
 import { Link } from "react-router-dom"
 import { useAuthStore } from "../store/authStore"
-import { useState } from "react"
-import { ArrowLeftEndOnRectangleIcon, Cog6ToothIcon, UserIcon } from "@heroicons/react/24/solid"
+import { useRef } from "react"
+import { ArrowLeftEndOnRectangleIcon, ChevronDownIcon, ChevronUpIcon, Cog6ToothIcon, UserIcon } from "@heroicons/react/24/solid"
+import { useMenu } from "../hooks/useMenu"
 
-const Header = ({ handle }) => {
-
-    const { session, isLogin } = useAuthStore()
-
-    const [userMenu, setUserMenu] = useState(false)
-
-    const userMenuHandle = (e) => {
-        e.preventDefault()
-        setUserMenu(!userMenu)
-    }
-
-    const openSidebar = () => {
-        handle()
-    }
-
+const Header = () => {
+    const userMenuRef = useRef()
+    const { session, isLogin, accountType } = useAuthStore()
+    const { userMenu, toggleMenu } = useMenu({ userMenuRef })
 
     return (
         <>
@@ -33,13 +23,16 @@ const Header = ({ handle }) => {
                     {
                         isLogin ?
                             <div className={`mr-4`}>
-                                <a href="#" className="flex items-center gap-4" onClick={(e) => userMenuHandle(e)} >
+                                <a href="#" className="flex items-center gap-4" ref={userMenuRef} onClick={toggleMenu}  >
                                     <span className="">
                                         <span className="block font-bold">{session.name}</span>
-                                        <span className="text-sm block text-slate-500">{session.type}</span>
+                                        <span className="text-sm block text-slate-500">{accountType()}</span>
                                     </span>
                                     <span className="w-12 h-12 rounded-full overflow-hidden">
                                         <img src={`https://ui-avatars.com/api/?name=${session.name}&background=0D8ABC&color=fff`} className="w-12 h-12" alt={session.name} />
+                                    </span>
+                                    <span>
+                                        {userMenu ? <ChevronUpIcon className="w-4 h-4" /> : <ChevronDownIcon className="w-4 h-4" />}
                                     </span>
                                 </a>
 
