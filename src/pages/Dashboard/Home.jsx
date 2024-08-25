@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Title from "../../components/Title";
 import { useTestStore } from "../../store/testStore";
 import { useState } from "react";
+import { Card, CardHeader, CardTitle } from "../../components/Card";
 
 const PendingTest = ({ handle }) => {
     return (
@@ -22,7 +23,7 @@ const NewTest = ({ handle }) => {
             <p className=" text-center font-medium text-xl my-4">Aún no haz realizado ninguna prueba, haz una prueba para determinar tu nivel de Inglés.</p>
 
             <button onClick={handle}
-                className=" bg-violet-600 hover:bg-violet-700 rounded block w-full text-center my-2 font-semibold text-white p-4 transition-all duration-500">
+                className=" bg-sky-600 hover:bg-sky-700 block w-full text-center my-2 font-semibold text-white p-4 transition-all duration-500">
                 Comenzar Prueba
             </button>
 
@@ -48,9 +49,27 @@ const Home = () => {
                 questions.length > 0 && <PendingTest handle={continueHandle} />
             }
 
-            {
-                questions.length <= 0 && <NewTest handle={loadQuestionsHandle} />
-            }
+
+
+            <div className="grid grid-cols-12 gap-4 my-4">
+
+                <div className="col-span-7">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>
+                                Pruebas
+                            </CardTitle>
+                        </CardHeader>
+
+                        <div>
+                            {
+                                questions.length <= 0 && <NewTest handle={loadQuestionsHandle} />
+                            }
+                        </div>
+                    </Card>
+                </div>
+
+            </div>
         </>
     );
 }

@@ -22,6 +22,7 @@ const ExitEnrollButton = ({ onPress, children, ...props }) => {
     )
 }
 
+
 const MyRoom = ({ room, handle }) => {
     const { nombre_aula, aula_descripcion, nivel, aula_id } = room
 
@@ -29,7 +30,7 @@ const MyRoom = ({ room, handle }) => {
         <>
             <div className='flex gap-2 items-center my-2'>
 
-                <img src={InglesImage} alt="" className='w-80' />
+                <img src={`https://ui-avatars.com/api/?name=${nombre_aula}&background=0D8ABC&color=fff`} alt="" className='w-80' />
 
                 <div className='flex-1 space-y-2'>
                     <Title>{nombre_aula}</Title>

@@ -45,6 +45,8 @@ import DashboardCourses, { loader as CoursesLoader } from './pages/Dashboard/Cou
 import DashboardCourse, { loader as CourseLoader } from './pages/Dashboard/Course.jsx'
 import Demo from './pages/Demo.jsx'
 
+import Profile from './pages/Profile.jsx'
+
 const router = createBrowserRouter(
   [
     {
@@ -142,6 +144,11 @@ const router = createBrowserRouter(
         { path: "Courses", element: <DashboardCourses />, loader: CoursesLoader },
         { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader }
       ]
+    },
+    {
+      path: 'Profile',
+      element: <Profile />
+
     },
     {
       path: "Logout",

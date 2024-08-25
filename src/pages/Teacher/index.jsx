@@ -32,7 +32,6 @@ const Teacher = () => {
         setUserMenu(!userMenu)
     }
 
-
     return (
 
         <div className="flex h-screen overflow-hidden">
