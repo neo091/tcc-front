@@ -6,9 +6,7 @@ const Profile = () => {
         <div className='grid grid-cols-12'>
             <div className='col-span-12'>
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Profile</CardTitle>
-                    </CardHeader>
+
                     <div className='p-6'>
                         Mi Perfil
                     </div>

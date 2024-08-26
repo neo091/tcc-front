@@ -126,7 +126,8 @@ const router = createBrowserRouter(
         {
           path: "Files",
           element: <Files />
-        }
+        },
+        { path: 'Profile', element: <Profile /> }
 
       ]
     },
@@ -142,14 +143,11 @@ const router = createBrowserRouter(
         { path: "Rooms/:id", element: <DashboardRoomsView />, loader: RoomsViewLoader },
         { path: "Lesson/:id", element: <DashboardLessonView />, loader: LessonViewLoader },
         { path: "Courses", element: <DashboardCourses />, loader: CoursesLoader },
-        { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader }
+        { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader },
+        { path: 'Profile', element: <Profile /> }
       ]
     },
-    {
-      path: 'Profile',
-      element: <Profile />
 
-    },
     {
       path: "Logout",
       element: <Logout />
