@@ -4,6 +4,7 @@ const Profile = () => {
     return (
         <div>
             Profile
+            jAVIER PUTO
         </div>
     );
 }
