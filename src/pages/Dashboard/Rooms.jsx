@@ -22,31 +22,22 @@ const ExitEnrollButton = ({ onPress, children, ...props }) => {
     )
 }
 
+
 const MyRoom = ({ room, handle }) => {
     const { nombre_aula, aula_descripcion, nivel, aula_id } = room
 
     return (
         <>
-            <div className='p-2 bg-slate-800 rounded sm:flex xl:flex flex-row gap-5 items-center  '>
-                <div className=' h-[200px] sm:w-[600px] xl:w-[500px] ' style={
+            <div className='flex gap-2 items-center my-2'>
 
-                    {
-                        backgroundImage: `url('${InglesImage}')`,
-                        backgroundPosition: 'center',
-                        backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat'
-                    }
-                }>
-                </div>
-                <div>
+                <img src={`https://ui-avatars.com/api/?name=${nombre_aula}&background=0D8ABC&color=fff`} alt="" className='w-80' />
+
+                <div className='flex-1 space-y-2'>
                     <Title>{nombre_aula}</Title>
                     <p>{aula_descripcion}</p>
-                    <p className=' overflow-hidden p-2 my-4'>
-                        <Link to={`/Dashboard/Rooms/${aula_id}`} className='bg-violet-900 text-center rounded text-white py-2 hover:scale-105 duration-200 px-10 ' >
-                            Ver Aula
-                        </Link>
-
-                    </p>
+                    <Link to={`/Dashboard/Rooms/${aula_id}`} className='bg-violet-900 text-center rounded text-white p-2 inline-block' >
+                        Ver Aula
+                    </Link>
 
                 </div>
             </div>

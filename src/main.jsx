@@ -13,7 +13,7 @@ import Logout from './pages/Logout.jsx'
 import NewRoom, { action as NewRoomAction } from './pages/Teacher/NewRoom.jsx'
 
 //Teacher Sections
-import Teacher, { loader as teacherLoader } from './pages/Teacher'
+import Teacher from './pages/Teacher'
 import TeacherHome from './pages/Teacher/TeacherHome.jsx'
 import Rooms from './pages/Teacher/Rooms.jsx'
 import RoomsList from './pages/Teacher/RoomsList.jsx'
@@ -43,6 +43,9 @@ import DashboardRoomsView, { loader as RoomsViewLoader } from './pages/Dashboard
 import DashboardLessonView, { loader as LessonViewLoader } from './pages/Dashboard/LessonView.jsx'
 import DashboardCourses, { loader as CoursesLoader } from './pages/Dashboard/Courses.jsx'
 import DashboardCourse, { loader as CourseLoader } from './pages/Dashboard/Course.jsx'
+import Demo from './pages/Demo.jsx'
+
+import Profile from './pages/Profile.jsx'
 
 const router = createBrowserRouter(
   [
@@ -54,7 +57,6 @@ const router = createBrowserRouter(
     {
       path: "/Teacher",
       element: <Teacher />,
-      loader: teacherLoader,
       id: "teacher",
       children: [
         { index: true, element: <TeacherHome /> },
@@ -134,7 +136,6 @@ const router = createBrowserRouter(
       loader: dashloader,
       children: [
         { index: true, element: <HomeDash /> },
-        { path: "Home", element: <HomeDash /> },
         { path: "Test", element: <InglishTest /> },
         { path: "Files", element: <FilesStudent /> },
         { path: "Rooms", element: <DashboardRooms />, loader: dashLoader },
@@ -143,6 +144,11 @@ const router = createBrowserRouter(
         { path: "Courses", element: <DashboardCourses />, loader: CoursesLoader },
         { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader }
       ]
+    },
+    {
+      path: 'Profile',
+      element: <Profile />
+
     },
     {
       path: "Logout",
@@ -162,7 +168,12 @@ const router = createBrowserRouter(
       path: "/test-page",
       element: <TestPage />,
       errorElement: <ErrorPage />
-    }
+    },
+    {
+      path: "/Demo",
+      element: <Demo />,
+      errorElement: <ErrorPage />
+    },
   ]
 )
 

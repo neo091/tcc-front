@@ -1,10 +1,8 @@
-# React + Vite
+## Cambios 18/08
+- se cambio la interface de el teacher mejorando algunos aspectos de diseño
+- se agrego [zustand][zustandDocs], una librería que permite el almacenamiento en stores (ver zustand y stores en [youtube][zustandYT] o paginas oficiales)
+- se mejoro la carga de las aulas para que carguen solo si hay una nueva o una modificación
+- anadi la foto de un gallo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-by: Neo091
+[zustandDocs]: https://zustand.docs.pmnd.rs/getting-started/introduction
+[zustandYT]: https://www.youtube.com/results?search_query=zustand

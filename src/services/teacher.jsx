@@ -33,7 +33,6 @@ const getWhitId = async (id) => {
         headers: { Authorization: token }
     }
 
-
     const response = await axios.get(`${base_url}/api/teacher/room/${id}`, config)
 
     return response.data
