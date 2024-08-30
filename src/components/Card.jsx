@@ -23,3 +23,11 @@ export function Card({ children, extraCss }) {
         </div>
     );
 }
+
+export function CardContent({ children, className }) {
+    return (
+        <div className={`p-4 ${className && className}`}>
+            {children}
+        </div>
+    );
+}

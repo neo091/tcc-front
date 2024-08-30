@@ -8,7 +8,10 @@ const ListOfLessons = ({ lesson, removeHandle }) => {
     const { title, id } = lesson
 
     const navigate = useNavigate()
-    const { setLesson } = useLessonStore()
+
+    const { lesson: myLesson, resetLesson, setLesson } = useLessonStore()
+
+
 
     const remove = () => {
         Swal.fire(
@@ -35,15 +38,14 @@ const ListOfLessons = ({ lesson, removeHandle }) => {
 
     }
 
-    const edit = async () => {
-
-        console.log(lesson)
-        await setLesson(lesson)
-
+    const edit = () => {
+        setLesson(lesson)
         navigate(`lessons/${id}/edit`)
     }
 
     return (
+
+
         <div className="bg-slate-700 rounded flex items-center gap-2 px-2">
             <h3 className="flex-1 hover:cursor-pointer p-2">{title}</h3>
 

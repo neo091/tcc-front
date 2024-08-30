@@ -2,10 +2,12 @@ import { useEffect, useState } from "react"
 import { createLesson, deleteLesson, getLessons, getLesson as getLessonWutId } from "../services/teacher"
 import { useLessonStore } from "../store/lessonStore"
 
-export function useLessons({ id }) {
+export function useLessons({ id, lessonId }) {
     const [lessons, setLessons] = useState([])
+    const [lesson, setLesson] = useState([])
 
     const loadLessons = async () => {
+        if (!id) return
         const response = await getLessons({ id })
 
         console.log('obteniendo lecciones')
@@ -18,8 +20,6 @@ export function useLessons({ id }) {
         setLessons(response.body.result)
     }
 
-    if (id !== undefined) useEffect(() => { loadLessons() }, [])
-
     const removeLesson = async ({ lessonId }) => {
 
         const newLessonsList = [...lessons].filter((lesson) => lesson.id !== lessonId)
@@ -30,17 +30,31 @@ export function useLessons({ id }) {
 
     }
 
-    const getLesson = async ({ lessonId }) => {
+    const getLesson = async () => {
+
+        if (!lessonId) return
+
         const response = await getLessonWutId({ id: lessonId })
-        console.log(response)
+        console.log(response.body.result)
+        setLesson(response.body.result)
     }
 
     const addLesson = async () => {
+
+
+
         const response = await createLesson(id)
 
         return response.body.result.insertId
-
     }
 
-    return { lessons, removeLesson, addLesson, getLesson }
+
+    useEffect(() => {
+        loadLessons()
+        getLesson()
+    }, [])
+
+
+
+    return { lessons, removeLesson, addLesson, lesson }
 }

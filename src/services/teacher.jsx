@@ -172,10 +172,8 @@ export async function updateLesson(lessonId, data) {
     return response.data
 }
 
-export const uploadFile = async (file, aula_id, leccion_id) => {
+export const uploadFile = async (file, roomId, lessonId) => {
     const user = await getUserData()
-
-    console.log(aula_id, leccion_id)
 
     setToken(user.token)
 
@@ -187,11 +185,11 @@ export const uploadFile = async (file, aula_id, leccion_id) => {
 
     formData.append("file", file)
 
-    const response = axios.post(`${base_url}/api/files/upload/${aula_id}/${leccion_id}`, formData, config)
+    const response = axios.post(`${base_url}/api/files/upload/${roomId}/${lessonId}`, formData, config)
     return response
 }
 
-const uploadAudioFile = async (file, aula_id, leccion_id) => {
+const uploadAudioFile = async (file, roomId, lessonId) => {
     const user = await getUserData()
 
     setToken(user.token)
@@ -204,7 +202,7 @@ const uploadAudioFile = async (file, aula_id, leccion_id) => {
 
     formData.append("file", file)
 
-    const response = await axios.post(`${base_url}/api/files/upload/audio/${aula_id}/${leccion_id}`, formData, config)
+    const response = await axios.post(`${base_url}/api/files/upload/audio/${roomId}/${lessonId}`, formData, config)
     return response.data
 }
 
@@ -252,7 +250,7 @@ const addLessonContent = async (data, lesson) => {
     return await axios.post(`${base_url}/api/teacher/lessons/contents/create/${lesson}`, data, config)
 }
 
-const getLessonContents = async (lesson) => {
+export const addContent = async ({ lessonId, data }) => {
 
     const user = await getUserData()
 
@@ -261,6 +259,32 @@ const getLessonContents = async (lesson) => {
     const config = {
         headers: { Authorization: token }
     }
+
+    return await axios.post(`${base_url}/api/teacher/lessons/contents/create/${lessonId}`, data, config)
+}
+
+export async function getContents({ lessonId }) {
+
+    console.log(lessonId, '?')
+    const user = await getUserData()
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.get(`${base_url}/api/teacher/lessons/contents/all/${lessonId}`, config)
+    console.log(response.data)
+    return response.data
+}
+
+const getLessonContents = async (lesson) => {
+
+    const user = await getUserData()
+
+    setToken(user.token)
+
+
     const response = await axios.get(`${base_url}/api/teacher/lessons/contents/all/${lesson}`, config)
 
     return response.data
@@ -296,5 +320,7 @@ export default {
     addLessonContent,
     getLessonContents,
     uploadAudioFile,
-    getFile
+    getFile,
+    getContents,
+    addContent
 }
