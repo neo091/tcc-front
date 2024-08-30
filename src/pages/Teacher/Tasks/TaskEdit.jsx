@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router-dom"
 export const loader = ({ params }) => {
 
     const { id, taskId } = params
-    return { id: id, taskId: taskId }
+    return { id, taskId }
 }
 
 const TaskEdit = () => {
@@ -13,6 +13,8 @@ const TaskEdit = () => {
 
     return (
         <div>
+            <button onClick={() => history.back()}>Atras</button>
+            <br />
             TaskEdit {id}, {taskId}
         </div>
     );

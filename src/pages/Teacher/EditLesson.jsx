@@ -7,15 +7,14 @@ import { useEffect, useRef, useState } from "react"
 import fileDownload from "js-file-download"
 import parseHTML from 'html-react-parser'
 import AudioButton from "../../components/AudioButton"
-
-
+import { useLessonsEdit } from "../../hooks/useLessonsEdit"
+import { useLessonStore } from "../../store/lessonStore"
+import { Card, CardHeader, CardTitle } from "../../components/Card"
+import { useLessons } from "../../hooks/useLessons"
 
 export const loader = async ({ params }) => {
-
-    const res = await getLesson(params.lessonId)
-    const contents = await teacher.getLessonContents(params.lessonId)
-
-    return { body: res.body.result, contents }
+    const lessonId = params.lessonId
+    return { lessonId }
 }
 
 export const action = async ({ request, params }) => {
@@ -27,7 +26,6 @@ export const action = async ({ request, params }) => {
     return redirect(`/Teacher/Rooms/${params.id}`)
 }
 
-
 const AddSectionButton = ({ handle, type, children }) => {
     return (
         <button onClick={() => handle(type)} className={`shadow-[inset_0px_-6px_0px_0px_#00000050] inline my-2 text-white py-2 px-5 transition-all duration-500 bg-violet-600 hover:bg-violet-500`}>
@@ -35,8 +33,6 @@ const AddSectionButton = ({ handle, type, children }) => {
         </button>
     )
 }
-
-
 
 const SectionTypes = ({ type, value, editHandle, id }) => {
 
@@ -107,7 +103,12 @@ const SectionTypes = ({ type, value, editHandle, id }) => {
 
 const EditLesson = () => {
 
-    const { body, contents } = useLoaderData()
+    const { lastLessonCreatedId } = useLessonStore()
+    const { getLesson } = useLessons({})
+
+    const lesson = getLesson({ lessonId: lastLessonCreatedId })
+
+    console.log(lesson)
 
     const [filesToUpload, setFilesToUpload] = useState([])
     const [myFiles, setMyFiles] = useState([])
@@ -163,14 +164,14 @@ const EditLesson = () => {
 
     }
 
-    const uploadFileHandle = async (file) => {
-        await teacher.uploadFile(file, body.room, body.id).then(result => {
+    // const uploadFileHandle = async (file) => {
+    //     await teacher.uploadFile(file, body.room, body.id).then(result => {
 
-            return result
+    //         return result
 
-        }).catch((e) => console.log(e.message))
+    //     }).catch((e) => console.log(e.message))
 
-    }
+    // }
 
     const downloadFileHandle = async (file) => {
         await teacher.downloadFileFromServer(file.archivo_id)
@@ -207,7 +208,7 @@ const EditLesson = () => {
 
     const [sections, setSections] = useState([])
 
-    useEffect(() => setSections(contents.body.result), [])
+    // useEffect(() => setSections(contents.body.result), [])
 
     const addTextSection = async () => {
         const { value: text } = await Swal.fire({
@@ -343,7 +344,40 @@ const EditLesson = () => {
 
     return (
         <>
-            <div className='w-full sm:w-2/3 lg:w-2/4  mx-auto'>
+
+            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3'>
+
+                <div className="">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Editar</CardTitle>
+                        </CardHeader>
+                        <div className="p-4">
+                            <Form method="POST">
+
+                                <div className="my-2">
+                                    <input name='title' type="text" placeholder='Titulo de la lección' defaultValue={''} className="text-black p-2 w-full" />
+                                </div>
+
+                                <div className="my-2">
+                                    <textarea name='desc'
+                                        cols="30" rows="4"
+                                        className="p-2 w-full text-black" placeholder="Descripción breve sobre esta lección"></textarea>
+                                </div>
+
+                                <div className="w-full flex gap-3">
+                                    <Button text="GUARDAR" />
+                                </div>
+
+                            </Form>
+                        </div>
+                    </Card>
+                </div>
+
+            </div>
+
+
+            {/* <div className='w-full sm:w-2/3 lg:w-2/4  mx-auto'>
 
 
                 <Form method="POST">
@@ -390,7 +424,7 @@ const EditLesson = () => {
                 <div className="">
                     {sections.map((section) => <SectionTypes key={section.ID} type={section.type} value={section.value} editHandle={editHandle} id={section.ID} />)}
                 </div>
-            </div >
+            </div > */}
 
 
 

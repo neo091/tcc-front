@@ -1,4 +1,3 @@
-
 import axios from 'axios'
 import fileDownload from "js-file-download"
 import { getUserData } from '../auth'
@@ -93,7 +92,7 @@ const edit = async (data, id) => {
     return response.data
 }
 
-const getLessons = async (id_room) => {
+export const getLessons = async ({ id }) => {
     const user = await getUserData()
 
     setToken(user.token)
@@ -102,7 +101,8 @@ const getLessons = async (id_room) => {
         headers: { Authorization: token }
     }
 
-    const response = await axios.get(`${base_url}/api/teacher/lessons/all/${id_room}`, config)
+    const response = await axios.get(`${base_url}/api/teacher/lessons/all/${id}`, config)
+
     return response.data
 }
 
@@ -119,7 +119,7 @@ export const createLesson = async (id_room) => {
     return response.data
 }
 
-export const getLesson = async (lessonId) => {
+export const getLesson = async ({ id }) => {
     const user = await getUserData()
 
     setToken(user.token)
@@ -128,21 +128,21 @@ export const getLesson = async (lessonId) => {
         headers: { Authorization: token }
     }
 
-    const response = await axios.get(`${base_url}/api/teacher/lessons/${lessonId}`, config)
+    const response = await axios.get(`${base_url}/api/teacher/lessons/${id}`, config)
     return response.data
 }
 
-export const deleteLesson = async (lesson_id) => {
+export const deleteLesson = async ({ lesson }) => {
     const user = await getUserData()
 
-    console.log(user.token)
-
-    setToken(user.token)
     const config = {
-        headers: { Authorization: token }
+        headers: { Authorization: `Bearer ${user.token}` }
     }
-    const response = await axios.delete(`${base_url}/api/teacher/lessons/delete/${lesson_id}`, config)
-    console.log(response.data)
+
+    const response = await axios.delete(`${base_url}/api/teacher/lessons/delete/${lesson}`, config)
+
+    console.log(response)
+
     return response.data
 }
 
@@ -272,6 +272,15 @@ const getFile = async (id) => {
     return response.data
 }
 
+export const addTask = async ({ id }) => {
+    const response = await axios.post(`${base_url}/api/teacher/tasks/add/${id}`)
+    return response.data
+}
+export const getTasks = async ({ id }) => {
+    const response = await axios.get(`${base_url}/api/teacher/tasks/add/${id}`)
+    return response.data
+}
+
 
 
 export default {
@@ -280,7 +289,6 @@ export default {
     edit,
     getAllRooms,
     getWhitId,
-    getLessons,
     deleteLesson,
     uploadFile,
     downloadFileFromServer,
