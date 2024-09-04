@@ -63,13 +63,13 @@ const CounterSection = () => {
                             />
                         </h4>
                         <span className="text-xs text-slate-400">Alumnos</span>
-                    </div>
+                    </div >
 
-                </div>
+                </div >
 
 
 
-            </div>
+            </div >
 
             <div className=" bg-slate-800 p-6">
 
@@ -88,13 +88,13 @@ const CounterSection = () => {
                             />
                         </h4>
                         <span className="text-xs text-slate-400">Aulas Virtuales</span>
-                    </div>
+                    </div >
 
-                </div>
+                </div >
 
 
 
-            </div>
+            </div >
 
             <div className=" bg-slate-800 p-6">
 
@@ -113,13 +113,13 @@ const CounterSection = () => {
                             />
                         </h4>
                         <span className="text-xs text-slate-400">Archivos</span>
-                    </div>
+                    </div >
 
-                </div>
+                </div >
 
 
 
-            </div>
+            </div >
 
             <div className=" bg-slate-800 p-6">
 
@@ -138,12 +138,12 @@ const CounterSection = () => {
                             />
                         </h4>
                         <span className="text-xs text-slate-400">Exámenes Pendientes</span>
-                    </div>
+                    </div >
 
-                </div>
+                </div >
 
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
 
