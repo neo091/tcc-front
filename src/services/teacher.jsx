@@ -1,4 +1,3 @@
-
 import axios from 'axios'
 import fileDownload from "js-file-download"
 import { getUserData } from '../auth'
@@ -93,7 +92,7 @@ const edit = async (data, id) => {
     return response.data
 }
 
-const getLessons = async (id_room) => {
+export const getLessons = async ({ id }) => {
     const user = await getUserData()
 
     setToken(user.token)
@@ -102,7 +101,8 @@ const getLessons = async (id_room) => {
         headers: { Authorization: token }
     }
 
-    const response = await axios.get(`${base_url}/api/teacher/lessons/all/${id_room}`, config)
+    const response = await axios.get(`${base_url}/api/teacher/lessons/all/${id}`, config)
+
     return response.data
 }
 
@@ -119,7 +119,7 @@ export const createLesson = async (id_room) => {
     return response.data
 }
 
-export const getLesson = async (lessonId) => {
+export const getLesson = async ({ id }) => {
     const user = await getUserData()
 
     setToken(user.token)
@@ -128,21 +128,21 @@ export const getLesson = async (lessonId) => {
         headers: { Authorization: token }
     }
 
-    const response = await axios.get(`${base_url}/api/teacher/lessons/${lessonId}`, config)
+    const response = await axios.get(`${base_url}/api/teacher/lessons/${id}`, config)
     return response.data
 }
 
-export const deleteLesson = async (lesson_id) => {
+export const deleteLesson = async ({ lesson }) => {
     const user = await getUserData()
 
-    console.log(user.token)
-
-    setToken(user.token)
     const config = {
-        headers: { Authorization: token }
+        headers: { Authorization: `Bearer ${user.token}` }
     }
-    const response = await axios.delete(`${base_url}/api/teacher/lessons/delete/${lesson_id}`, config)
-    console.log(response.data)
+
+    const response = await axios.delete(`${base_url}/api/teacher/lessons/delete/${lesson}`, config)
+
+    console.log(response)
+
     return response.data
 }
 
@@ -172,10 +172,8 @@ export async function updateLesson(lessonId, data) {
     return response.data
 }
 
-export const uploadFile = async (file, aula_id, leccion_id) => {
+export const uploadFile = async (file, roomId, lessonId) => {
     const user = await getUserData()
-
-    console.log(aula_id, leccion_id)
 
     setToken(user.token)
 
@@ -187,11 +185,11 @@ export const uploadFile = async (file, aula_id, leccion_id) => {
 
     formData.append("file", file)
 
-    const response = axios.post(`${base_url}/api/files/upload/${aula_id}/${leccion_id}`, formData, config)
+    const response = axios.post(`${base_url}/api/files/upload/${roomId}/${lessonId}`, formData, config)
     return response
 }
 
-const uploadAudioFile = async (file, aula_id, leccion_id) => {
+const uploadAudioFile = async (file, roomId, lessonId) => {
     const user = await getUserData()
 
     setToken(user.token)
@@ -204,7 +202,7 @@ const uploadAudioFile = async (file, aula_id, leccion_id) => {
 
     formData.append("file", file)
 
-    const response = await axios.post(`${base_url}/api/files/upload/audio/${aula_id}/${leccion_id}`, formData, config)
+    const response = await axios.post(`${base_url}/api/files/upload/audio/${roomId}/${lessonId}`, formData, config)
     return response.data
 }
 
@@ -252,7 +250,7 @@ const addLessonContent = async (data, lesson) => {
     return await axios.post(`${base_url}/api/teacher/lessons/contents/create/${lesson}`, data, config)
 }
 
-const getLessonContents = async (lesson) => {
+export const addContent = async ({ lessonId, data }) => {
 
     const user = await getUserData()
 
@@ -261,6 +259,32 @@ const getLessonContents = async (lesson) => {
     const config = {
         headers: { Authorization: token }
     }
+
+    return await axios.post(`${base_url}/api/teacher/lessons/contents/create/${lessonId}`, data, config)
+}
+
+export async function getContents({ lessonId }) {
+
+    console.log(lessonId, '?')
+    const user = await getUserData()
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.get(`${base_url}/api/teacher/lessons/contents/all/${lessonId}`, config)
+    console.log(response.data)
+    return response.data
+}
+
+const getLessonContents = async (lesson) => {
+
+    const user = await getUserData()
+
+    setToken(user.token)
+
+
     const response = await axios.get(`${base_url}/api/teacher/lessons/contents/all/${lesson}`, config)
 
     return response.data
@@ -272,6 +296,15 @@ const getFile = async (id) => {
     return response.data
 }
 
+export const addTask = async ({ id }) => {
+    const response = await axios.post(`${base_url}/api/teacher/tasks/add/${id}`)
+    return response.data
+}
+export const getTasks = async ({ id }) => {
+    const response = await axios.get(`${base_url}/api/teacher/tasks/add/${id}`)
+    return response.data
+}
+
 
 
 export default {
@@ -280,7 +313,6 @@ export default {
     edit,
     getAllRooms,
     getWhitId,
-    getLessons,
     deleteLesson,
     uploadFile,
     downloadFileFromServer,
@@ -288,5 +320,7 @@ export default {
     addLessonContent,
     getLessonContents,
     uploadAudioFile,
-    getFile
+    getFile,
+    getContents,
+    addContent
 }

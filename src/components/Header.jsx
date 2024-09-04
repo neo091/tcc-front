@@ -1,20 +1,25 @@
 import { Link } from "react-router-dom"
 import { useAuthStore } from "../store/authStore"
 import { useRef } from "react"
-import { ArrowLeftEndOnRectangleIcon, ChevronDownIcon, ChevronUpIcon, Cog6ToothIcon, UserIcon } from "@heroicons/react/24/solid"
+import { ArrowLeftEndOnRectangleIcon, Bars3Icon, ChevronDownIcon, ChevronUpIcon, Cog6ToothIcon, UserIcon } from "@heroicons/react/24/solid"
 import { useMenu } from "../hooks/useMenu"
 
 const Header = () => {
+
     const userMenuRef = useRef()
     const { session, isLogin, accountType } = useAuthStore()
     const { userMenu, toggleMenu } = useMenu({ userMenuRef })
+
 
     return (
         <>
             <header className="bg-slate-800 text-white sticky top-0 z-[999] px-8">
                 <div className={`flex items-center justify-end`}>
+
+
                     <div className="flex-1">
-                        <ul>
+
+                        <ul className="flex items-center">
                             <li>
                                 <Link className="px-6 py-4 inline-block hover:bg-slate-700" to={'/'}>Home</Link>
                             </li>

@@ -4,7 +4,7 @@ export function useMenu({ userMenuRef }) {
     const [userMenu, setUserMenu] = useState(false)
 
     const onClickHandler = (e) => {
-
+        console.log('click', e.target)
         const includesPopoverElement = e.composedPath().includes(userMenuRef.current);
         if (userMenuRef.current && !includesPopoverElement) {
             setUserMenu(false);

@@ -4,39 +4,14 @@ import { useAuthStore } from "../../store/authStore";
 import SidebarTeacher from "../../components/SidebarTeacher";
 import Header from "../../components/Header";
 
-const UserTypeToString = (type) => {
-
-    if (type === 0) return 'undefined'
-    if (type === 1) return 'Student'
-    if (type === 2) return 'Teacher'
-    if (type === 3) return 'Admin'
-
-}
 
 const Teacher = () => {
-
-    const { session } = useAuthStore()
-
-    const navigation = useNavigation()
-
-    const [showSideBar, setShowSidebar] = useState(true)
-
-    const openSidebarHandle = () => {
-        setShowSidebar(!showSideBar)
-    }
-
-    const [userMenu, setUserMenu] = useState(false)
-
-    const userMenuHandle = (e) => {
-        e.preventDefault()
-        setUserMenu(!userMenu)
-    }
 
     return (
 
         <div className="flex h-screen overflow-hidden">
             <SidebarTeacher />
-            <div className="relative overflow-x-hidden overflow-y-auto flex flex-1 flex-col">
+            <div className="z-0 relative overflow-x-hidden overflow-y-auto flex flex-1 flex-col">
                 <Header />
                 <div className="m-6">
                     <Outlet />

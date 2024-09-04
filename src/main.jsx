@@ -46,6 +46,9 @@ import DashboardCourse, { loader as CourseLoader } from './pages/Dashboard/Cours
 import Demo from './pages/Demo.jsx'
 
 import Profile from './pages/Profile.jsx'
+import Exams from './pages/Teacher/Exams/Exams.jsx'
+import ExamsIndex from './pages/Teacher/Exams/ExamsIndex.jsx'
+import AddExam, { loader as AddExamLoader } from './pages/Teacher/Exams/AddExam.jsx'
 
 const router = createBrowserRouter(
   [
@@ -121,12 +124,21 @@ const router = createBrowserRouter(
               element: <TaskEdit />,
               loader: TaskEditLoader
             },
+            {
+              path: ':id/Exams', element: <Exams />,
+              children: [
+                { index: true, element: <ExamsIndex /> },
+                { path: 'Add', element: <AddExam />, loader: AddExamLoader }
+              ]
+            }
           ]
         },
         {
           path: "Files",
           element: <Files />
-        }
+        },
+        { path: 'Profile', element: <Profile /> },
+
 
       ]
     },
@@ -142,9 +154,11 @@ const router = createBrowserRouter(
         { path: "Rooms/:id", element: <DashboardRoomsView />, loader: RoomsViewLoader },
         { path: "Lesson/:id", element: <DashboardLessonView />, loader: LessonViewLoader },
         { path: "Courses", element: <DashboardCourses />, loader: CoursesLoader },
-        { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader }
+        { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader },
+        { path: 'Profile', element: <Profile /> }
       ]
     },
+
     {
       path: 'Profile',
       element: <Profile />
