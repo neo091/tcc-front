@@ -160,6 +160,11 @@ const router = createBrowserRouter(
     },
 
     {
+      path: 'Profile',
+      element: <Profile />
+
+    },
+    {
       path: "Logout",
       element: <Logout />
     },
