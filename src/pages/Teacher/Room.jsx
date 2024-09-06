@@ -41,7 +41,7 @@ const Room = () => {
 
         if (room.error || lessons.error) {
 
-            console.log(error)
+            console.error(error)
             return
         }
 
@@ -49,7 +49,6 @@ const Room = () => {
         setRoom(room.body)
         setLessons(lessons.body.result)
 
-        console.log(room.body)
     }
 
     useEffect(() => { loadRoom() }, [])
@@ -94,8 +93,9 @@ const Room = () => {
                     </div>
 
                     <div className="bg-slate-800 rounded mb-4">
-                        <div className="py-4 px-4 border-b border-slate-700">
-                            <h2>Examenes</h2>
+                        <div className="flex py-4 px-4 border-b border-slate-700">
+                            <h2 className="flex-1">Exámenes</h2>
+                            <Link to={`./NewExam`}> + </Link>
                         </div>
 
                         <div className="p-4">

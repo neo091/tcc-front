@@ -322,5 +322,6 @@ export default {
     uploadAudioFile,
     getFile,
     getContents,
-    addContent
+    addContent,
+    getLessons
 }

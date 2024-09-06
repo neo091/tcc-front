@@ -7,9 +7,7 @@ export const loader = ({ params }) => {
 
 const AddExam = () => {
 
-
     const { id } = useLoaderData()
-
 
     return (
         <div>
