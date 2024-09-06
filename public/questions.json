@@ -1,0 +1,362 @@
+[
+    {
+        "id": 1,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'té' en inglés?",
+        "options": [
+            "a) tea",
+            "b) te",
+            "c) coffee",
+            "d) milk"
+        ],
+        "answer": 0
+    },
+    {
+        "id": 2,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'gato' en inglés?",
+        "options": [
+            "a) dog",
+            "b) bird",
+            "c) cat",
+            "d) fish"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 3,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'casa' en inglés?",
+        "options": [
+            "a) car",
+            "b) house",
+            "c) tree",
+            "d) chair"
+        ],
+        "answer": 1
+    },
+    {
+        "id": 4,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'libro' en inglés?",
+        "options": [
+            "a) pen",
+            "b) notebook",
+            "c) book",
+            "d) paper"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 5,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'rojo' en inglés?",
+        "options": [
+            "a) blue",
+            "b) green",
+            "c) red",
+            "d) yellow"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 6,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'amigo' en inglés?",
+        "options": [
+            "a) friend",
+            "b) enemy",
+            "c) brother",
+            "d) neighbor"
+        ],
+        "answer": 0
+    },
+    {
+        "id": 7,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'agua' en inglés?",
+        "options": [
+            "a) fire",
+            "b) air",
+            "c) water",
+            "d) earth"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 8,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'escuela' en inglés?",
+        "options": [
+            "a) school",
+            "b) hospital",
+            "c) library",
+            "d) museum"
+        ],
+        "answer": 0
+    },
+    {
+        "id": 9,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'comida' en inglés?",
+        "options": [
+            "a) food",
+            "b) drink",
+            "c) snack",
+            "d) dessert"
+        ],
+        "answer": 0
+    },
+    {
+        "id": 10,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'perro' en inglés?",
+        "options": [
+            "a) cat",
+            "b) dog",
+            "c) bird",
+            "d) fish"
+        ],
+        "answer": 1
+    },
+    {
+        "id": 11,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'cielo' en inglés?",
+        "options": [
+            "a) sun",
+            "b) sky",
+            "c) cloud",
+            "d) star"
+        ],
+        "answer": 1
+    },
+    {
+        "id": 12,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'mesa' en inglés?",
+        "options": [
+            "a) table",
+            "b) chair",
+            "c) sofa",
+            "d) bed"
+        ],
+        "answer": 0
+    },
+    {
+        "id": 13,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'manzana' en inglés?",
+        "options": [
+            "a) orange",
+            "b) banana",
+            "c) apple",
+            "d) grape"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 14,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'amable' en inglés?",
+        "options": [
+            "a) rude",
+            "b) kind",
+            "c) selfish",
+            "d) angry"
+        ],
+        "answer": 1
+    },
+    {
+        "id": 15,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'rápido' en inglés?",
+        "options": [
+            "a) slow",
+            "b) fast",
+            "c) weak",
+            "d) strong"
+        ],
+        "answer": 1
+    },
+    {
+        "id": 16,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'noche' en inglés?",
+        "options": [
+            "a) morning",
+            "b) afternoon",
+            "c) night",
+            "d) day"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 17,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'ventana' en inglés?",
+        "options": [
+            "a) door",
+            "b) wall",
+            "c) roof",
+            "d) window"
+        ],
+        "answer": 3
+    },
+    {
+        "id": 18,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'feliz' en inglés?",
+        "options": [
+            "a) happy",
+            "b) sad",
+            "c) angry",
+            "d) tired"
+        ],
+        "answer": 0
+    },
+    {
+        "id": 19,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'pequeño' en inglés?",
+        "options": [
+            "a) big",
+            "b) large",
+            "c) small",
+            "d) huge"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 20,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'camisa' en inglés?",
+        "options": [
+            "a) pants",
+            "b) shoes",
+            "c) shirt",
+            "d) hat"
+        ],
+        "answer": 2
+    },
+    {
+        "id": 21,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'grande' en inglés?",
+        "options": [
+          "a) big",
+          "b) small",
+          "c) tiny",
+          "d) little"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 22,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'mar' en inglés?",
+        "options": [
+          "a) river",
+          "b) lake",
+          "c) sea",
+          "d) ocean"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 23,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'auto' en inglés?",
+        "options": [
+          "a) car",
+          "b) bike",
+          "c) bus",
+          "d) train"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 24,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'puerta' en inglés?",
+        "options": [
+          "a) window",
+          "b) roof",
+          "c) door",
+          "d) floor"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 25,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'flor' en inglés?",
+        "options": [
+          "a) flower",
+          "b) tree",
+          "c) grass",
+          "d) leaf"
+        ],
+        "answer": 0
+      },
+      {
+        "id": 26,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'familia' en inglés?",
+        "options": [
+          "a) friends",
+          "b) family",
+          "c) neighbors",
+          "d) colleagues"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 27,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'hermano' en inglés?",
+        "options": [
+          "a) sister",
+          "b) cousin",
+          "c) uncle",
+          "d) brother"
+        ],
+        "answer": 3
+      },
+      {
+        "id": 28,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'caminar' en inglés?",
+        "options": [
+          "a) run",
+          "b) jump",
+          "c) walk",
+          "d) swim"
+        ],
+        "answer": 2
+      },
+      {
+        "id": 29,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'zapatos' en inglés?",
+        "options": [
+          "a) hat",
+          "b) shoes",
+          "c) gloves",
+          "d) socks"
+        ],
+        "answer": 1
+      },
+      {
+        "id": 30,
+        "title": "Elige la traducción correcta",
+        "question": "¿Cómo se dice 'feliz cumpleaños' en inglés?",
+        "options": [
+          "a) Merry Christmas",
+          "b) Happy New Year",
+          "c) Happy Birthday",
+          "d) Happy Holidays"
+        ],
+        "answer": 2
+      }
+]
