@@ -13,7 +13,7 @@ const AddExam = () => {
 
     return (
         <div>
-            add exam {id}
+            Agregar Exámenes
         </div>
     );
 }
