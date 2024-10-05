@@ -1,7 +1,7 @@
 import { ChartBarIcon, HomeIcon, PresentationChartBarIcon } from '@heroicons/react/24/solid';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import LogoImage from '../../public/images/logo.png'
+import LogoImage from '/images/logo.png'
 
 const SidebarTeacher = () => {
     return (

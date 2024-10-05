@@ -5,6 +5,7 @@ import { useAuthStore } from "../../store/authStore";
 import Swal from "sweetalert2";
 import { useRoomsStore } from "../../store/roomsStore";
 import { Card, CardHeader, CardTitle } from "../../components/Card";
+import { EyeDropperIcon, EyeIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 const Th = ({ children }) => {
     return (
@@ -122,42 +123,15 @@ const RoomsList = () => {
                                         <div className="px-3 py-4">{item.level}</div>
                                         <div className="px-3 py-4 flex gap-4 items-center">
                                             <Link to={`${item.id}`} className="hover:text-sky-500">
-                                                <svg
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                    height="1.5em"
-                                                    width="1.5em"
-                                                >
-                                                    <path d="M.2 10a11 11 0 0119.6 0A11 11 0 01.2 10zm9.8 4a4 4 0 100-8 4 4 0 000 8zm0-2a2 2 0 110-4 2 2 0 010 4z" />
-                                                </svg>
+                                                <EyeIcon className="w-6 h-6" />
                                             </Link>
 
                                             <Link to={`${item.id}/edit`} className="hover:text-sky-500">
-
-                                                <svg
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    viewBox="0 0 24 24"
-                                                    height="1.5em"
-                                                    width="1.5em"
-                                                >
-                                                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-                                                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                                </svg>
+                                                <PencilSquareIcon className="w-6 h-" />
                                             </Link>
 
                                             <a href={`${item.id}/delete`} onClick={(e) => deleteHandle(e, item.id)} className="hover:text-red-500">
-                                                <svg
-                                                    viewBox="0 0 1024 1024"
-                                                    fill="currentColor"
-                                                    height="1.5em"
-                                                    width="1.5em"
-                                                >
-                                                    <path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z" />
-                                                </svg>
+                                                <TrashIcon className="w-6 h-" />
                                             </a>
                                         </div>
                                     </div>

@@ -14,12 +14,18 @@ export function CardHeader({ children }) {
     )
 }
 
+export function CardFooter({ children }) {
+    return (
+        <div className="border-t border-slate-700 flex items-center">
+            {children}
+        </div>
+    )
+}
+
 export function Card({ children, extraCss }) {
     return (
         <div className={`bg-slate-800 ${extraCss && extraCss}`}>
-            <div className="min-h-60">
-                {children}
-            </div>
+            {children}
         </div>
     );
 }

@@ -28,4 +28,12 @@ export const getQuestions = async () => {
         .get(`${base_url}/test-connect`, {})
 
     return response.data
-}   
+}
+
+export const generateExam = async (data) => {
+    const response = await axios
+        .post(`${base_url}/gen/exam`, data)
+
+    return response.data
+
+}
