@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from "react-router-dom"
-import { PlusCircleIcon } from "@heroicons/react/24/solid"
+import { PencilSquareIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/solid"
 import { useRooms } from "../../hooks/useRooms"
 import Lessons from "../../components/Lessons/Lessons"
 
@@ -11,8 +11,7 @@ const Room = () => {
 
     const { id } = useLoaderData()
 
-    const { room } = useRooms({ id })
-
+    const { room, exams } = useRooms({ id })
 
     return (
         <>
@@ -55,15 +54,38 @@ const Room = () => {
                             </Link>
                         </div>
 
-                        <div className="p-4">
+                        <div className="p-4 flex flex-col gap-2">
+                            {
+                                exams.map(exam => {
 
+                                    const examConfig = JSON.parse(exam.config)
+
+                                    return (
+
+
+                                        <div key={`exam-${exam.id}`} className="bg-slate-700 rounded flex items-center gap-2 px-2">
+                                            <h3 className="flex-1 hover:cursor-pointer p-2">
+                                                {examConfig.title === "" ? `Exam Nº: ${exam.id}` : examConfig.title}
+                                            </h3>
+
+                                            <button className="text-sky-500" title="Edit">
+                                                <PencilSquareIcon className='w-6 h-6' />
+                                            </button>
+
+                                            <button className="text-red-500" title="Delete">
+                                                <TrashIcon className='w-6 h-6' />
+                                            </button>
+
+                                        </div >
+                                    )
+                                })
+                            }
                         </div>
 
                     </div>
                 </div>
 
             </div>
-
 
         </>
     );

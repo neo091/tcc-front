@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
-import teacher from "../services/teacher"
+import teacher, { getExams } from "../services/teacher"
 
 export function useRooms({ id }) {
     const [room, setRoom] = useState([])
+    const [exams, setExams] = useState([])
 
     const loadRoom = async () => {
         const room = await teacher.getWhitId(id)
@@ -15,7 +16,16 @@ export function useRooms({ id }) {
         setRoom(room.body)
     }
 
-    useEffect(() => { loadRoom() }, [])
+    const getExamsList = async () => {
+        const exams = await getExams(id)
+        const { body } = exams.data
+        setExams(body.exams)
+    }
 
-    return { room }
+    useEffect(() => {
+        loadRoom()
+        getExamsList()
+    }, [])
+
+    return { room, exams }
 }

@@ -318,6 +318,15 @@ export async function saveExam(data) {
     )
 }
 
+export async function getExams(roomID) {
+
+    return await axios.get(`${base_url}/api/teacher/exams/${roomID}`,
+        {
+            headers: { Authorization: token }
+        }
+    )
+}
+
 export default {
     deleteRoom,
     add,
