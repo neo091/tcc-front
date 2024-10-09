@@ -2,16 +2,74 @@ import { Link, useLoaderData } from "react-router-dom"
 import { PencilSquareIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/solid"
 import { useRooms } from "../../hooks/useRooms"
 import Lessons from "../../components/Lessons/Lessons"
+import Swal from "sweetalert2"
+import { useExam } from "../../hooks/useExam"
 
 export const loader = async ({ params }) => {
     return { id: params.id }
+}
+
+const ListOfExams = ({ exam, examDelete }) => {
+
+    const examConfig = JSON.parse(exam.config);
+
+    const deleteHandle = async () => {
+        await examDelete({ examID: exam.id })
+    }
+
+    const remove = () => {
+
+        Swal.fire(
+            {
+                title: 'Borrar Examen?',
+                text: 'si borras este examen ya no podrás recuperarlo, estas seguro/a de borrar esto?',
+                showCancelButton: true,
+                confirmButtonText: "Borrar",
+                confirmButtonColor: 'rgb(239 68 68)'
+            }
+        ).then(result => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Se ha borrado correctamente",
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+
+                deleteHandle()
+            }
+        })
+
+    }
+
+
+    return (
+        <div className="bg-slate-700 rounded flex items-center gap-2 px-2">
+            <h3 className="flex-1 hover:cursor-pointer p-2">
+                {examConfig.title === "" ? `Exam Nº: ${exam.id}` : examConfig.title}
+            </h3>
+
+            <button className="text-sky-500" title="Edit">
+                <PencilSquareIcon className='w-6 h-6' />
+            </button>
+
+            <button onClick={remove} className="text-red-500" title="Delete">
+                <TrashIcon className='w-6 h-6' />
+            </button>
+
+        </div >
+    )
+
 }
 
 const Room = () => {
 
     const { id } = useLoaderData()
 
-    const { room, exams } = useRooms({ id })
+    const { room } = useRooms({ id })
+
+    const { exams, examDelete } = useExam({ id })
 
     return (
         <>
@@ -56,29 +114,7 @@ const Room = () => {
 
                         <div className="p-4 flex flex-col gap-2">
                             {
-                                exams.map(exam => {
-
-                                    const examConfig = JSON.parse(exam.config)
-
-                                    return (
-
-
-                                        <div key={`exam-${exam.id}`} className="bg-slate-700 rounded flex items-center gap-2 px-2">
-                                            <h3 className="flex-1 hover:cursor-pointer p-2">
-                                                {examConfig.title === "" ? `Exam Nº: ${exam.id}` : examConfig.title}
-                                            </h3>
-
-                                            <button className="text-sky-500" title="Edit">
-                                                <PencilSquareIcon className='w-6 h-6' />
-                                            </button>
-
-                                            <button className="text-red-500" title="Delete">
-                                                <TrashIcon className='w-6 h-6' />
-                                            </button>
-
-                                        </div >
-                                    )
-                                })
+                                exams.map(exam => <ListOfExams key={`exam-${exam.id}`} exam={exam} examDelete={examDelete} />)
                             }
                         </div>
 

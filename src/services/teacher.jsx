@@ -327,6 +327,15 @@ export async function getExams(roomID) {
     )
 }
 
+export async function deleteExam({ examID }) {
+    return await axios.post(`${base_url}/api/teacher/exams/delete`,
+        { examID },
+        {
+            headers: { Authorization: token }
+        }
+    )
+}
+
 export default {
     deleteRoom,
     add,
