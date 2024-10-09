@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTestStore } from "../../store/testStore";
 import { Navigate, useNavigate } from "react-router-dom";
-import { getQuestions, getResume, getRecomendations } from "../../services/gptService";
+import { getQuestions, getResume, getRecommendations } from "../../services/gptService";
 
 const BackgroundTest = (info, index) => {
 
@@ -37,8 +37,8 @@ const Finished = () => {
         if (recomendations != null) {
             return
         } else {
-            await getRecomendations(JSON.stringify(rec)).then(response => {
-                setRecomendations(response.body.res.recomendacion)
+            await getRecommendations(JSON.stringify(rec)).then(response => {
+                getRecommendations(response.body.res.recomendacion)
                 addToHistory(rec)
 
                 console.log(rec)
@@ -137,7 +137,7 @@ const ShowQuestions = ({ questions }) => {
     )
 }
 
-const InglishTest = () => {
+const EnglishTest = () => {
     const navigate = useNavigate()
     const questions = useTestStore(state => state.questions)
     const reset = useTestStore(state => state.reset)
@@ -169,4 +169,4 @@ const InglishTest = () => {
     )
 }
 
-export default InglishTest
+export default EnglishTest

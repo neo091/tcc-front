@@ -1,5 +1,4 @@
 import axios from 'axios'
-import fileDownload from "js-file-download"
 import { getUserData } from '../auth'
 
 const base_url = import.meta.env.VITE_AUTH_URI || 'http://localhost:4000'
@@ -9,6 +8,9 @@ let token = null
 const setToken = newToken => {
     token = `Bearer ${newToken}`
 }
+
+const user = await getUserData()
+setToken(user.token)
 
 const getAllRooms = async (data) => {
     setToken(data.token)
@@ -21,6 +23,8 @@ const getAllRooms = async (data) => {
     return response.data
 
 }
+
+
 
 const getWhitId = async (id) => {
 
@@ -290,7 +294,6 @@ const getLessonContents = async (lesson) => {
     return response.data
 }
 
-
 const getFile = async (id) => {
     const response = await axios.get(`${base_url}/api/files/${id}`)
     return response.data
@@ -300,12 +303,20 @@ export const addTask = async ({ id }) => {
     const response = await axios.post(`${base_url}/api/teacher/tasks/add/${id}`)
     return response.data
 }
+
 export const getTasks = async ({ id }) => {
     const response = await axios.get(`${base_url}/api/teacher/tasks/add/${id}`)
     return response.data
 }
 
+export async function saveExam(data) {
 
+    return await axios.post(`${base_url}/api/teacher/exams/save`, data,
+        {
+            headers: { Authorization: token }
+        }
+    )
+}
 
 export default {
     deleteRoom,

@@ -12,7 +12,7 @@ export const getResume = async (resume_object) => {
 }
 
 
-export const getRecomendations = async (resume_object) => {
+export const getRecommendations = async (resume_object) => {
     const data = JSON.parse(resume_object)
 
 

@@ -34,7 +34,7 @@ import TaskEdit, { loader as TaskEditLoader } from './pages/Teacher/Tasks/TaskEd
 //Dash Section -> 
 import Dashboard, { loader as dashloader } from './pages/Dashboard/Index.jsx'
 import HomeDash from './pages/Dashboard/Home.jsx'
-import InglishTest from './pages/Dashboard/Test.jsx'
+import EnglishTest from './pages/Dashboard/Test.jsx'
 import TestPage from './pages/Test-Page.jsx'
 import FilesStudent from './pages/Dashboard/Files.jsx'
 import AddSection from './pages/Teacher/lessons/add-section.jsx'
@@ -148,7 +148,7 @@ const router = createBrowserRouter(
       loader: dashloader,
       children: [
         { index: true, element: <HomeDash /> },
-        { path: "Test", element: <InglishTest /> },
+        { path: "Test", element: <EnglishTest /> },
         { path: "Files", element: <FilesStudent /> },
         { path: "Rooms", element: <DashboardRooms />, loader: dashLoader },
         { path: "Rooms/:id", element: <DashboardRoomsView />, loader: RoomsViewLoader },

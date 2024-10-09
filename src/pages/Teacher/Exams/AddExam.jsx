@@ -6,60 +6,24 @@ import Swal from 'sweetalert2';
 import { ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, CheckIcon, ChevronLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { generateExam } from '../../../services/gptService';
+import { saveExam } from '../../../services/teacher';
 
 export const loader = ({ params }) => {
     return { id: params.id }
 }
 
-const examen =
-{
-    title: "",
-    asks: [
-        {
-            "id": 1,
-            "ask": "She _______ to school every day.",
-            "answers": ["goes", "go", "going"],
-            "correct": 0,
-            "type": "selection",
-            "points": 1
-        },
-        {
-            "id": 2,
-            "ask": "What is the opposite of 'big'?",
-            "answers": ["small", "tall", "wide"],
-            "correct": 0,
-            "type": "selection",
-            "points": 1
-        },
-        {
-            "id": 3,
-            "ask": "How ______ you?",
-            "answers": ["is", "are", "am"],
-            "correct": 1,
-            "type": "selection",
-            "points": 1
-        },
-        {
-            "id": 4,
-            "ask": "What time is it?",
-            "answers": ["It's five o'clock.", "It's blue.", "It's Monday."],
-            "correct": 0,
-            "type": "selection",
-            "points": 2
-        },
-        {
-            "id": 5,
-            "ask": "What is the plural of 'child'?",
-            "answers": ["children", "childs", "childes"],
-            "correct": 0,
-            "type": "selection",
-            "points": 2
-        }
-    ]
+const ExamGeneratedList = (
+    {
+        saveHandle,
+        examList,
+        editAnswerHandle,
+        editAskHandle,
+        removeAnswerHandle,
+        editCorrectAnswerHandle,
+        editPointsHandle
+    }
+) => {
 
-}
-
-const ExamGeneratedList = ({ examList, editAnswerHandle, editAskHandle, removeAnswerHandle, editCorrectAnswerHandle, editPointsHandle }) => {
     return (
         examList && examList.length > 0
             ?
@@ -125,7 +89,7 @@ const ExamGeneratedList = ({ examList, editAnswerHandle, editAskHandle, removeAn
 
                 <Card>
                     <CardContent>
-                        <button className='inline-block p-2 shadow-sm shadow-black bg-sky-600 w-full'>GUARDAR</button>
+                        <button onClick={saveHandle} className='inline-block p-2 shadow-sm shadow-black bg-sky-600 w-full'>GUARDAR</button>
                     </CardContent>
                 </Card>
             </> : ""
@@ -134,24 +98,26 @@ const ExamGeneratedList = ({ examList, editAnswerHandle, editAskHandle, removeAn
 }
 
 const AddExam = () => {
-    const [exam, setExam] = useState([])
-    const { id } = useLoaderData()
-    const { getRoom } = useRoomsStore()
-    const room = getRoom(id)
+    const [exam, setExam] = useState([]);
+    const [saveData, setSaveData] = useState([])
+    const { id } = useLoaderData();
+    const { getRoom } = useRoomsStore();
+    const room = getRoom(id);
 
     const submitHandle = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        const formData = new FormData(e.target)
-        const updates = Object.fromEntries(formData)
+        const formData = new FormData(e.target);
+        const updates = Object.fromEntries(formData);
 
-        console.log(updates);
+        // console.log(updates);
         const myExam = await generateExam(updates);
 
         const { body } = myExam;
 
 
         setExam(body.asks);
+        setSaveData(updates);
     }
 
     const editAnswerHandle = async (answerIndex, examIndex) => {
@@ -218,6 +184,19 @@ const AddExam = () => {
         newExam[examIndex].points = currentVal
         setExam(newExam)
     }
+
+    const saveHandle = async () => {
+
+        const save = await saveExam(
+
+            {
+                "exam": JSON.stringify(exam),
+                "config": JSON.stringify(saveData),
+                "roomID": room.id
+            }
+
+        )
+    }
     return (
         <div>
             <div className='grid grid-cols-1 md:grid-cols-2  gap-4    '>
@@ -282,6 +261,7 @@ const AddExam = () => {
                     removeAnswerHandle={removeAnswerHandle}
                     editCorrectAnswerHandle={editCorrectAnswerHandle}
                     editPointsHandle={editPointsHandle}
+                    saveHandle={saveHandle}
                     examList={exam} />
 
             </div>

@@ -1,13 +1,3 @@
-import axios from "axios"
-
-const backend_url = import.meta.env.VITE_AUTH_URI || 'http://localhost:4000'
-
-let token = null
-
-const setToken = newToken => {
-    token = `Bearer ${newToken}`
-}
-
 export async function getUserData() {
 
     const loggedUserJson = await window.localStorage.getItem("loggedTCC")
@@ -15,8 +5,6 @@ export async function getUserData() {
 
     return userLogged
 }
-
-//crear una funcion de prueba para verificar erroress de session
 
 export async function destryoUser() {
     window.localStorage.clear()
