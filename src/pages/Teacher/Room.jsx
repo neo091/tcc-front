@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from "react-router-dom"
+import { Link, useLoaderData, useNavigate } from "react-router-dom"
 import { PencilSquareIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/solid"
 import { useRooms } from "../../hooks/useRooms"
 import Lessons from "../../components/Lessons/Lessons"
@@ -12,6 +12,8 @@ export const loader = async ({ params }) => {
 const ListOfExams = ({ exam, examDelete }) => {
 
     const examConfig = JSON.parse(exam.config);
+
+    const navigate = useNavigate()
 
     const deleteHandle = async () => {
         await examDelete({ examID: exam.id })
@@ -43,6 +45,10 @@ const ListOfExams = ({ exam, examDelete }) => {
 
     }
 
+    const editHandle = () => {
+        navigate(`Exams/edit/${exam.id}`)
+    }
+
 
     return (
         <div className="bg-slate-700 rounded flex items-center gap-2 px-2">
@@ -50,7 +56,7 @@ const ListOfExams = ({ exam, examDelete }) => {
                 {examConfig.title === "" ? `Exam Nº: ${exam.id}` : examConfig.title}
             </h3>
 
-            <button className="text-sky-500" title="Edit">
+            <button onClick={editHandle} className="text-sky-500" title="Edit">
                 <PencilSquareIcon className='w-6 h-6' />
             </button>
 

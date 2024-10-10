@@ -49,6 +49,7 @@ import Profile from './pages/Profile.jsx'
 import Exams from './pages/Teacher/Exams/Exams.jsx'
 import ExamsIndex from './pages/Teacher/Exams/ExamsIndex.jsx'
 import AddExam, { loader as AddExamLoader } from './pages/Teacher/Exams/AddExam.jsx'
+import EditExam, { loader as EditExamLoader } from './pages/Teacher/Exams/Edit.jsx'
 
 const router = createBrowserRouter(
   [
@@ -128,7 +129,8 @@ const router = createBrowserRouter(
               path: ':id/Exams', element: <Exams />,
               children: [
                 { index: true, element: <ExamsIndex /> },
-                { path: 'Add', element: <AddExam />, loader: AddExamLoader }
+                { path: 'Add', element: <AddExam />, loader: AddExamLoader },
+                { path: 'Edit/:idExam', element: <EditExam />, loader: EditExamLoader }
               ]
             }
           ]
