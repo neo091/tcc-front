@@ -1,40 +1,120 @@
-import { Link, Outlet, useNavigation } from "react-router-dom";
-import { useState } from "react";
-import { useAuthStore } from "../../store/authStore";
+import { Link, Outlet } from "react-router-dom";
 import SidebarTeacher from "../../components/SidebarTeacher";
 import Header from "../../components/Header";
+import LogoImage from '/images/logo.png'
+import { CogIcon } from "@heroicons/react/20/solid";
+import { Bars2Icon, ChevronDoubleLeftIcon, ChevronRightIcon, HomeIcon, PresentationChartBarIcon } from "@heroicons/react/24/solid";
+import { useEffect, useRef } from "react";
+import { useAuthStore } from "../../store/authStore";
 
-const UserTypeToString = (type) => {
-
-    if (type === 0) return 'undefined'
-    if (type === 1) return 'Student'
-    if (type === 2) return 'Teacher'
-    if (type === 3) return 'Admin'
-
-}
 
 const Teacher = () => {
 
-    const { session } = useAuthStore()
+    const sidebarRef = useRef()
+    const { session, isLogin, accountType } = useAuthStore()
 
-    const navigation = useNavigation()
 
-    const [showSideBar, setShowSidebar] = useState(true)
+    const toggleSidebar = (e) => {
 
-    const openSidebarHandle = () => {
-        setShowSidebar(!showSideBar)
+
+        const element = e.target
+
+        if (element.id.toString() === "toggleSidebar") {
+            sidebarRef.current.classList.toggle("hidden")
+        }
+
+        if (element.id.toString() !== "toggleSidebar") {
+            sidebarRef.current.classList.add("hidden")
+        }
     }
 
-    const [userMenu, setUserMenu] = useState(false)
 
-    const userMenuHandle = (e) => {
-        e.preventDefault()
-        setUserMenu(!userMenu)
-    }
+    useEffect(() => {
+
+        document.body.addEventListener('click', toggleSidebar);
+        return () => {
+            document.body.removeEventListener('click', toggleSidebar);
+        }
+    }, [])
 
     return (
+        <>
 
-        <div className="flex h-screen overflow-hidden">
+            <div className="flex h-screen overflow-hidden">
+                <div className="hidden lg:block w-72 bg-slate-800 absolute lg:static h-lvh z-10  " ref={sidebarRef}>
+
+                    <div className="text-center p-2 max-sm:mt-14">
+                        <button>
+                            <img src={LogoImage} className="w-40" alt="Tcc" />
+                        </button>
+                    </div>
+
+                    <a href="#" className="p-4 bg-slate-900 block">
+                        <div className="mx-4">
+                            <div className="flex gap-3 justify-between items-center">
+                                <span className="w-12 h-12 rounded-full overflow-hidden">
+                                    <img src={`https://ui-avatars.com/api/?name=${session.name}&background=0D8ABC&color=fff`} className="w-12 h-12" alt={session.name} />
+                                </span>
+
+                                <span className="">
+                                    <span className="block font-bold">{session.name}</span>
+                                    <span className="text-sm block text-slate-500">{accountType()}</span>
+                                </span>
+                                <ChevronRightIcon width={24} hanging={24} />
+                            </div>
+                        </div>
+                    </a>
+
+                    <div className="flex flex-col overflow-y-auto">
+                        <nav className="mt-5 py-2 px-4">
+                            <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-400">MENU</h3>
+                            <ul className="mb-6 flex flex-col gap-2">
+                                <li>
+                                    <Link to={''} className={'group relative flex items-center gap-2.5 rounded px-4 py-2 font-medium duration-300 ease-in-out hover:bg-violet-800'}>
+                                        <HomeIcon className="w-6 h-6" />
+                                        Dashboard
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link to={"Rooms"} className="group relative flex items-center gap-2.5 rounded px-4 py-2 font-medium duration-300 ease-in-out hover:bg-violet-800 ">
+                                        <PresentationChartBarIcon className="w-6 h-6" />
+                                        Mis Aulas
+                                    </Link>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+                <div className="relative overflow-x-hidden overflow-y-auto flex flex-1 flex-col">
+
+                    <header className="bg-slate-800 text-white z-20">
+                        <ul className="flex items-center ">
+                            <li>
+                                <button className="p-4" id="toggleSidebar">
+                                    <Bars2Icon className="w-6 h-6" id="toggleSidebar" />
+                                </button>
+                            </li>
+                            <li>
+                                <Link className="px-6 py-4 inline-block hover:bg-slate-700" to={'/'}>Home</Link>
+                            </li>
+                        </ul>
+                    </header>
+                    <div className="m-6">
+                        <Outlet />
+                    </div>
+                </div>
+            </div>
+
+        </>
+    );
+}
+
+export default Teacher;
+
+
+{/* <div className="flex h-screen overflow-hidden">
             <SidebarTeacher />
             <div className="relative overflow-x-hidden overflow-y-auto flex flex-1 flex-col">
                 <Header />
@@ -42,11 +122,7 @@ const Teacher = () => {
                     <Outlet />
                 </div>
             </div>
-        </div>
-    );
-}
-
-export default Teacher;
+        </div> */}
 
 
 // <Header handle={openSidebarHandle} />

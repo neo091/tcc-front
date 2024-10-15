@@ -9,9 +9,6 @@ const setToken = newToken => {
     token = `Bearer ${newToken}`
 }
 
-const user = await getUserData()
-setToken(user.token)
-
 const getAllRooms = async (data) => {
     setToken(data.token)
 
@@ -311,6 +308,10 @@ export const getTasks = async ({ id }) => {
 
 export async function saveExam(data) {
 
+    const user = await getUserData()
+
+    setToken(user.token)
+
     return await axios.post(`${base_url}/api/teacher/exams/save`, data,
         {
             headers: { Authorization: token }
@@ -320,6 +321,10 @@ export async function saveExam(data) {
 
 export async function getExams(roomID) {
 
+    const user = await getUserData()
+
+    setToken(user.token)
+
     return await axios.get(`${base_url}/api/teacher/exams/${roomID}`,
         {
             headers: { Authorization: token }
@@ -328,6 +333,10 @@ export async function getExams(roomID) {
 }
 
 export async function deleteExam({ examID }) {
+    const user = await getUserData()
+
+    setToken(user.token)
+
     return await axios.post(`${base_url}/api/teacher/exams/delete`,
         { examID },
         {
