@@ -1,15 +1,14 @@
-import { Link, Outlet } from "react-router-dom";
-import SidebarTeacher from "../../components/SidebarTeacher";
-import Header from "../../components/Header";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import LogoImage from '/images/logo.png'
-import { CogIcon } from "@heroicons/react/20/solid";
-import { ArrowLeftEndOnRectangleIcon, Bars2Icon, ChevronDoubleLeftIcon, ChevronRightIcon, HomeIcon, PresentationChartBarIcon } from "@heroicons/react/24/solid";
+import { Bars2Icon, ChevronRightIcon, HomeIcon, PowerIcon, PresentationChartBarIcon } from "@heroicons/react/24/solid";
 import { useEffect, useRef } from "react";
 import { useAuthStore } from "../../store/authStore";
+import Swal from "sweetalert2";
 
 
 const Teacher = () => {
 
+    const navigate = useNavigate()
     const sidebarRef = useRef()
     const { session, isLogin, accountType } = useAuthStore()
 
@@ -35,6 +34,24 @@ const Teacher = () => {
             document.body.removeEventListener('click', toggleSidebar);
         }
     }, [])
+
+
+    const disconnectHandle = () => {
+        Swal.fire(
+            {
+                title: "Quieres Desconectarte?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, desconectar!"
+            }
+        ).then((result) => {
+            if (result.isConfirmed) {
+                navigate("/Logout")
+            }
+        })
+    }
 
     return (
         <>
@@ -66,14 +83,7 @@ const Teacher = () => {
                         </div>
                     </a>
 
-                    <div className="flex flex-col overflow-y-auto">
-                        <nav className="mt-5 py-2 px-4">
-                            <Link to={"/Logout"} className="group relative flex items-center gap-2.5 rounded px-4 py-2 font-medium duration-300 ease-in-out hover:bg-red-800">
-                                <ArrowLeftEndOnRectangleIcon className="w-8" />
-                                Salir
-                            </Link>
-                        </nav>
-                    </div>
+
 
                     <div className="flex flex-col overflow-y-auto">
                         <nav className="mt-5 py-2 px-4">
@@ -92,7 +102,23 @@ const Teacher = () => {
                                         Mis Aulas
                                     </Link>
                                 </li>
+
+                                <li>
+                                    <button onClick={disconnectHandle} className="group relative flex items-center gap-2.5 rounded px-4 py-2 font-medium duration-300 ease-in-out hover:bg-red-700 w-full">
+                                        <PowerIcon className="w-6" />
+                                        Desconexión
+                                    </button>
+                                </li>
                             </ul>
+                        </nav>
+                    </div>
+
+                    <div className="flex flex-col overflow-y-auto">
+                        <nav className="mt-4 py-2 px-4">
+                            <ul className="mb-6 flex flex-col gap-2">
+
+                            </ul>
+
                         </nav>
                     </div>
 

@@ -43,6 +43,8 @@ import DashboardRoomsView, { loader as RoomsViewLoader } from './pages/Dashboard
 import DashboardLessonView, { loader as LessonViewLoader } from './pages/Dashboard/LessonView.jsx'
 import DashboardCourses, { loader as CoursesLoader } from './pages/Dashboard/Courses.jsx'
 import DashboardCourse, { loader as CourseLoader } from './pages/Dashboard/Course.jsx'
+import DashboardExams from './pages/Dashboard/exams/index.jsx'
+import DashboardExam from './pages/Dashboard/exams/Exam.jsx'
 import Demo from './pages/Demo.jsx'
 
 import Profile from './pages/Profile.jsx'
@@ -157,7 +159,9 @@ const router = createBrowserRouter(
         { path: "Lesson/:id", element: <DashboardLessonView />, loader: LessonViewLoader },
         { path: "Courses", element: <DashboardCourses />, loader: CoursesLoader },
         { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader },
-        { path: 'Profile', element: <Profile /> }
+        { path: 'Profile', element: <Profile /> },
+        { path: 'Exams', element: <DashboardExams /> },
+        { path: 'Exam', element: <DashboardExam /> }
       ]
     },
 

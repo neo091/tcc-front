@@ -1,0 +1,57 @@
+[
+    {
+        "ask": "¿Cómo te presentarías en inglés?",
+        "answers": [
+            "My name is Juan.",
+            "I am fine.",
+            "He is happy."
+        ],
+        "correct": 0,
+        "type": "multiple_choice",
+        "points": 1
+    },
+    {
+        "ask": "¿Cuál de estas opciones es una forma correcta de preguntar el nombre en inglés?",
+        "answers": [
+            "What is your name?",
+            "How are your name?",
+            "Who name are you?"
+        ],
+        "correct": 0,
+        "type": "multiple_choice",
+        "points": 1
+    },
+    {
+        "ask": "Completa la frase: 'Hello, ___ Maria.'",
+        "answers": [
+            "my",
+            "is",
+            "I am"
+        ],
+        "correct": 2,
+        "type": "multiple_choice",
+        "points": 2
+    },
+    {
+        "ask": "¿Cuál de estas frases es adecuada para responder a 'How are you?'?",
+        "answers": [
+            "I am 25 years old.",
+            "I am a teacher.",
+            "I am fine, thank you."
+        ],
+        "correct": 2,
+        "type": "multiple_choice",
+        "points": 1
+    },
+    {
+        "ask": "Selecciona la opción que completa correctamente: 'Nice to meet you, ___.'",
+        "answers": [
+            "too",
+            "please",
+            "and"
+        ],
+        "correct": 0,
+        "type": "multiple_choice",
+        "points": 2
+    }
+]

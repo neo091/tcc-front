@@ -1,5 +1,5 @@
-import { ChartBarIcon, HomeIcon, PresentationChartBarIcon } from "@heroicons/react/24/solid";
-import { Link, NavLink } from "react-router-dom";
+import { ChartBarIcon, DocumentTextIcon, HomeIcon, PresentationChartBarIcon } from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
 import LogoImage from '../../public/images/logo.png'
 
 const SidebarStudents = () => {
@@ -32,6 +32,13 @@ const SidebarStudents = () => {
                             <Link to={"Courses"} className="group relative flex items-center gap-2.5 rounded px-4 py-2 font-medium duration-300 ease-in-out hover:bg-violet-800 ">
                                 <ChartBarIcon className="w-6 h-6" />
                                 Aulas Virtuales
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link to={"Exams"} className="group relative flex items-center gap-2.5 rounded px-4 py-2 font-medium duration-300 ease-in-out hover:bg-violet-800 ">
+                                <DocumentTextIcon className="w-6 h-6" />
+                                Exámenes
                             </Link>
                         </li>
                     </ul>

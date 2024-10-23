@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 
 
 export const loader = ({ params }) => {
@@ -14,10 +14,10 @@ const LessonList = ({ lesson }) => {
     const { title, desc } = lesson
     return (
 
-        <a href={`../lesson/${lesson.id}`} className="block p-2 bg-slate-800 rounded shadow-black shadow-sm">
+        <Link to={`../lesson/${lesson.id}`} className="block p-2 bg-slate-800 rounded shadow-black shadow-sm">
             <h2 className=" text-3xl font-semibold">{title}</h2>
             <p>{desc}</p>
-        </a>
+        </Link>
 
     )
 }

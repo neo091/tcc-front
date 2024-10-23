@@ -1,15 +1,15 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useEffect } from "react";
 
 const Logout = () => {
     const { resetSession } = useAuthStore()
+    const navigate = useNavigate()
 
     useEffect(() => resetSession(), [])
     window.localStorage.clear()
-    return (
-        <Navigate to={'../../Login'} />
-    )
+    navigate("/Login")
+    return;
 }
 
 export default Logout;
