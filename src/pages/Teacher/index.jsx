@@ -3,7 +3,7 @@ import SidebarTeacher from "../../components/SidebarTeacher";
 import Header from "../../components/Header";
 import LogoImage from '/images/logo.png'
 import { CogIcon } from "@heroicons/react/20/solid";
-import { Bars2Icon, ChevronDoubleLeftIcon, ChevronRightIcon, HomeIcon, PresentationChartBarIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftEndOnRectangleIcon, Bars2Icon, ChevronDoubleLeftIcon, ChevronRightIcon, HomeIcon, PresentationChartBarIcon } from "@heroicons/react/24/solid";
 import { useEffect, useRef } from "react";
 import { useAuthStore } from "../../store/authStore";
 
@@ -12,7 +12,6 @@ const Teacher = () => {
 
     const sidebarRef = useRef()
     const { session, isLogin, accountType } = useAuthStore()
-
 
     const toggleSidebar = (e) => {
 
@@ -62,8 +61,19 @@ const Teacher = () => {
                                 </span>
                                 <ChevronRightIcon width={24} hanging={24} />
                             </div>
+
+
                         </div>
                     </a>
+
+                    <div className="flex flex-col overflow-y-auto">
+                        <nav className="mt-5 py-2 px-4">
+                            <Link to={"/Logout"} className="group relative flex items-center gap-2.5 rounded px-4 py-2 font-medium duration-300 ease-in-out hover:bg-red-800">
+                                <ArrowLeftEndOnRectangleIcon className="w-8" />
+                                Salir
+                            </Link>
+                        </nav>
+                    </div>
 
                     <div className="flex flex-col overflow-y-auto">
                         <nav className="mt-5 py-2 px-4">
