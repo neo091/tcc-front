@@ -11,47 +11,37 @@
         "points": 1
     },
     {
-        "ask": "¿Cuál de estas opciones es una forma correcta de preguntar el nombre en inglés?",
+        "ask": "La frase correcta para responder a 'Nice to meet you' es 'Nice to meet you, too.'",
         "answers": [
-            "What is your name?",
-            "How are your name?",
-            "Who name are you?"
+            "Verdadero",
+            "Falso"
         ],
         "correct": 0,
-        "type": "multiple_choice",
-        "points": 1
-    },
-    {
-        "ask": "Completa la frase: 'Hello, ___ Maria.'",
-        "answers": [
-            "my",
-            "is",
-            "I am"
-        ],
-        "correct": 2,
-        "type": "multiple_choice",
+        "type": "true_false",
         "points": 2
     },
     {
-        "ask": "¿Cuál de estas frases es adecuada para responder a 'How are you?'?",
+        "ask": "Completa correctamente: 'Nice to meet you, ___.'",
         "answers": [
-            "I am 25 years old.",
-            "I am a teacher.",
-            "I am fine, thank you."
+            "Verdadero",
+            "Falso"
         ],
-        "correct": 2,
-        "type": "multiple_choice",
-        "points": 1
+        "correct": "Too",
+        "type": "typing",
+        "points": 2
     },
     {
-        "ask": "Selecciona la opción que completa correctamente: 'Nice to meet you, ___.'",
-        "answers": [
-            "too",
-            "please",
-            "and"
-        ],
-        "correct": 0,
-        "type": "multiple_choice",
+        "ask": "Traduce al español el texto de la imagen",
+        "src":"http://localhost:5173/images/exams/sunny.png",
+        "correct": "Soleado",
+        "type": "typingImage",
+        "points": 2
+    },
+    {
+        "ask": "Traduce al Ingles el texto de la imagen",
+        "src":"http://localhost:5173/images/exams/aprender.png",
+        "correct": "learn",
+        "type": "typingImage",
         "points": 2
     }
 ]
