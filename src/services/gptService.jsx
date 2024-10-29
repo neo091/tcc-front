@@ -37,3 +37,9 @@ export const generateExam = async (data) => {
     return response.data
 
 }
+
+export async function getAnalice(data) {
+    const response = await axios
+        .post(`${base_url}/exam/analice`, data)
+    return response.data
+}

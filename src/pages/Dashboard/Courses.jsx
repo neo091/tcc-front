@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import InglesImage from '../../assets/a1.jpg'
 import Title from "../../components/Title";
 import Swal from "sweetalert2";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { getUserData } from "../../auth";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 export const loader = async () => {
     const user = await getUserData()
@@ -24,22 +24,32 @@ const Room = ({ room, handle }) => {
     const { nombre_aula, aula_descripcion, nivel, aula_id } = room
 
     return (
+
         <>
 
-            <div className='flex gap-2 items-center my-2'>
+            <div className="group flex p-2 box-border hover:bg-slate-800 rounded-md ">
 
-                <img src={InglesImage} alt="" className='w-80' />
+                <div className={`bg-[url(/images/a1.jpg)] bg-center bg-cover w-40 h-40 relative`}>
 
-                <div className='flex-1 space-y-2'>
-                    <Title>{nombre_aula}</Title>
-                    <p>{aula_descripcion}</p>
-                    <EnrollButton onPress={handle} data-id={aula_id} >
-                        Inscribirme
-                    </EnrollButton>
+                    <button onClick={handle} className="absolute bottom-2 right-2 w-10 h-10 bg-green-500 rounded-full p-2 hover:scale-110 shadow hidden group-hover:block ">
+                        <PlusIcon />
+                    </button>
+
                 </div>
+
             </div>
 
         </>
+        // <div className='flex-col'>
+        //     <img src={InglesImage} alt="" className='w-40 h-40' />
+        //     <div className='flex-1 space-y-2'>
+        //         <Title>{nombre_aula}</Title>
+        //         <p>{aula_descripcion}</p>
+        //         <EnrollButton onPress={handle} data-id={aula_id} >
+        //             Inscribirme
+        //         </EnrollButton>
+        //     </div>
+        // </div>
     )
 }
 
@@ -64,7 +74,7 @@ const Courses = () => {
             if (result.error) {
                 Swal.fire(
                     {
-                        title: "Ya estas inscripto",
+                        title: "Ya estas inscrito",
                         icon: "error",
                         showConfirmButton: false,
                         timer: 1500
@@ -91,7 +101,7 @@ const Courses = () => {
         Swal.fire({
             title: 'Seguro?',
             text: 'Estas seguro de inscribirte a este curso?',
-            confirmButtonText: "INCRIBIR AHORA!",
+            confirmButtonText: "INSCRIBIR AHORA!",
             confirmButtonColor: 'green',
             showCancelButton: true
         }).then(async (result) => {
@@ -118,7 +128,7 @@ const Courses = () => {
 
 
     return (
-        <div>
+        <div className="flex">
             {courses.map(course => <Room key={course.aula_id} room={course} handle={enrollHandle} />)}
         </div>
     );

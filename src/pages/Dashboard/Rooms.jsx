@@ -1,9 +1,5 @@
 import React, { Children, useEffect, useState } from 'react';
 import Title from '../../components/Title';
-import Enlace from '../../components/Enlace';
-
-import InglesImage from '../../assets/a1.jpg'
-import Swal from 'sweetalert2';
 import { getUserData } from '../../auth';
 import { Link, useLoaderData } from 'react-router-dom';
 
@@ -28,19 +24,11 @@ const MyRoom = ({ room, handle }) => {
 
     return (
         <>
-            <div className='flex gap-2 items-center my-2'>
-
-                <img src={`https://ui-avatars.com/api/?name=${nombre_aula}&background=0D8ABC&color=fff`} alt="" className='w-80' />
-
-                <div className='flex-1 space-y-2'>
-                    <Title>{nombre_aula}</Title>
-                    <p>{aula_descripcion}</p>
-                    <Link to={`/Dashboard/Rooms/${aula_id}`} className='bg-violet-900 text-center rounded text-white p-2 inline-block' >
-                        Ver Aula
-                    </Link>
-
-                </div>
-            </div>
+            <Link to={`/Dashboard/Rooms/${aula_id}`} className='p-2 box-border hover:bg-slate-800 rounded-md'>
+                <img src={`https://ui-avatars.com/api/?name=${nombre_aula}&background=0D8ABC&color=fff`} alt="" className='w-40' />
+                <h3 className='text-slate-400'>{nombre_aula}</h3>
+                <p>{aula_descripcion}</p>
+            </Link>
 
         </>
     )
@@ -69,18 +57,13 @@ const DashboardRooms = () => {
 
     return (
         <div>
-            <div>
-                <Enlace to={"/Dashboard/Courses"}>Inscribirme</Enlace>
-            </div>
-
             <Title>
                 Mis Aulas
             </Title>
 
-
-
-            {myRooms.map(room => <MyRoom key={room.aula_id} room={room} />)}
-
+            <section className='flex'>
+                {myRooms.map(room => <MyRoom key={room.aula_id} room={room} />)}
+            </section>
         </div>
     );
 }
