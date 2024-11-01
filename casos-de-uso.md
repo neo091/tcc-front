@@ -14,7 +14,6 @@
 - [✅] Verificación y modificación de su perfil.
 - [✅] Gestión de aulas.
 - [✅] Elaboración de prueba, para verificación del estado del usuario.
-- [❗] Elaboración de examen manual.
 - [✅] Elaboración de exámenes a través de inteligencia artificial.
 - [❗] Verificación del rendimiento del alumno a través de un reporte.
 - [✅] Subir archivo pdf.
