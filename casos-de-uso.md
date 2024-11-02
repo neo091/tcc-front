@@ -19,8 +19,9 @@
 - [✅] Subir archivo pdf.
 
 ## Perfil del administrador
-- [❗] Gestión de usuarios.
-- [❗] Activación y desactivación de perfil de usuarios.
+- [✅] Panel de Administrador
+- [✅] Gestión de usuarios.
+- [✅] Activación y desactivación de perfil de usuarios.
 - [❗] Gestión de aulas y contenidos del docente.	 
 
 ## Funcionalidades del Sistema 
