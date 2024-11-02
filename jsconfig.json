@@ -6,7 +6,18 @@
         "jsx": "react",
         "allowImportingTsExtensions": true,
         "strictNullChecks": true,
-        "strictFunctionTypes": true
+        "strictFunctionTypes": true,
+        "baseUrl": "./src",
+        "paths": {
+            "@components/*": ["components/*"],
+            "@utils/*": ["utils/*"],
+            "@services/*": ["services/*"],
+            "@hooks/*": ["hooks/*"],
+            "@Pages/*": ["pages/*"],
+            "@Admin/*": ["pages/Admin/*"],
+            "@Dashboard/*": ["pages/Dashboard/*"],
+            "@Teacher/*": ["pages/Teacher/*"],
+        }
     },
     "exclude": [
         "node_modules",

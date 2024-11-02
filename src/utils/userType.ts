@@ -1,0 +1,1 @@
+export const GetUserType = (type: number) => type === 1 ? 'Student' : type === 2 ? 'Teacher' : type === 3 ? 'Admin' : ''

@@ -24,7 +24,7 @@ export function CardFooter({ children }) {
 
 export function Card({ children, extraCss }) {
     return (
-        <div className={`bg-slate-800 ${extraCss && extraCss}`}>
+        <div className={`bg-slate-800 w-full ${extraCss && extraCss}`}>
             {children}
         </div>
     );

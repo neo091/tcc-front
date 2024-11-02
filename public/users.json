@@ -1,0 +1,30 @@
+[
+    {
+        "UID": 1,
+        "name": "Marcos",
+        "email": "mneo666@gmail.com",
+        "type": 3,
+        "status": "active"
+    },
+    {
+        "UID": 2,
+        "name": "Javier",
+        "email": "mneo666@gmail.com",
+        "type": 2,
+        "status": "active"
+    },
+    {
+        "UID": 3,
+        "name": "Oliver",
+        "email": "mneo666@gmail.com",
+        "type": 1,
+        "status": "active"
+    },
+    {
+        "UID": 4,
+        "name": "John Wick",
+        "email": "mneo666@gmail.com",
+        "type": 1,
+        "status": "inactive"
+    }
+]

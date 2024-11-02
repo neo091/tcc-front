@@ -7,7 +7,7 @@
 
 ## Perfil de usuario	
 - [✅] El usuario puede verificar su perfil.
-- [✅] Acceso al aula del docente, chatbot, cuestionarios, exámenes, material didáctico, puntajes de pruebas realizadas.
+- [✅] Acceso al aula del docente, chatbot, cuestionarios, exámenes, material didáctico, puntos de pruebas realizadas.
 
 ## Perfil del docente
 - [✅] Acceso a la plataforma.

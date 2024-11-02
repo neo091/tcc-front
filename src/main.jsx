@@ -4,54 +4,61 @@ import './index.css'
 
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
-import Home from './pages/Home'
-import ErrorPage from './pages/error-page.jsx'
-
-import Login from './pages/Login/Login.jsx'
-import Register from './pages/Register/Register.jsx'
-import Logout from './pages/Logout.jsx'
-import NewRoom, { action as NewRoomAction } from './pages/Teacher/NewRoom.jsx'
+import Home from '@Pages/Home'
+import ErrorPage from '@Pages/error-page.jsx'
+import Profile from '@Pages/Profile.jsx'
+import Login from '@Pages/Login/Login.jsx'
+import Logout from '@Pages/Logout.jsx'
+import Register from '@Pages/Register/Register.jsx'
 
 //Teacher Sections
-import Teacher from './pages/Teacher'
-import TeacherHome from './pages/Teacher/TeacherHome.jsx'
-import Rooms from './pages/Teacher/Rooms.jsx'
-import RoomsList from './pages/Teacher/RoomsList.jsx'
-import Room, { loader as RoomLoader } from './pages/Teacher/Room.jsx'
-import EditRoom, { loader as EditRoomLoader, action as EditAction } from './pages/Teacher/EditRoom.jsx'
-import Files from './pages/Teacher/Files.jsx'
-import NewLesson, { loader as NewLessonLoader } from './pages/Teacher/NewLesson.jsx'
-import RoomDelete, { loader as RoomDeleteLoader } from './pages/Teacher/RoomDelete.jsx'
-import EditLesson, { loader as editLessonLoader, action as editLessonAction } from './pages/Teacher/EditLesson.jsx'
-import { DeleteLesson, loader as DeleteLessonLoader } from './pages/Teacher/Lessons.jsx'
-import Students from './pages/Teacher/Students.jsx'
-
-import TaskNew, { loader as NewTaskLoader } from './pages/Teacher/Tasks/TaskNew.jsx'
-import TaskEdit, { loader as TaskEditLoader } from './pages/Teacher/Tasks/TaskEdit.jsx'
+import Teacher from '@Teacher'
+import TeacherHome from '@Teacher/TeacherHome.jsx'
+import Rooms from '@Teacher/Rooms.jsx'
+import NewRoom, { action as NewRoomAction } from '@Teacher/NewRoom.jsx'
+import RoomsList from '@Teacher/RoomsList.jsx'
+import Room, { loader as RoomLoader } from '@Teacher/Room.jsx'
+import EditRoom, { loader as EditRoomLoader, action as EditAction } from '@Teacher/EditRoom.jsx'
+import Files from '@Teacher/Files.jsx'
+import NewLesson, { loader as NewLessonLoader } from '@Teacher/NewLesson.jsx'
+import RoomDelete, { loader as RoomDeleteLoader } from '@Teacher/RoomDelete.jsx'
+import EditLesson, { loader as editLessonLoader, action as editLessonAction } from '@Teacher/EditLesson.jsx'
+import AddSection from '@Teacher/lessons/add-section.jsx'
+import { DeleteLesson, loader as DeleteLessonLoader } from '@Teacher/Lessons.jsx'
+import Students from '@Teacher/Students.jsx'
+import Exams from '@Teacher/Exams/Exams.jsx'
+import ExamsIndex from '@Teacher/Exams/ExamsIndex.jsx'
+import AddExam, { loader as AddExamLoader } from '@Teacher/Exams/AddExam.jsx'
+import EditExam, { loader as EditExamLoader } from '@Teacher/Exams/Edit.jsx'
+import TaskNew, { loader as NewTaskLoader } from '@Teacher/Tasks/TaskNew.jsx'
+import TaskEdit, { loader as TaskEditLoader } from '@Teacher/Tasks/TaskEdit.jsx'
 
 //---//
 
 //Dash Section -> 
-import Dashboard, { loader as dashloader } from './pages/Dashboard/Index.jsx'
-import HomeDash from './pages/Dashboard/Home.jsx'
-import EnglishTest from './pages/Dashboard/Test.jsx'
-import TestPage from './pages/Test-Page.jsx'
-import FilesStudent from './pages/Dashboard/Files.jsx'
-import AddSection from './pages/Teacher/lessons/add-section.jsx'
-import DashboardRooms, { loader as dashLoader } from './pages/Dashboard/Rooms.jsx'
-import DashboardRoomsView, { loader as RoomsViewLoader } from './pages/Dashboard/RoomsView.jsx'
-import DashboardLessonView, { loader as LessonViewLoader } from './pages/Dashboard/LessonView.jsx'
-import DashboardCourses, { loader as CoursesLoader } from './pages/Dashboard/Courses.jsx'
-import DashboardCourse, { loader as CourseLoader } from './pages/Dashboard/Course.jsx'
-import DashboardExams from './pages/Dashboard/exams/index.jsx'
-import DashboardExam from './pages/Dashboard/exams/Exam.jsx'
-import Demo from './pages/Demo.jsx'
+import Dashboard, { loader as dashloader } from '@Dashboard/Index.jsx'
+import HomeDash from '@Dashboard/Home.jsx'
+import EnglishTest from '@Dashboard/Test.jsx'
+import TestPage from '@Pages/Test-Page.jsx'
+import FilesStudent from '@Dashboard/Files.jsx'
+import DashboardRooms, { loader as dashLoader } from '@Dashboard/Rooms.jsx'
+import DashboardRoomsView, { loader as RoomsViewLoader } from '@Dashboard/RoomsView.jsx'
+import DashboardLessonView, { loader as LessonViewLoader } from '@Dashboard/LessonView.jsx'
+import DashboardCourses, { loader as CoursesLoader } from '@Dashboard/Courses.jsx'
+import DashboardCourse, { loader as CourseLoader } from '@Dashboard/Course.jsx'
+import DashboardExams from '@Dashboard/exams/index.jsx'
+import DashboardExam from '@Dashboard/exams/Exam.jsx'
+import Demo from '@Pages/Demo.jsx'
 
-import Profile from './pages/Profile.jsx'
-import Exams from './pages/Teacher/Exams/Exams.jsx'
-import ExamsIndex from './pages/Teacher/Exams/ExamsIndex.jsx'
-import AddExam, { loader as AddExamLoader } from './pages/Teacher/Exams/AddExam.jsx'
-import EditExam, { loader as EditExamLoader } from './pages/Teacher/Exams/Edit.jsx'
+//---//
+
+// Admin
+import Admin from "@Admin/Admin.jsx"
+import AdminHome from "@Admin/Home.jsx"
+import AdminUsers from "@Admin/Users.jsx"
+import AdminRooms from "@Admin/Rooms.jsx"
+
+//---//
 
 const router = createBrowserRouter(
   [
@@ -188,6 +195,17 @@ const router = createBrowserRouter(
       path: "/Demo",
       element: <Demo />,
       errorElement: <ErrorPage />
+    },
+    {
+      path: "/Admin",
+      element: <Admin />,
+      errorElement: <ErrorPage />,
+      children: [
+        { index: true, element: <AdminHome /> },
+        { path: "Users", element: <AdminUsers /> },
+        { path: "Rooms", element: <AdminRooms /> },
+        { path: "Profile", element: <Profile /> },
+      ]
     },
   ]
 )
