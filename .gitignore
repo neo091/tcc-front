@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 test-db.txt
+chuletas.txt
 
 # Editor directories and files
 .vscode/*

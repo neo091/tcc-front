@@ -33,7 +33,7 @@ const Lessons = ({ id }) => {
                     {
                         lessons.length > 0
                             ? lessons.map((lesson) => <ListOfLessons key={lesson.id} lesson={lesson} removeHandle={removeLesson} />)
-                            : 'no lessons'
+                            : <p className='text-center'>Crear lecciones</p>
                     }
                 </div>
 

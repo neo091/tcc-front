@@ -13,6 +13,7 @@
             "@utils/*": ["utils/*"],
             "@services/*": ["services/*"],
             "@hooks/*": ["hooks/*"],
+            "@store/*": ["store/*"],
             "@Pages/*": ["pages/*"],
             "@Admin/*": ["pages/Admin/*"],
             "@Dashboard/*": ["pages/Dashboard/*"],

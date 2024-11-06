@@ -12,7 +12,6 @@ export const loader = ({ params }) => {
     return { id: params.id }
 }
 
-
 const MultipleChoice = ({ item, examIndex, editAskHandle, editPointsHandle, editCorrectAnswerHandle, editAnswerHandle, removeAnswerHandle }) => {
 
     const { id, ask, points } = item

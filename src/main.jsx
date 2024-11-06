@@ -15,10 +15,10 @@ import Register from '@Pages/Register/Register.jsx'
 import Teacher from '@Teacher'
 import TeacherHome from '@Teacher/TeacherHome.jsx'
 import Rooms from '@Teacher/Rooms.jsx'
+import EditRoom from '@Teacher/Rooms/EditRoom'
 import NewRoom, { action as NewRoomAction } from '@Teacher/NewRoom.jsx'
 import RoomsList from '@Teacher/RoomsList.jsx'
 import Room, { loader as RoomLoader } from '@Teacher/Room.jsx'
-import EditRoom, { loader as EditRoomLoader, action as EditAction } from '@Teacher/EditRoom.jsx'
 import Files from '@Teacher/Files.jsx'
 import NewLesson, { loader as NewLessonLoader } from '@Teacher/NewLesson.jsx'
 import RoomDelete, { loader as RoomDeleteLoader } from '@Teacher/RoomDelete.jsx'
@@ -58,6 +58,7 @@ import AdminHome from "@Admin/Home.jsx"
 import AdminUsers from "@Admin/Users.jsx"
 import AdminRooms from "@Admin/Rooms.jsx"
 
+
 //---//
 
 const router = createBrowserRouter(
@@ -80,6 +81,10 @@ const router = createBrowserRouter(
           children: [
             { index: true, element: <RoomsList /> },
             {
+              path: "Edit",
+              element: <EditRoom />
+            },
+            {
               path: "new",
               element: <NewRoom />,
               action: NewRoomAction
@@ -89,12 +94,7 @@ const router = createBrowserRouter(
               element: <Room />,
               loader: RoomLoader
             },
-            {
-              path: ":id/edit",
-              element: <EditRoom />,
-              loader: EditRoomLoader,
-              action: EditAction
-            },
+
             {
               path: ":id/NewLesson",
               element: <NewLesson />,

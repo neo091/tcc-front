@@ -16,9 +16,79 @@ const getAllRooms = async (data) => {
         headers: { Authorization: token }
     }
 
-    const response = await axios.get(`${base_url}/api/teacher/all-rooms/${data.id}`, config)
+    const response = await axios.get(`${base_url}/api/teacher/rooms/all`, config)
     return response.data
 
+}
+
+
+export const createRoom = async () => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.post(`${base_url}/api/teacher/rooms/create`, {}, config)
+
+    return response.data
+}
+
+export const getRooms = async () => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.get(`${base_url}/api/teacher/rooms/all`, config)
+
+    return response.data
+}
+
+export const getRoom = async (room_id) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.get(`${base_url}/api/teacher/room/${room_id}`, config)
+
+    return response.data
+}
+
+export const updateRoom = async (data) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.put(`${base_url}/api/teacher/room`, data, config)
+    return response.data
+}
+
+export const deleteRoom = async (aula_id) => {
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.post(`${base_url}/api/teacher/rooms/delete`, { aula_id }, config)
+
+    return response.data
 }
 
 
@@ -59,19 +129,6 @@ const add = async (data) => {
 
     const response = await axios.post(`${base_url}/api/teacher/add-virtual-room`, newData, config)
     return response.data
-}
-
-const deleteRoom = async (id) => {
-    const user = await getUserData()
-    setToken(user.token)
-
-    const config = {
-        headers: { Authorization: token }
-    }
-
-    const response = await axios.delete(`${base_url}/api/teacher/delete-virtual-room/${id}`, config)
-    return response.data
-
 }
 
 const edit = async (data, id) => {
@@ -173,7 +230,7 @@ export async function updateLesson(lessonId, data) {
     return response.data
 }
 
-export const uploadFile = async (file, roomId, lessonId) => {
+export const uploadFile = async (file, roomId) => {
     const user = await getUserData()
 
     setToken(user.token)
@@ -186,7 +243,7 @@ export const uploadFile = async (file, roomId, lessonId) => {
 
     formData.append("file", file)
 
-    const response = axios.post(`${base_url}/api/files/upload/${roomId}/${lessonId}`, formData, config)
+    const response = axios.post(`${base_url}/api/files/upload/${roomId}`, formData, config)
     return response
 }
 
@@ -225,7 +282,7 @@ const downloadFileFromServer = async (file_id) => {
     return response
 }
 
-const deleteFileFromServer = async (file_id) => {
+export const deleteFileFromServer = async (file_id) => {
     const user = await getUserData()
 
     setToken(user.token)
@@ -293,6 +350,19 @@ const getLessonContents = async (lesson) => {
 
 const getFile = async (id) => {
     const response = await axios.get(`${base_url}/api/files/${id}`)
+    return response.data
+}
+
+export const getTeacherRoomFiles = async (roomId) => {
+
+    const user = await getUserData()
+    setToken(user.token)
+
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.get(`${base_url}/api/files/get/${roomId}`, config)
     return response.data
 }
 

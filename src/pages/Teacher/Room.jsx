@@ -1,9 +1,11 @@
 import { Link, useLoaderData, useNavigate } from "react-router-dom"
 import { PencilSquareIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/solid"
-import { useRooms } from "../../hooks/useRooms"
-import Lessons from "../../components/Lessons/Lessons"
+import { useRooms } from "@hooks/useRooms"
+import Lessons from "@components/Lessons/Lessons"
 import Swal from "sweetalert2"
-import { useExam } from "../../hooks/useExam"
+import { useExam } from "@hooks/useExam"
+import TeacherFilesRooms from "@components/TeacherFilesRooms"
+import { useRoomStore } from "@store/roomStore"
 
 export const loader = async ({ params }) => {
     return { id: params.id }
@@ -69,11 +71,12 @@ const ListOfExams = ({ exam, examDelete }) => {
 
 }
 
+
 const Room = () => {
 
     const { id } = useLoaderData()
 
-    const { room } = useRooms({ id })
+    const { room } = useRoomStore()
 
     const { exams, examDelete } = useExam({ id })
 
@@ -96,19 +99,7 @@ const Room = () => {
 
                     <Lessons id={id} />
 
-                    <div className="bg-slate-800 rounded mb-4">
-                        <div className="flex py-4 px-4 border-b border-slate-700">
-                            <h2 className="flex-1">Tareas</h2>
-                            <Link to={`./NewTask`}>
-                                <PlusCircleIcon className="w-8 h-8" />
-                            </Link>
-                        </div>
-
-                        <div className="p-4">
-                            {room.aula_descripcion}
-                        </div>
-
-                    </div>
+                    <TeacherFilesRooms roomId={id} />
 
                     <div className="bg-slate-800 rounded mb-4">
                         <div className="flex py-4 px-4 border-b border-slate-700">
@@ -121,6 +112,9 @@ const Room = () => {
                         <div className="p-4 flex flex-col gap-2">
                             {
                                 exams.map(exam => <ListOfExams key={`exam-${exam.id}`} exam={exam} examDelete={examDelete} />)
+                            }
+                            {
+                                exams.length <= 0 && <p className="text-center">Crear exámenes</p>
                             }
                         </div>
 
