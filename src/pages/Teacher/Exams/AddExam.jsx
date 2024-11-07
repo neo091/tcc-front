@@ -304,6 +304,10 @@ const TIPOS = [
     {
         "name": "Texto",
         "value": "typing"
+    },
+    {
+        "name": "Audio",
+        "value": "audio"
     }
 ]
 
@@ -312,25 +316,52 @@ const AddExam = () => {
     const [saveData, setSaveData] = useState([])
     const { room } = useRoomStore()
 
+    const toggleElement = (element, message, enable) => {
+        element.innerText = message
+        element.enable = enable
+    }
+
     const submitHandle = async (e) => {
         e.preventDefault();
+        const buttonSubmit = e.target.querySelector("button")
+        toggleElement(buttonSubmit, "GENERANDO...", false)
 
         const formData = new FormData(e.target);
         const updates = Object.fromEntries(formData);
 
 
+        if (updates.type === "audio") {
+
+            console.log('es audio')
+            return;
+        }
+
+
         await generateExam(updates).then(result => {
 
-            console.log(result)
             const { body } = result;
 
             const newQuestions = [...exam].concat(body.questions)
             setExam(newQuestions)
+            toggleElement(buttonSubmit, "GENERAR", true)
 
 
-        }).catch((err) => console.log(err.response.data))
+        }).catch((err) => {
 
-        // setSaveData(updates);
+            Swal.fire({
+                timer: 1000,
+                title: err.response.data.body?.message,
+                showConfirmButton: false
+            })
+
+            toggleElement(buttonSubmit, "GENERAR", true)
+            // console.log(err.code)
+        })
+
+        setSaveData({
+            "title": "Examen sin titulo",
+            "prompt": updates.title
+        });
     }
 
     const editAnswerHandle = async (answerIndex, examIndex) => {
@@ -400,15 +431,13 @@ const AddExam = () => {
 
     const saveHandle = async () => {
 
-        const save = await saveExam(
+        const data = {
+            "exam": JSON.stringify(exam),
+            "config": JSON.stringify(saveData),
+            "roomID": room.aula_id
+        }
 
-            {
-                "exam": JSON.stringify(exam),
-                "config": JSON.stringify(saveData),
-                "roomID": room.id
-            }
-
-        )
+        await saveExam(data).then(result => console.log(result)).catch((err) => console.log(err))
     }
     return (
         <div>
@@ -432,7 +461,7 @@ const AddExam = () => {
                                 <div>
                                     <select name='amount' className='w-full h-10 text-black'>
                                         {
-                                            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => item === 0 ? <option key={item} disabled selected="false">Cantidad de Preguntas</option> : <option key={item} value={item}>{item}</option>)
+                                            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => item === 0 ? <option key={item} value={0} disabled >Cantidad de Preguntas</option> : <option key={item} value={item}>{item}</option>)
                                         }
                                     </select>
                                 </div>
@@ -440,7 +469,7 @@ const AddExam = () => {
                                 <div>
                                     <select name='type' className='w-full h-10 text-black'>
                                         {
-                                            TIPOS.map(item => item.value !== 0 ? <option key={item.value} value={item.value}>{item.name}</option> : <option key={item.value} disabled selected="false">{item.name}</option>)
+                                            TIPOS.map(item => item.value !== 0 ? <option key={item.value} value={item.value}>{item.name}</option> : <option key={item.value} value={0} disabled >{item.name}</option>)
                                         }
                                     </select>
                                 </div>

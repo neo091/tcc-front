@@ -262,26 +262,7 @@ const EditExam = () => {
                                             <label htmlFor="">Titulo</label>
                                             <input name='title' type='text' className='w-full h-10 text-black p-2' placeholder='titulo' defaultValue={examConfig.title} />
                                         </div>
-                                        <div>
-                                            <label htmlFor="">Preguntas</label>
-                                            <select name='amount' className='w-full h-10 text-black'>
-                                                {
-                                                    [5, 6, 7, 8, 9, 10].map(item => <option key={item} value={item}>{item}</option>)
-                                                }
-                                            </select>
-                                        </div>
-
-                                        <div>
-                                            <label htmlFor="">Tipo</label>
-                                            <select name='type' className='w-full h-10 text-black'>
-                                                {
-                                                    ["Selección"].map(item => <option key={item} value={item}>{item}</option>)
-                                                }
-                                            </select>
-                                        </div>
-
                                         <input type="hidden" name='level' />
-                                        <button className='inline-block p-2 shadow-sm shadow-black bg-sky-600 w-full'>GENERAR</button>
 
                                     </div>
                                 </form>
