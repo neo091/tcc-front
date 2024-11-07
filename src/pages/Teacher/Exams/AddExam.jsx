@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../../components/Card';
-import { useRoomsStore } from '../../../store/roomsStore';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/Card';
 import Swal from 'sweetalert2';
-import { ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, CheckIcon, ChevronLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { CheckIcon, ChevronLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import { generateExam } from '../../../services/gptService';
-import { saveExam } from '../../../services/teacher';
+import { generateExam } from '@services/gptService';
+import { saveExam } from '@services/teacher';
+import { useRoomStore } from '@store/roomStore';
 
 export const loader = ({ params }) => {
     return { id: params.id }
@@ -254,10 +253,10 @@ const ExamGeneratedList = (
                 {
                     examList.map((item, examIndex) => {
 
-                        const { type } = item
+                        const { type, ask } = item
 
                         return (
-                            <>
+                            <div key={ask}>
                                 {
                                     type === "multiple_choice" && <MultipleChoice item={item} examIndex={examIndex} editAskHandle={editAskHandle} editPointsHandle={editPointsHandle} editCorrectAnswerHandle={editCorrectAnswerHandle} editAnswerHandle={editAnswerHandle} removeAnswerHandle={removeAnswerHandle} />
                                 }
@@ -273,7 +272,7 @@ const ExamGeneratedList = (
                                 {
                                     type === "typingImage" && <Image item={item} examIndex={examIndex} editAskHandle={editAskHandle} editPointsHandle={editPointsHandle} editCorrectAnswerHandle={editCorrectAnswerHandle} />
                                 }
-                            </>
+                            </div>
 
                         )
                     })
@@ -289,12 +288,29 @@ const ExamGeneratedList = (
     )
 }
 
+const TIPOS = [
+    {
+        "name": "Selecciona el Tipo",
+        "value": 0
+    },
+    {
+        "name": "Selección Multiple",
+        "value": "multiple_choice"
+    },
+    {
+        "name": "Falso Verdadero",
+        "value": "true_false"
+    },
+    {
+        "name": "Texto",
+        "value": "typing"
+    }
+]
+
 const AddExam = () => {
     const [exam, setExam] = useState([]);
     const [saveData, setSaveData] = useState([])
-    const { id } = useLoaderData();
-    const { getRoom } = useRoomsStore();
-    const room = getRoom(id);
+    const { room } = useRoomStore()
 
     const submitHandle = async (e) => {
         e.preventDefault();
@@ -302,48 +318,18 @@ const AddExam = () => {
         const formData = new FormData(e.target);
         const updates = Object.fromEntries(formData);
 
-        // console.log(updates);
-        // const myExam = await generateExam(updates);
 
-        // const { body } = myExam;
+        await generateExam(updates).then(result => {
+
+            console.log(result)
+            const { body } = result;
+
+            const newQuestions = [...exam].concat(body.questions)
+            setExam(newQuestions)
 
 
-        setExam([
-            {
-                "ask": "¿Cómo te presentarías en inglés?",
-                "answers": [
-                    "My name is Juan.",
-                    "I am fine.",
-                    "He is happy."
-                ],
-                "correct": 0,
-                "type": "multiple_choice",
-                "points": 1
-            },
-            {
-                "ask": "La frase correcta para responder a 'Nice to meet you' es 'Nice to meet you, too.'",
-                "answers": [
-                    "Verdadero",
-                    "Falso"
-                ],
-                "correct": 0,
-                "type": "true_false",
-                "points": 2
-            },
-            {
-                "ask": "Completa correctamente: 'Nice to meet you, ___.'",
-                "correct": "Too",
-                "type": "typing",
-                "points": 2
-            },
-            {
-                "ask": "Traduce al español el texto de la imagen",
-                "src": "http://localhost:5173/images/exams/sunny.png",
-                "correct": "Soleado",
-                "type": "typingImage",
-                "points": 2
-            },
-        ]);
+        }).catch((err) => console.log(err.response.data))
+
         // setSaveData(updates);
     }
 
@@ -426,14 +412,14 @@ const AddExam = () => {
     }
     return (
         <div>
-            <div className='grid grid-cols-1 md:grid-cols-2  gap-4    '>
+            <div className='grid grid-cols-1 md:grid-cols-2  gap-4'>
                 <Card>
                     <CardHeader>
                         <CardTitle>
                             Generar Examen
                         </CardTitle>
                         <div>
-                            {room.level}
+                            {room.nivel}
                         </div>
                     </CardHeader>
 
@@ -441,28 +427,25 @@ const AddExam = () => {
                         <form onSubmit={submitHandle}>
                             <div className='flex flex-col gap-4 '>
                                 <div>
-                                    <label htmlFor="">Titulo</label>
-                                    <input name='title' type='text' className='w-full h-10 text-black p-2' placeholder='titulo' />
+                                    <input name='title' type='text' className='w-full h-10 text-black p-2' placeholder='escribe sobre que quieres que genere...' />
                                 </div>
                                 <div>
-                                    <label htmlFor="">Preguntas</label>
                                     <select name='amount' className='w-full h-10 text-black'>
                                         {
-                                            [5, 6, 7, 8, 9, 10].map(item => <option key={item} value={item}>{item}</option>)
+                                            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => item === 0 ? <option key={item} disabled selected="false">Cantidad de Preguntas</option> : <option key={item} value={item}>{item}</option>)
                                         }
                                     </select>
                                 </div>
 
                                 <div>
-                                    <label htmlFor="">Tipo</label>
                                     <select name='type' className='w-full h-10 text-black'>
                                         {
-                                            ["Selección"].map(item => <option key={item} value={item}>{item}</option>)
+                                            TIPOS.map(item => item.value !== 0 ? <option key={item.value} value={item.value}>{item.name}</option> : <option key={item.value} disabled selected="false">{item.name}</option>)
                                         }
                                     </select>
                                 </div>
 
-                                <input type="hidden" name='level' value={room.level} />
+                                <input type="hidden" name='level' value={room.nivel} />
                                 <button className='inline-block p-2 shadow-sm shadow-black bg-sky-600 w-full'>GENERAR</button>
 
                             </div>

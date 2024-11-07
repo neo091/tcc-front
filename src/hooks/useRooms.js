@@ -48,9 +48,14 @@ export function useRooms() {
         navigate("/Teacher/Rooms/Edit")
     }
 
+    const viewRoomHandle = (room) => {
+        setRoom(room)
+        navigate(`/Teacher/Rooms/${room.aula_id}`)
+    }
+
     useEffect(() => {
         loadRooms()
     }, [])
 
-    return { rooms, createRoomHandle, deleteRoomHandle, editRoomHandle }
+    return { rooms, createRoomHandle, deleteRoomHandle, editRoomHandle, viewRoomHandle }
 }

@@ -11,14 +11,6 @@ export const loader = async () => {
     return { user }
 }
 
-const EnrollButton = ({ onPress, children, ...props }) => {
-    return (
-        <button {...props} onClick={onPress} className='bg-violet-600 hover:bg-violet-700 shadow-[inset_0px_-6px_0px_0px_#00000050] block sm:inline-block xl:inline-block lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500'>
-            {children}
-        </button>
-    )
-}
-
 const Room = ({ room, handle }) => {
 
     const { nombre_aula, aula_descripcion, nivel, aula_id } = room
@@ -27,15 +19,14 @@ const Room = ({ room, handle }) => {
 
         <>
 
-            <div className="group flex p-2 box-border hover:bg-slate-800 rounded-md ">
+            <div className="group p-2 box-border hover:bg-slate-800 rounded-md aspect-square w-40 relative">
 
-                <div className={`bg-[url(/images/a1.jpg)] bg-center bg-cover w-40 h-40 relative`}>
+                <img src={`https://ui-avatars.com/api/?name=${nombre_aula}&background=0D8ABC&color=fff`} className="w-40" alt="" />
+                <span className="truncate">{nombre_aula}</span>
 
-                    <button onClick={handle} className="absolute bottom-2 right-2 w-10 h-10 bg-green-500 rounded-full p-2 hover:scale-110 shadow hidden group-hover:block ">
-                        <PlusIcon />
-                    </button>
-
-                </div>
+                <button onClick={() => handle(aula_id)} className="absolute bottom-2 right-2 w-10 h-10 bg-green-500 rounded-full p-2 hover:scale-110 shadow hidden group-hover:block ">
+                    <PlusIcon />
+                </button>
 
             </div>
 
@@ -96,7 +87,7 @@ const Courses = () => {
         }
     }
 
-    const enrollHandle = (e) => {
+    const enrollHandle = (id) => {
 
         Swal.fire({
             title: 'Seguro?',
@@ -114,9 +105,11 @@ const Courses = () => {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${user.token}`
                     },
-                    body: JSON.stringify({ user: user.id, aula: e.target.dataset.id }),
+                    body: JSON.stringify({ user: user.id, aula: id }),
                 });
                 post(request1)
+
+                // console.log(id);
 
 
             }

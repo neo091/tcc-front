@@ -5,7 +5,7 @@ import { useRooms } from "@hooks/useRooms";
 
 const RoomsList = () => {
 
-    const { rooms, createRoomHandle, deleteRoomHandle, editRoomHandle } = useRooms()
+    const { rooms, createRoomHandle, deleteRoomHandle, editRoomHandle, viewRoomHandle } = useRooms()
 
     return (
 
@@ -43,9 +43,9 @@ const RoomsList = () => {
                                         <div className="px-3 py-4 font-bold">{item.nombre_aula}</div>
                                         <div className="px-3 py-4">{item.nivel}</div>
                                         <div className="px-3 py-4 flex gap-4 items-center">
-                                            <Link to={`${item.aula_id}`} className="hover:text-sky-500">
+                                            <button onClick={() => viewRoomHandle(item)} className="hover:text-sky-500">
                                                 <EyeIcon className="w-6 h-6" />
-                                            </Link>
+                                            </button>
 
                                             <button onClick={() => editRoomHandle(item)} className="hover:text-sky-500">
                                                 <PencilSquareIcon className="w-6 h-" />

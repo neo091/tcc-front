@@ -24,10 +24,10 @@ const MyRoom = ({ room, handle }) => {
 
     return (
         <>
-            <Link to={`/Dashboard/Rooms/${aula_id}`} className='p-2 box-border hover:bg-slate-800 rounded-md'>
+            <Link to={`/Dashboard/Rooms/${aula_id}`} className='p-2 box-border hover:bg-slate-800 rounded-md max-w-40'>
                 <img src={`https://ui-avatars.com/api/?name=${nombre_aula}&background=0D8ABC&color=fff`} alt="" className='w-40' />
-                <h3 className='text-slate-400'>{nombre_aula}</h3>
-                <p>{aula_descripcion}</p>
+                <h3 className='text-slate-400 truncate'>{nombre_aula} </h3>
+                <p className=' truncate'>{aula_descripcion}</p>
             </Link>
 
         </>

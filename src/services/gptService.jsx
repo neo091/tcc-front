@@ -32,7 +32,7 @@ export const getQuestions = async () => {
 
 export const generateExam = async (data) => {
     const response = await axios
-        .post(`${base_url}/gen/exam`, data)
+        .post(`${base_url}/generate/exam`, data)
 
     return response.data
 
