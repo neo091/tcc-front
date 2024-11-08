@@ -30,3 +30,6 @@
 - [❗] Generación de reporte con AI
 - [✅] Gestión de archivos.
 - [✅] Gestión de aula.
+
+### Exámenes
+- Listar exámenes disponibles

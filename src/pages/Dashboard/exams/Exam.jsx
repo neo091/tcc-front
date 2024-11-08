@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getAnalice } from "../../../services/gptService";
+import { getAnalice } from "@services/gptService";
 import { CheckBadgeIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 
