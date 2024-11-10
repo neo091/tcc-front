@@ -1,26 +1,43 @@
 import { useEffect, useRef, useState } from "react";
 import { getAnalice } from "@services/gptService";
 import { CheckBadgeIcon, XCircleIcon } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useExamStore2 } from "@store/examStore2";
 
 const Exam = () => {
 
+    const { exam, roomId, currentExam, setCompletedExams, completedExams } = useExamStore2()
+
+    const navigate = useNavigate()
+
+
     const [current, setCurrent] = useState(0)
-    const [questions, setQuestions] = useState([])
-    const [currentQuestion, setCurrentQuestion] = useState(null)
+    const [questions, setQuestions] = useState(exam)
+    const [currentQuestion, setCurrentQuestion] = useState(exam[current])
     const [correctQuestion, setCorrectQuestion] = useState([])
     const [incorrectQuestion, setIncorrectQuestion] = useState([])
     const [finalizado, setFinalizado] = useState(false)
     const [notaExamen, setNotaExamen] = useState([])
     const typingRef = useRef()
+    const [isCompleted, setIsCompleted] = useState(false)
 
 
     const loadExam = async () => {
-        const res = await fetch('http://localhost:5173/exam.json')
-        const json = await res.json()
-        setQuestions(json)
-        setCurrentQuestion(json[current])
+        // const res = await fetch('http://localhost:5173/exam.json')
+        // const json = await res.json()
+        // setQuestions(json)
+        // setCurrentQuestion(json[current])
+
+        // setQuestions(exam)
+        // setCurrentQuestion(exam[current])
+        const isCompletedExam = completedExams.find(item => item === currentExam)
+
+        if (isCompletedExam) {
+            setIsCompleted(true)
+        }
+
+        // console.log(isCompletedExam)
+
     }
 
     useEffect(() => {
@@ -32,6 +49,7 @@ const Exam = () => {
     }, [current])
 
     const finishExam = async () => {
+
         getAnalice({
             correct: correctQuestion,
             incorrect: incorrectQuestion
@@ -39,7 +57,8 @@ const Exam = () => {
             .then((response) => {
                 setFinalizado(true)
                 setNotaExamen(JSON.parse(response.body.res))
-                console.log(JSON.parse(response.body.res))
+                setCompletedExams(currentExam)
+                // console.log(JSON.parse(response.body.res))
             })
             .catch((e) => console.error(e.message))
     }
@@ -57,6 +76,8 @@ const Exam = () => {
 
         if (newCurrent >= questions.length) {
             setCurrentQuestion([])
+            finishExam()
+
             return;
         }
 
@@ -83,8 +104,6 @@ const Exam = () => {
 
             finishExam()
 
-
-
             return;
         }
 
@@ -92,8 +111,11 @@ const Exam = () => {
 
     }
 
+
+
     return (
         <>
+            {isCompleted && <p>Exam Completed</p>}
 
             {
                 currentQuestion?.type == "multiple_choice" && <div className="flex items-center">
@@ -148,13 +170,16 @@ const Exam = () => {
 
                     <div className="text-center flex flex-col gap-3 items-center justify-center bg-slate-800 rounded max-w-[600px] m-auto py-8">
 
-                        {notaExamen.percentage > 80 ? <CheckBadgeIcon className="w-24 text-green-500" /> : <XCircleIcon className="w-24 text-red-600" />}
+                        {notaExamen.percentage > 70 ? <CheckBadgeIcon className="w-24 text-green-500" /> : <XCircleIcon className="w-24 text-red-600" />}
                         <h2 className="text-2xl font-semibold">Has terminado el examen</h2>
-                        <p>Su puntuación: {notaExamen.totalPointsCorrect}/{notaExamen.totalPoints} ({notaExamen.percentage}%)</p>
+                        <p>Su puntuación: {correctQuestion.reduce((acc, item) => acc + item.points, 0)}/{exam.reduce((acc, item) => acc + item.points, 0)} ({notaExamen.percentage}%)</p>
+                        <p>{notaExamen.recommendations}</p>
 
                     </div>
 
-                    <Link to={"/Dashboard/Exams"} className=" bg-violet-600 px-4 py-2 rounded w-[200px] m-auto block text-center mt-8">Volver</Link>
+                    <Link to={`/Dashboard/Rooms/${roomId}`} className=" bg-violet-600 px-4 py-2 rounded w-[200px] m-auto block text-center mt-8">Volver</Link>
+
+
 
                 </>
             }
