@@ -146,15 +146,24 @@ const Register = () => {
     )*/
     return (
         <>
-            <Header />
-            <div className='flex items-center justify-center'>
 
-                <div className=' py-6'>
-                    <img src="/images/logo.png" alt="" />
+            <div className='grid grid-cols-[32rem_auto] max-lg:grid-cols-[1fr] w-[94%] max-md:w-[85%] max-lg:w-[55%] m-auto justify-center items-center gap-6 h-screen'>
+
+                <div className='max-lg:hidden'>
+                    <h2 className='text-3xl font-bold mb-2'>Aprende inglés a tu ritmo y sin horario</h2>
+                    <p>Miles de estudiantes aprenden inglés cada mes utilizando el método DigitalEducation.</p>
+                    <p className='my-4 ml-2'>Clases de inglés en directo con profesores nativos.</p>
+                    <p className='my-4 ml-2'>Aprendes más de 3.000 frases y palabras claves.</p>
+                    <p className='my-4 ml-2'>Mejoras tu pronunciación y comprensión auditiva.</p>
+                    <p className='my-4 ml-2'>Certificado oficial DigitalEducation al completar cada nivel.</p>
+                </div>
+
+                <div>
+
                     <Alert type={alertType} message={alertMessage} hide={hideAlert} />
                     <form action="/register-success" method='POST' onSubmit={(e) => registerSubmit(e)}>
-                        <div className='flex flex-col gap-6 p-6 bg-slate-800 border-slate-700 border'>
-                            <h1 className='text-center text-2xl font-semibold'>Registro</h1>
+                        <div className='flex flex-col gap-6 p-6 bg-slate-800 border-slate-700 border rounded-xl shadow-black/45 shadow-xl hover:shadow-none transition-all duration-300'>
+                            <h1 className='text-center text-2xl font-semibold'>Crea tu cuenta</h1>
                             <Input type="text" label="Nombre" handle={nameHandle} />
                             <Input type="text" label="Correo electrónico" handle={emailHandle} />
                             <Input type="password" label="Contraseña" handle={passwordHandle} />
@@ -166,7 +175,7 @@ const Register = () => {
 
                             </div>
 
-                            <button className='bg-sky-600 inline-block p-2' >Register</button>
+                            <button className='bg-sky-600 inline-block py-2 rounded font-semibold' >¡Quiero aprender Inglés!</button>
                             <p>Ya tienes una cuneta? <Link to={"/Login"} className='text-sky-600 ml-2'>Iniciar Sesión</Link></p>
                         </div>
                     </form>

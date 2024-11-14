@@ -2,11 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 body {
     height: 100vh;
     color: white;
     background-color: rgb(15, 20, 31);
-    font-family: Nista, Helvetica Neue, Helvetica, Arial, sans-serif;
+    
     box-sizing: border-box;
 }
