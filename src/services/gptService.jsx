@@ -3,22 +3,6 @@ import axios from 'axios'
 
 const base_url = "http://localhost:4000/api"
 
-let token = null
-
-const setToken = newToken => {
-    token = `Bearer ${newToken}`
-}
-
-
-async function getSession() {
-    const user = await getUserData()
-
-    setToken(user.token)
-
-}
-await getSession()
-
-
 export const getResume = async (resume_object) => {
     const data = JSON.parse(resume_object)
 
@@ -27,7 +11,6 @@ export const getResume = async (resume_object) => {
 
     return response
 }
-
 
 export const getRecommendations = async (resume_object) => {
     const data = JSON.parse(resume_object)
@@ -62,11 +45,10 @@ export async function getAnalice(data) {
 }
 
 export async function sendMessageService(message) {
+    const user = await getUserData()
 
-
-    console.log(token)
     const response = await axios.post(`${base_url}/dashboard/chatbot/send-message`, { message: message }, {
-        headers: { Authorization: token }
+        headers: { Authorization: `Bearer ${user.token}` }
     })
     return response.data
 }
