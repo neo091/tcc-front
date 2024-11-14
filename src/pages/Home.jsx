@@ -60,7 +60,7 @@ const Home = () => {
                         <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                             <div className="flex items-center justify-between">
                                 <a href="#" className="-m-1.5 p-1.5">
-                                    <span className="sr-only">Your Company</span>
+                                    <span className="sr-only">DigitalEducation</span>
                                     <img
                                         alt=""
                                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
@@ -132,12 +132,10 @@ const Home = () => {
                                 fugiat veniam occaecat fugiat aliqua.
                             </p>
                             <div className="mt-10 flex items-center justify-center gap-x-6">
-                                <a
-                                    href="#"
-                                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                >
+                                <Link to={"/Register"} className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+
                                     Get started
-                                </a>
+                                </Link>
                                 <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
                                     Learn more <span aria-hidden="true">→</span>
                                 </a>
