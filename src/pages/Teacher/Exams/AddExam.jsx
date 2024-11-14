@@ -6,6 +6,7 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { generateExam } from '@services/gptService';
 import { saveExam } from '@services/teacher';
 import { useRoomStore } from '@store/roomStore';
+import { useNavigate } from 'react-router-dom';
 
 export const loader = ({ params }) => {
     return { id: params.id }
@@ -305,16 +306,17 @@ const TIPOS = [
         "name": "Texto",
         "value": "typing"
     },
-    {
-        "name": "Audio",
-        "value": "audio"
-    }
+    // {
+    //     "name": "Audio",
+    //     "value": "audio"
+    // }
 ]
 
 const AddExam = () => {
     const [exam, setExam] = useState([]);
     const [saveData, setSaveData] = useState([])
     const { room } = useRoomStore()
+    const navigate = useNavigate()
 
     const toggleElement = (element, message, enable) => {
         element.innerText = message
@@ -437,7 +439,16 @@ const AddExam = () => {
             "roomID": room.aula_id
         }
 
-        await saveExam(data).then(result => console.log(result)).catch((err) => console.log(err))
+        Swal.fire({
+            title: "Guardar examen?",
+            showCancelButton: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                await saveExam(data).then(result => {
+                    navigate(`/Teacher/Rooms/${room.aula_id}`)
+                }).catch((err) => console.log(err))
+            }
+        })
     }
     return (
         <div>

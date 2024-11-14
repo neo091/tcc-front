@@ -100,8 +100,10 @@ const EditRoom = (props) => {
                         </div>
 
                         <div className="w-full flex gap-3">
-                            <button onClick={() => isNewHandle()} className="bg-sky-600 inline-block px-6 py-4 w-full my-2 hover:bg-sky-400">Editar</button>
                             <Link to={"/Teacher/Rooms"} className="bg-red-600 inline-block px-6 py-4 w-full my-2 hover:bg-red-400 text-center">Cancelar</Link>
+
+                            <button onClick={() => isNewHandle()} className="bg-sky-600 inline-block px-6 py-4 w-full my-2 hover:bg-sky-400">Guardar</button>
+
                         </div>
                     </Form>
                 </div>}

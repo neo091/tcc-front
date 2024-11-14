@@ -2,6 +2,7 @@ import React, { Children, useEffect, useState } from 'react';
 import Title from '../../components/Title';
 import { getUserData } from '../../auth';
 import { Link, useLoaderData } from 'react-router-dom';
+import { GridContent } from '../../components/GridContent';
 
 
 export const loader = async () => {
@@ -56,15 +57,14 @@ const DashboardRooms = () => {
     useEffect(() => { getMyRooms() }, [])
 
     return (
-        <div>
-            <Title>
-                Mis Aulas
-            </Title>
+        <>
+            <Title>Mis Aulas</Title>
 
-            <section className='flex'>
+            <GridContent>
+
                 {myRooms.map(room => <MyRoom key={room.aula_id} room={room} />)}
-            </section>
-        </div>
+            </GridContent>
+        </>
     );
 }
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { createRoom, deleteRoom, getRoom, getRooms } from "@services/teacher"
 import { useRoomStore } from "@store/roomStore"
 import { useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
 
 export function useRooms() {
     const [rooms, setRooms] = useState([])
@@ -37,10 +38,34 @@ export function useRooms() {
 
     const deleteRoomHandle = (aula_id) => {
 
-        deleteRoom(aula_id).then(result => console.log(result)).catch((err) => console.log(err))
+        Swal.fire(
+            {
+                title: 'Borrar Aula?',
+                text: 'si borras esta Aula ya no podrás recuperarla, estas seguro/a de borrar esto?',
+                showCancelButton: true,
+                confirmButtonText: "Borrar",
+                confirmButtonColor: 'rgb(239 68 68)'
+            }
+        ).then(async (result) => {
+            if (result.isConfirmed) {
 
-        const newRooms = [...rooms].filter((room) => room.aula_id !== aula_id)
-        setRooms(newRooms)
+                await deleteRoom(aula_id).then(result => console.log(result)).catch((err) => console.log(err))
+
+                const newRooms = [...rooms].filter((room) => room.aula_id !== aula_id)
+                setRooms(newRooms)
+
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Se ha borrado correctamente",
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+
+            }
+        })
+
+
     }
 
     const editRoomHandle = (room) => {

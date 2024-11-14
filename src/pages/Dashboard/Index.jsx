@@ -1,27 +1,40 @@
-import Header from "../../components/Header";
-import SidebarStudents from "../../components/SidebarStudents";
-
+import SidebarStudents from "@components/SidebarStudents";
+import { Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
-
-export async function loader() {
-    return {};
-}
 
 const Dashboard = () => {
 
+    const [showMenu, setShowMenu] = useState(false)
+
+
+    const toggleMenuHandle = () => {
+        setShowMenu(!showMenu)
+    }
+
     return (
-        <div className="flex min-h-lvh">
+        <>
+            <div className="h-16 bg-slate-800 w-full max-md:fixed max-md:flex justify-between items-center px-8 hidden">
 
-            <SidebarStudents />
+                <button onClick={toggleMenuHandle}>
+                    <Bars3BottomLeftIcon className="w-10 h-10" />
+                </button>
 
-            <main className="flex-1">
-                <Header />
+                <img src="/images/JohnWick.png" className="w-10 h-10 rounded-full border-4 border-slate-700" />
 
-                <div className="m-6">
+            </div>
+            <div className="grid w-[98%] max-xl:w-[96%] max-md:w-full m-auto grid-cols-[12rem_auto_23rem] max-xl:grid-cols-[3rem_auto_1em] max-md:grid-cols-1 gap-8   ">
+
+
+                <SidebarStudents showMenu={showMenu} toggleMenuHandle={toggleMenuHandle} />
+
+                <main className="mt-6 max-md:px-4 max-md:mt-16">
                     <Outlet />
-                </div>
-            </main>
-        </div>
+                </main>
+
+            </div>
+
+        </>
     );
 }
 

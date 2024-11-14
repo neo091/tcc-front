@@ -1,3 +1,7 @@
+import { GridContent } from "@components/GridContent"
+import Title from "@components/Title"
+import { useAuthStore } from "@store/authStore"
+
 const UserTypeToString = (type) => {
 
     if (type === 0) return 'undefined'
@@ -8,11 +12,16 @@ const UserTypeToString = (type) => {
 }
 
 
-const ProfilePicture = ({ src }) => <img src={src} className="mx-auto w-[200px] bg-black rounded-full " alt="" />
+const ProfilePicture = ({ src }) => <img src={src} className="mx-auto w-[100px] bg-black rounded-full " alt="" />
 const ProfileInfo = ({ name }) => <p className=" text-center capitalize ">{name}</p>
 const UserType = ({ type }) => <p className="text-sm text-center text-blue-500">{UserTypeToString(type)}</p>
 
-const Profile = ({ user }) => {
+const Profile = () => {
+
+
+    const { session } = useAuthStore()
+
+    console.log(session)
 
     const updatePanel = (e) => {
         document.querySelector('.active-panel').classList.remove('active-panel')
@@ -23,9 +32,13 @@ const Profile = ({ user }) => {
 
     return (
         <>
-            <ProfilePicture src='../images/user-4-xxl.png' />
-            <ProfileInfo name={user.name} />
-            <UserType type={user.type} />
+            <Title>Perfil</Title>
+            <GridContent>
+                <ProfilePicture src='/images/JohnWick.png' />
+                <ProfileInfo name={session.name} />
+                <ProfileInfo name={session.email} />
+                <UserType type={session.type} />
+            </GridContent>
         </>
 
     );

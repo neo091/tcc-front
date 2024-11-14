@@ -6,7 +6,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import Home from '@Pages/Home'
 import ErrorPage from '@Pages/error-page.jsx'
-import Profile from '@Pages/Profile.jsx'
+// import Profile from '@Pages/Profile.jsx'
 import Login from '@Pages/Login/Login.jsx'
 import Logout from '@Pages/Logout.jsx'
 import Register from '@Pages/Register/Register.jsx'
@@ -36,7 +36,7 @@ import TaskEdit, { loader as TaskEditLoader } from '@Teacher/Tasks/TaskEdit.jsx'
 //---//
 
 //Dash Section -> 
-import Dashboard, { loader as dashloader } from '@Dashboard/Index.jsx'
+import Dashboard from '@Dashboard/Index.jsx'
 import HomeDash from '@Dashboard/Home.jsx'
 import EnglishTest from '@Dashboard/Test.jsx'
 import TestPage from '@Pages/Test-Page.jsx'
@@ -57,6 +57,8 @@ import Admin from "@Admin/Admin.jsx"
 import AdminHome from "@Admin/Home.jsx"
 import AdminUsers from "@Admin/Users.jsx"
 import AdminRooms from "@Admin/Rooms.jsx"
+import Chatbot from '@Pages/Dashboard/Chatbot'
+import Profile from '@Pages/Dashboard/Profile'
 
 
 //---//
@@ -156,7 +158,6 @@ const router = createBrowserRouter(
     {
       path: "Dashboard",
       element: <Dashboard />,
-      loader: dashloader,
       children: [
         { index: true, element: <HomeDash /> },
         { path: "Test", element: <EnglishTest /> },
@@ -168,7 +169,8 @@ const router = createBrowserRouter(
         { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader },
         { path: 'Profile', element: <Profile /> },
         { path: 'Exams', element: <DashboardExams /> },
-        { path: 'Exam', element: <DashboardExam /> }
+        { path: 'Exam', element: <DashboardExam /> },
+        { path: "Chatbot", element: <Chatbot /> }
       ]
     },
 

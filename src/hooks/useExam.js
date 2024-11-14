@@ -45,5 +45,5 @@ export function useExam({ id, examID }) {
     }, [exams])
 
 
-    return { exams, examDelete, exam, setExam, examConfig };
+    return { exams, examDelete, exam, setExam, examConfig, setExamConfig };
 }

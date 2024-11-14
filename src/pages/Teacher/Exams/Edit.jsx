@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../../components/Card';
-import { useRoomsStore } from '../../../store/roomsStore';
+
 import Swal from 'sweetalert2';
 import { ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, CheckIcon, ChevronLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { generateExam } from '../../../services/gptService';
-import { saveExam } from '../../../services/teacher';
+import { editExam, saveExam } from '../../../services/teacher';
 import { useExam } from '../../../hooks/useExam';
+import { Image, MultipleChoice, TrueFalseItem, Typing } from '@components/ExamTypes';
 
 export const loader = ({ params }) => {
     return { id: params.id, examID: params.idExam }
@@ -32,58 +33,27 @@ const ExamGeneratedList = (
                 {
                     examList.map((item, examIndex) => {
 
-                        const { id, ask, points } = item
+                        const { type, ask } = item
+
                         return (
-                            <Card key={examIndex}>
-                                <CardHeader>
-                                    <CardTitle>
-                                        {ask} <button className='inline-block p-2 bg-sky-600 rounded' onClick={() => editAskHandle(examIndex)}>
-                                            <PencilIcon className='w-6 h-6' />
-                                        </button>
-                                    </CardTitle>
-                                    <p className='flex gap-4 items-center'>
-                                        Points:
-                                        <button onClick={() => editPointsHandle(examIndex, "remove")} className='hover:bg-gray-700 transition-colors p-2 '><ChevronLeftIcon className='w-6 h-6' /></button>
-                                        <span className='p-2'>{points}</span>
-                                        <button onClick={() => editPointsHandle(examIndex, "add")} className='hover:bg-gray-700 transition-colors p-2'> <ChevronRightIcon className='w-6 h-6' /></button>
-                                    </p>
-                                </CardHeader>
-                                <CardContent>
-                                    <table>
-                                        <tbody>
-                                            {
-                                                item.answers.map((answer, answerIndex) => {
-                                                    return <tr key={`${answerIndex}-${answer}`}>
-                                                        <td>
+                            <div key={ask}>
+                                {
+                                    type === "multiple_choice" && <MultipleChoice item={item} examIndex={examIndex} editAskHandle={editAskHandle} editPointsHandle={editPointsHandle} editCorrectAnswerHandle={editCorrectAnswerHandle} editAnswerHandle={editAnswerHandle} removeAnswerHandle={removeAnswerHandle} />
+                                }
 
-                                                            {
-                                                                item.correct === answerIndex
-                                                                    ? <span className='inline-block rounded w-6 h-6 bg-white cursor-pointer' onClick={() => editCorrectAnswerHandle(examIndex, answerIndex)}><CheckIcon className='w-6 h-6 text-green-600' /></span>
-                                                                    : <span className='inline-block rounded w-6 h-6 bg-white cursor-pointer' onClick={() => editCorrectAnswerHandle(examIndex, answerIndex)}></span>
-                                                            }
+                                {
+                                    type === "true_false" && <TrueFalseItem item={item} examIndex={examIndex} editAskHandle={editAskHandle} editPointsHandle={editPointsHandle} editCorrectAnswerHandle={editCorrectAnswerHandle} />
+                                }
 
-                                                        </td>
-                                                        <td>
-                                                            {answer}
-                                                        </td>
-                                                        <td>
-                                                            <button className='inline-block p-2 bg-sky-600 rounded' onClick={() => editAnswerHandle(answerIndex, examIndex)}>
-                                                                <PencilIcon className='w-6 h-6' />
-                                                            </button>
-                                                        </td>
-                                                        <td>
-                                                            <button className='inline-block p-2 bg-red-600 rounded' onClick={() => removeAnswerHandle(examIndex, answerIndex)}>
-                                                                <TrashIcon className='w-6 h-6' />
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                })
-                                            }
-                                        </tbody>
-                                    </table>
+                                {
+                                    type === "typing" && <Typing item={item} examIndex={examIndex} editAskHandle={editAskHandle} editPointsHandle={editPointsHandle} editCorrectAnswerHandle={editCorrectAnswerHandle} />
+                                }
 
-                                </CardContent>
-                            </Card>
+                                {
+                                    type === "typingImage" && <Image item={item} examIndex={examIndex} editAskHandle={editAskHandle} editPointsHandle={editPointsHandle} editCorrectAnswerHandle={editCorrectAnswerHandle} />
+                                }
+                            </div>
+
                         )
                     })
                 }
@@ -97,83 +67,13 @@ const ExamGeneratedList = (
 
     )
 }
-const ExamList = ({ exam, editPointsHandle, editCorrectAnswerHandle, editAskHandle, editAnswerHandle, removeAnswerHandle }) => {
-    return (
-        exam && exam.length > 0
-            ?
-            <>
-                {
-                    exam.map((item, examIndex) => {
 
-                        const { id, ask, points } = item
-                        return (
-                            <Card key={examIndex}>
-                                <CardHeader>
-                                    <CardTitle>
-                                        {ask} <button className='inline-block p-2 bg-sky-600 rounded' onClick={() => editAskHandle(examIndex)}>
-                                            <PencilIcon className='w-6 h-6' />
-                                        </button>
-                                    </CardTitle>
-                                    <p className='flex gap-4 items-center'>
-                                        Points:
-                                        <button onClick={() => editPointsHandle(examIndex, "remove")} className='hover:bg-gray-700 transition-colors p-2 '><ChevronLeftIcon className='w-6 h-6' /></button>
-                                        <span className='p-2'>{points}</span>
-                                        <button onClick={() => editPointsHandle(examIndex, "add")} className='hover:bg-gray-700 transition-colors p-2'> <ChevronRightIcon className='w-6 h-6' /></button>
-                                    </p>
-                                </CardHeader>
-                                <CardContent>
-                                    <table>
-                                        <tbody>
-                                            {
-                                                item.answers.map((answer, answerIndex) => {
-                                                    return <tr key={`${answerIndex}-${answer}`}>
-                                                        <td>
-
-                                                            {
-                                                                item.correct === answerIndex
-                                                                    ? <span className='inline-block rounded w-6 h-6 bg-white cursor-pointer' onClick={() => editCorrectAnswerHandle(examIndex, answerIndex)}><CheckIcon className='w-6 h-6 text-green-600' /></span>
-                                                                    : <span className='inline-block rounded w-6 h-6 bg-white cursor-pointer' onClick={() => editCorrectAnswerHandle(examIndex, answerIndex)}></span>
-                                                            }
-
-                                                        </td>
-                                                        <td>
-                                                            {answer}
-                                                        </td>
-                                                        <td>
-                                                            <button className='inline-block p-2 bg-sky-600 rounded' onClick={() => editAnswerHandle(answerIndex, examIndex)} >
-                                                                <PencilIcon className='w-6 h-6' />
-                                                            </button>
-                                                        </td>
-                                                        <td>
-                                                            <button className='inline-block p-2 bg-red-600 rounded' onClick={() => removeAnswerHandle(examIndex, answerIndex)} >
-                                                                <TrashIcon className='w-6 h-6' />
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                })
-                                            }
-                                        </tbody>
-                                    </table>
-
-                                </CardContent>
-                            </Card>
-                        )
-                    })
-                }
-
-                <Card>
-                    <CardContent>
-                        <button className='inline-block p-2 shadow-sm shadow-black bg-sky-600 w-full'>GUARDAR</button>
-                    </CardContent>
-                </Card>
-            </> : ""
-    )
-}
 const EditExam = () => {
 
     const { id, examID } = useLoaderData()
+    const navigate = useNavigate()
 
-    const { exam, setExam, examConfig } = useExam({ id, examID })
+    const { exam, setExam, examConfig, setExamConfig } = useExam({ id, examID })
 
     const editAnswerHandle = async (answerIndex, examIndex) => {
         const answerText = exam[examIndex].answers[answerIndex]
@@ -240,6 +140,40 @@ const EditExam = () => {
         setExam(newExam)
     }
 
+    const updateTitleHandle = (e) => {
+        const value = e.target.value
+
+        setExamConfig({
+            title: value,
+            prompt: examConfig.prompt
+        })
+    }
+
+    //update exam
+    const saveHandle = () => {
+        const data = {
+            "exam": exam,
+            "config": examConfig,
+            "roomID": id,
+            "id": examID
+        }
+
+        Swal.fire({
+            title: "Guardar Cambios?",
+            showCancelButton: true,
+            cancelButtonColor: "red",
+            confirmButtonText: "Guardar"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                await editExam(data).then(result => console.log(result)).catch((e) => console.log(e))
+
+
+                navigate(`/Teacher/Rooms/${id}`)
+            }
+        })
+    }
+
     return (
         <>
             {
@@ -260,7 +194,7 @@ const EditExam = () => {
                                     <div className='flex flex-col gap-4 '>
                                         <div>
                                             <label htmlFor="">Titulo</label>
-                                            <input name='title' type='text' className='w-full h-10 text-black p-2' placeholder='titulo' defaultValue={examConfig.title} />
+                                            <input name='title' type='text' className='w-full h-10 text-black p-2' placeholder='titulo' defaultValue={examConfig.title} onChange={updateTitleHandle} />
                                         </div>
                                         <input type="hidden" name='level' />
 
@@ -281,12 +215,13 @@ const EditExam = () => {
                         </div>
                     </div>
                     <div className='flex flex-col gap-2 mt-4'>
-                        <ExamList exam={exam}
-                            editPointsHandle={editPointsHandle}
-                            editCorrectAnswerHandle={editCorrectAnswerHandle}
+                        <ExamGeneratedList editAnswerHandle={editAnswerHandle}
                             editAskHandle={editAskHandle}
-                            editAnswerHandle={editAnswerHandle}
                             removeAnswerHandle={removeAnswerHandle}
+                            editCorrectAnswerHandle={editCorrectAnswerHandle}
+                            editPointsHandle={editPointsHandle}
+                            saveHandle={saveHandle}
+                            examList={exam}
                         />
                     </div>
                 </div>

@@ -1,18 +1,18 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle } from '../components/Card';
+import { Card, CardHeader, CardTitle } from '@components/Card';
+import Title from '@components/Title';
+import { GridContent } from '@components/GridContent';
 
 const Profile = () => {
     return (
-        <div className='grid grid-cols-12'>
-            <div className='col-span-12'>
-                <Card>
+        <>
+            <Title>Perfil</Title>
 
-                    <div className='p-6'>
-                        Mi Perfil
-                    </div>
-                </Card>
-            </div>
-        </div>
+            <GridContent>
+
+
+            </GridContent>
+        </>
     );
 }
 

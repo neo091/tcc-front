@@ -389,6 +389,20 @@ export async function saveExam(data) {
     )
 }
 
+
+export async function editExam(data) {
+
+    const user = await getUserData()
+
+    setToken(user.token)
+
+    return await axios.put(`${base_url}/api/teacher/exams/update`, data,
+        {
+            headers: { Authorization: token }
+        }
+    )
+}
+
 export async function getExams(roomID) {
 
     const user = await getUserData()
@@ -401,6 +415,8 @@ export async function getExams(roomID) {
         }
     )
 }
+
+
 
 export async function deleteExam({ examID }) {
     const user = await getUserData()

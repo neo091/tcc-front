@@ -121,9 +121,12 @@ const Courses = () => {
 
 
     return (
-        <div className="flex">
-            {courses.map(course => <Room key={course.aula_id} room={course} handle={enrollHandle} />)}
-        </div>
+        <>
+            <Title>Aulas Virtuales</Title>
+            <div className="flex mt-4">
+                {courses.map(course => <Room key={course.aula_id} room={course} handle={enrollHandle} />)}
+            </div>
+        </>
     );
 }
 

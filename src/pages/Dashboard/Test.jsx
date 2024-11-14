@@ -65,7 +65,7 @@ const Finished = () => {
 
     const correctsAnserts = questions.filter((question) => question.isCorrectUserAnswer)
     return (
-        <div className="flex flex-1 flex-col gap-4">
+        <div className="flex flex-1 flex-col gap-4 mt-4">
 
             <p className=" text-center">Correctas ✅: {resume?.respuestasCorrectas} Incorrectas ❌: {resume?.respuestasIncorrectas}</p>
 
@@ -111,7 +111,7 @@ const ShowQuestions = ({ questions }) => {
     return (
         <>
 
-            <div className="p-4 bg-slate-900 rounded-lg flex flex-col items-center content-center relative">
+            <div className="mt-4 p-4 bg-slate-900 rounded-lg flex flex-col items-center content-center relative">
                 <div className="absolute bg-slate-700 pt-1 px-4 rounded top-0 -translate-y-3">{currentTest + 1} / {questions.length}</div>
                 <div className=" opacity-60" >{questionInfo.title}</div>
                 <div className=" font-semibold text-2xl">{questionInfo.question}</div>
@@ -151,7 +151,7 @@ const EnglishTest = () => {
     return (
 
         <>
-            <div className="max-w-full md:max-w-4xl lg:max-w-2xl mx-auto bg-slate-800 p-4 rounded" >
+            <div className="max-w-full md:max-w-4xl lg:max-w-2xl mx-auto bg-slate-800 p-4 rounded mt-4" >
 
                 {
                     questions.length > 0 && replied < questions.length && < ShowQuestions questions={questions} />

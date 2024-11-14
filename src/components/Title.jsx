@@ -2,7 +2,7 @@ const Title = ({ children }) => {
     return (
         <>
 
-            <h1 className="text-3xl w-full">{children}</h1>
+            <h1 className="text-3xl w-full mt-4 font-semibold">{children}</h1>
 
         </>
     );
