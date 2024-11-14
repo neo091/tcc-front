@@ -176,7 +176,7 @@ const Register = () => {
                             </div>
 
                             <button className='bg-sky-600 inline-block py-2 rounded font-semibold' >¡Quiero aprender Inglés!</button>
-                            <p>Ya tienes una cuneta? <Link to={"/Login"} className='text-sky-600 ml-2'>Iniciar Sesión</Link></p>
+                            <p>Ya tienes una cuenta? <Link to={"/Login"} className='text-sky-600 ml-2'>Iniciar Sesión</Link></p>
                         </div>
                     </form>
                 </div>

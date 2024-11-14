@@ -59,7 +59,11 @@ import AdminUsers from "@Admin/Users.jsx"
 import AdminRooms from "@Admin/Rooms.jsx"
 import Chatbot from '@Pages/Dashboard/Chatbot'
 import Profile from '@Pages/Dashboard/Profile'
-
+//cc
+import Comienzo from './pages/Comienzo/comienzo.jsx';
+import TestFacil from './pages/Comienzo/testFacil.jsx';
+import TestMedio from './pages/Comienzo/testMedio.jsx';
+import TestDificil from './pages/Comienzo/testDificil.jsx';
 
 //---//
 
@@ -70,6 +74,14 @@ const router = createBrowserRouter(
       element: <Home />,
       errorElement: <ErrorPage />
     },
+    {
+      path: "/comienzo",
+      element: <Comienzo />,
+      errorElement: <ErrorPage />
+    },
+    { path: "/testFacil", element: <TestFacil /> },
+    { path: "/testMedio", element: <TestMedio /> },
+    { path: "/testDificil", element: <TestDificil /> },
     {
       path: "/Teacher",
       element: <Teacher />,
