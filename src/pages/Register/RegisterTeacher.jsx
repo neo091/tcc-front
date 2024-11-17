@@ -1,14 +1,10 @@
 import { useState } from 'react'
-import Banner from '../../components/Banner'
-import Button from '../../components/Button'
-import Content from '../../components/Content'
-import EnlaceDefaultNoBg from '../../components/EnlaceDefaultNoBg'
-import Header from '../../components/Header'
-import Alert from '../../components/Alerts'
-import RegisterService from '../../services/auth'
+import Alert from '@components/Alerts'
+import RegisterService, { doLogin } from '@services/auth'
 import isEmail from 'validator/lib/isEmail'
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuthStore } from '@store/authStore'
 import { AcademicCapIcon } from '@heroicons/react/24/solid'
 
 const Input = ({ type, label, handle }) => {
@@ -17,24 +13,25 @@ const Input = ({ type, label, handle }) => {
   )
 }
 
-const Register = () => {
+const RegisterTeacher = () => {
 
-  const [user, setUser] = useState([])
+  const [user, setUser] = useState({ rol_id: 2 })
   const [hideAlert, setHideAlert] = useState(true)
   const [alertMessage, setAlertMessage] = useState('default')
   const [alertType, setAlertType] = useState('default')
-
+  const navigate = useNavigate()
+  const { setSession, setIsLogin } = useAuthStore()
 
   const nameHandle = (text) => {
     setUser({ ...user, name: text })
   }
 
-  const emailHandle = (text) => {
-    setUser({ ...user, email: text })
-  }
-
   const lastNameHandle = (text) => {
     setUser({ ...user, lastName: text })
+  }
+
+  const emailHandle = (text) => {
+    setUser({ ...user, email: text })
   }
 
   const passwordHandle = (text) => {
@@ -90,14 +87,55 @@ const Register = () => {
       return
     }
 
-
     RegisterService.register(user).then(result => {
       console.log(result)
+
+      if (result.error) {
+        showAlert({
+          type: 'danger',
+          message: 'Registro fallido!'
+        })
+
+        return
+      }
 
       showAlert({
         type: 'success',
         message: 'Registro exitoso'
       })
+
+      setTimeout(async () => {
+        await doLogin({
+          email: user.email,
+          password: user.password
+        })
+          .then(result => {
+            console.log("login", result)
+
+
+            window.localStorage.setItem(
+              'loggedTCC', JSON.stringify(result.body)
+            )
+
+            setSession(result.body)
+            setIsLogin(true)
+
+            navigate("/Teacher")
+
+
+          })
+          .catch((e) => {
+            if (e.code == "ERR_BAD_RESPONSE") {
+              showAlert({ type: ErrorType.DANGER, message: `Error ${e.response.data.status}, ${e.response.data.body.message}` })
+            }
+
+            if (e.code == "ERR_NETWORK") {
+              showAlert({ type: ErrorType.DANGER, message: `Error` })
+            }
+
+            return
+          })
+      }, 3000)
 
 
     }).catch((err) => {
@@ -121,21 +159,16 @@ const Register = () => {
 
       <div className='grid grid-cols-[32rem_auto] max-lg:grid-cols-[1fr] w-[94%] max-md:w-[85%] max-lg:w-[55%] m-auto justify-center items-center gap-6 h-screen'>
 
-        <div className='max-lg:hidden'>
-          <h2 className='text-3xl font-bold mb-2'>Aprende inglés a tu ritmo y sin horario</h2>
-          <p>Miles de estudiantes aprenden inglés cada mes utilizando el método DigitalEducation.</p>
-          <p className='my-4 ml-2'>Clases de inglés en directo con profesores nativos.</p>
-          <p className='my-4 ml-2'>Aprendes más de 3.000 frases y palabras claves.</p>
-          <p className='my-4 ml-2'>Mejoras tu pronunciación y comprensión auditiva.</p>
-          <p className='my-4 ml-2'>Certificado oficial DigitalEducation al completar cada nivel.</p>
-        </div>
-
         <div>
-
           <Alert type={alertType} message={alertMessage} hide={hideAlert} />
           <form action="/register-success" method='POST' onSubmit={(e) => registerSubmit(e)}>
             <div className='flex flex-col gap-6 p-6 bg-slate-800 border-slate-700 border rounded-xl shadow-black/45 shadow-xl hover:shadow-none transition-all duration-300'>
-              <h1 className='text-center text-2xl font-semibold'>Crea tu cuenta</h1>
+
+              <h1 className='text-center text-2xl font-semibold'>
+                Crea tu cuenta como un
+                <span className='font-semibold text-violet-400 flex gap-2 items-center justify-center'>Teacher <AcademicCapIcon className='w-6' title='Teacher' /> </span>
+              </h1>
+
               <Input type="text" label="Nombre" handle={nameHandle} />
               <Input type="text" label="Apellido" handle={lastNameHandle} />
               <Input type="text" label="Correo electrónico" handle={emailHandle} />
@@ -148,8 +181,7 @@ const Register = () => {
 
               </div>
 
-              <button className='bg-sky-600 inline-block py-2 rounded font-semibold' >¡Quiero aprender Inglés!</button>
-              <Link to={"Teacher"} className='flex transition-all duration-300 hover:bg-violet-700 text-center  py-2 rounded font-semibold items-center justify-center gap-2' >¡I'm a Teacher <AcademicCapIcon className='w-8' /> !</Link>
+              <button className='bg-sky-600 inline-block py-2 rounded font-semibold' >Crear Cuenta</button>
               <p>Ya tienes una cuenta? <Link to={"/Login"} className='text-sky-600 ml-2'>Iniciar Sesión</Link></p>
             </div>
           </form>
@@ -160,4 +192,4 @@ const Register = () => {
 
 }
 
-export default Register
+export default RegisterTeacher

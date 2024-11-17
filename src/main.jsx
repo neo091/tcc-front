@@ -64,6 +64,7 @@ import Comienzo from './pages/Comienzo/comienzo.jsx';
 import TestFacil from './pages/Comienzo/testFacil.jsx';
 import TestMedio from './pages/Comienzo/testMedio.jsx';
 import TestDificil from './pages/Comienzo/testDificil.jsx';
+import RegisterTeacher from '@Pages/Register/RegisterTeacher.jsx'
 
 //---//
 
@@ -198,6 +199,11 @@ const router = createBrowserRouter(
     {
       path: "/Register",
       element: <Register />,
+      errorElement: <ErrorPage />
+    },
+    {
+      path: "/Register/Teacher",
+      element: <RegisterTeacher />,
       errorElement: <ErrorPage />
     },
     {
