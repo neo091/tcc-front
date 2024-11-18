@@ -141,7 +141,7 @@ const TestDificil = () => {
               <ul className="space-y-2 text-gray-800">
                 {questions.map((question, index) => (
                   <li key={index} className="text-md">
-                    <strong>{question.question}</strong>: {question.correctAnswer}
+                        <strong >{question.question}</strong>: <span className="font-bold">{question.correctAnswer}</span>
                   </li>
                 ))}
               </ul>
