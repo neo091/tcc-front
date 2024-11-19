@@ -9,11 +9,17 @@ const setToken = newToken => {
   token = `Bearer ${newToken}`
 }
 
-await getUserData().then(result => {
-  setToken(result.token)
-})
+async function getToken() {
+  await getUserData().then(result => {
+
+    if (result) setToken(result.token)
+  })
+}
+
 
 export const generateContent = async (data) => {
+
+  await getToken()
 
   const config = {
     headers: { Authorization: token }
@@ -29,6 +35,7 @@ export const generateContent = async (data) => {
 }
 
 export async function saveContent(data) {
+  await getToken()
   const config = {
     headers: { Authorization: token }
   }
@@ -43,6 +50,8 @@ export async function saveContent(data) {
 }
 
 export async function getContents(lessonId) {
+  await getToken()
+
   const config = {
     headers: { Authorization: token }
   }
