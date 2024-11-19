@@ -8,7 +8,6 @@ import Home from '@Pages/Home'
 import ErrorPage from '@Pages/error-page.jsx'
 // import Profile from '@Pages/Profile.jsx'
 import Login from '@Pages/Login/Login.jsx'
-import Logout from '@Pages/Logout.jsx'
 import Register from '@Pages/Register/Register.jsx'
 
 //Teacher Sections
@@ -185,11 +184,6 @@ const router = createBrowserRouter(
         { path: 'Exam', element: <DashboardExam /> },
         { path: "Chatbot", element: <Chatbot /> }
       ]
-    },
-
-    {
-      path: "Logout",
-      element: <Logout />
     },
     {
       path: "/Login",
