@@ -66,7 +66,7 @@ const Teacher = () => {
             </button>
           </div>
 
-          <a href="#" className="p-4 bg-slate-900 block">
+          <Link to={'Profile'} className="p-4 bg-slate-900 block">
             <div className="mx-4">
               <div className="flex gap-3 justify-between items-center">
                 <span className="w-12 h-12 rounded-full overflow-hidden">
@@ -82,7 +82,7 @@ const Teacher = () => {
 
 
             </div>
-          </a>
+          </Link>
 
 
 

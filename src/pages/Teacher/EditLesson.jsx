@@ -2,11 +2,7 @@ import { Form, redirect } from "react-router-dom"
 import Swal from "sweetalert2"
 
 import { useLessonStore } from "@store/lessonStore"
-import { Card, CardContent, CardHeader, CardTitle } from "@components/Card"
-import { useContents } from "@hooks/useContent"
-import { CONTENT_TYPE } from "@utils/contentType"
-import { AddContent } from "@components/AddContent"
-import { Content } from "@components/LessonContent"
+import { Card, CardHeader, CardTitle } from "@components/Card"
 import { updateLesson } from "@services/teacher"
 import { SparklesIcon, StarIcon } from "@heroicons/react/24/solid"
 import { generateContent, getContents, saveContent } from "@services/ContentService"
@@ -103,6 +99,7 @@ const EditLesson = () => {
           value: JSON.stringify(content)
         }
 
+        console.log(data)
         await saveContent(data).then(result => {
 
           if (!result.error) {
