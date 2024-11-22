@@ -62,3 +62,17 @@ export async function getContents(lessonId) {
 
   return response.data
 }
+
+export async function deleteContent(contentId) {
+  await getToken()
+
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  const response = await axios.delete(
+    `${base_url}/api/teacher/lessons/contents/delete/${contentId}`, config
+  )
+
+  return response.data
+}

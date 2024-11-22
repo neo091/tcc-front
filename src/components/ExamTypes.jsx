@@ -3,9 +3,9 @@ import { CheckIcon, ChevronLeftIcon, PencilIcon, TrashIcon } from '@heroicons/re
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import Swal from "sweetalert2";
 
-export const MultipleChoice = ({ item, examIndex, editAskHandle, editPointsHandle, editCorrectAnswerHandle, editAnswerHandle, removeAnswerHandle }) => {
+export const MultipleChoice = ({ item, examIndex, editAskHandle, editPointsHandle, editCorrectAnswerHandle, editAnswerHandle, removeAnswerHandle, handleDeleteExam }) => {
 
-  const { id, ask, points } = item
+  const { ask, points } = item
 
 
   return (
@@ -61,13 +61,20 @@ export const MultipleChoice = ({ item, examIndex, editAskHandle, editPointsHandl
           </table>
 
         </CardContent>
+
+        <div className="w-full mt-4 bg-slate-700 p-4">
+          <button onClick={() => handleDeleteExam({ id: examIndex })} className="bg-red-700 hover:bg-red-700/80 transition-all duration-300 w-full p-2 block rounded">
+            BORRAR
+          </button>
+        </div>
       </Card>
+
 
     </>
   )
 }
 
-export const TrueFalseItem = ({ item, examIndex, editAskHandle, editPointsHandle, editCorrectAnswerHandle }) => {
+export const TrueFalseItem = ({ item, examIndex, editAskHandle, editPointsHandle, editCorrectAnswerHandle, handleDeleteExam }) => {
 
   const { id, ask, points } = item
 
@@ -110,13 +117,18 @@ export const TrueFalseItem = ({ item, examIndex, editAskHandle, editPointsHandle
             }
           </section>
         </CardContent>
+        <div className="w-full mt-4 bg-slate-700 p-4">
+          <button onClick={() => handleDeleteExam({ id: examIndex })} className="bg-red-700 hover:bg-red-700/80 transition-all duration-300 w-full p-2 block rounded">
+            BORRAR
+          </button>
+        </div>
       </Card >
 
     </>
   )
 }
 
-export const Typing = ({ item, examIndex, editAskHandle, editPointsHandle, editCorrectAnswerHandle }) => {
+export const Typing = ({ item, examIndex, editAskHandle, editPointsHandle, editCorrectAnswerHandle, handleDeleteExam }) => {
 
   const { id, ask, points } = item
 
@@ -165,6 +177,11 @@ export const Typing = ({ item, examIndex, editAskHandle, editPointsHandle, editC
 
           </section>
         </CardContent>
+        <div className="w-full mt-4 bg-slate-700 p-4">
+          <button onClick={() => handleDeleteExam({ id: examIndex })} className="bg-red-700 hover:bg-red-700/80 transition-all duration-300 w-full p-2 block rounded">
+            BORRAR
+          </button>
+        </div>
       </Card >
     </>
   )

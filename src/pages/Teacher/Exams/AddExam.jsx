@@ -44,6 +44,12 @@ const AddExam = () => {
     getKeywords()
   }, [])
 
+  const handleDeleteExam = ({ id }) => {
+    const newExam = [...exam].filter((_, index) => index !== id)
+
+    setExam(newExam)
+  }
+
   const toggleElement = (element, message, enable) => {
     element.innerText = message
     element.enable = enable
@@ -57,6 +63,8 @@ const AddExam = () => {
     const formData = new FormData(e.target);
     formData.append("keywords", keywordsStr);
     const updates = Object.fromEntries(formData);
+
+    console.log(updates)
 
 
     if (updates.type === "audio") {
@@ -88,8 +96,9 @@ const AddExam = () => {
     })
 
     setSaveData({
-      "title": "Examen sin titulo",
-      "prompt": updates.title
+      "days": updates.days,
+      "title": updates.title ?? "Examen sin titulo",
+      "prompt": updates.prompt
     });
   }
 
@@ -161,6 +170,7 @@ const AddExam = () => {
   const saveHandle = async () => {
 
     const data = {
+
       "exam": JSON.stringify(exam),
       "config": JSON.stringify(saveData),
       "roomID": room.aula_id
@@ -172,7 +182,21 @@ const AddExam = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await saveExam(data).then(result => {
+          console.log(result.data)
+
+          if (result.data.error) {
+
+            Swal.fire({
+              text: `Ocurrió un error ${result.data.body.message}`
+            })
+
+
+            return
+          }
+
+
           navigate(`/Teacher/Rooms/${room.aula_id}`)
+
         }).catch((err) => console.log(err))
       }
     })
@@ -194,9 +218,15 @@ const AddExam = () => {
             <form onSubmit={submitHandle}>
               <div className='flex flex-col gap-4 '>
                 <div>
-                  <input name='title' type='text' className='w-full h-10 text-black p-2' placeholder='escribe sobre que quieres que genere...' />
+                  <label htmlFor="">Titulo del examen</label>
+                  <input name='title' type='text' className='w-full h-10 text-black p-2' placeholder='escribe titulo para el examen' />
                 </div>
                 <div>
+                  <label htmlFor="">Prompt adicional</label>
+                  <input name='prompt' type='text' className='w-full h-10 text-black p-2' placeholder='escribe sobre que quieres que genere...' />
+                </div>
+                <div>
+                  <label htmlFor="">Cantidad de Preguntas a generar</label>
                   <select name='amount' className='w-full h-10 text-black'>
                     {
                       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => item === 0 ? <option key={item} value={0} disabled >Cantidad de Preguntas</option> : <option key={item} value={item}>{item}</option>)
@@ -205,9 +235,19 @@ const AddExam = () => {
                 </div>
 
                 <div>
+                  <label htmlFor="">Tipo de Contenido</label>
                   <select name='type' className='w-full h-10 text-black'>
                     {
                       examTypes.map(item => item.value !== 0 ? <option key={item.value} value={item.value}>{item.name}</option> : <option key={item.value} value={0} disabled >{item.name}</option>)
+                    }
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="">Días limites</label>
+                  <select name='days' className='w-full h-10 text-black'>
+                    {
+                      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => item === 0 ? <option key={item} value={0} disabled >Cantidad de días</option> : <option key={item} value={item}>{item}</option>)
                     }
                   </select>
                 </div>
@@ -239,7 +279,10 @@ const AddExam = () => {
           editCorrectAnswerHandle={editCorrectAnswerHandle}
           editPointsHandle={editPointsHandle}
           saveHandle={saveHandle}
-          examList={exam} />
+          examList={exam}
+          handleDeleteExam={handleDeleteExam}
+
+        />
 
       </div>
     </div>

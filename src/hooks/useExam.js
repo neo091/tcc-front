@@ -36,6 +36,12 @@ export function useExam({ id, examID }) {
 
   };
 
+  const handleDeleteExam = ({ id }) => {
+    const newExam = [...exam].filter((_, index) => index !== id)
+
+    setExam(newExam)
+  }
+
   useEffect(() => {
     getExamsList()
   }, [])
@@ -44,5 +50,5 @@ export function useExam({ id, examID }) {
     getExam()
   }, [exams])
 
-  return { exams, examDelete, exam, setExam, examConfig, setExamConfig };
+  return { exams, examDelete, exam, setExam, examConfig, setExamConfig, handleDeleteExam };
 }

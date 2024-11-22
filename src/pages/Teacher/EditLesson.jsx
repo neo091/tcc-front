@@ -1,11 +1,11 @@
-import { Form, redirect } from "react-router-dom"
+import { Form, redirect, useLoaderData } from "react-router-dom"
 import Swal from "sweetalert2"
 
 import { useLessonStore } from "@store/lessonStore"
 import { Card, CardHeader, CardTitle } from "@components/Card"
-import { updateLesson } from "@services/teacher"
+import { getLesson, updateLesson } from "@services/teacher"
 import { SparklesIcon, StarIcon } from "@heroicons/react/24/solid"
-import { generateContent, getContents, saveContent } from "@services/ContentService"
+import { deleteContent, generateContent, getContents, saveContent } from "@services/ContentService"
 import { useEffect, useState } from "react"
 import { MultipleChoice, TrueFalseItem } from "@components/ExamTypes"
 
@@ -25,7 +25,9 @@ export const action = async ({ request, params }) => {
 
 const EditLesson = () => {
 
-  const { lesson } = useLessonStore()
+  const { lessonId } = useLoaderData()
+
+  const { lesson, setLesson } = useLessonStore()
 
   const [contents, setContents] = useState([])
 
@@ -46,6 +48,16 @@ const EditLesson = () => {
 
   }
 
+  const loadLesson = async () => {
+
+    await getLesson({ id: lessonId })
+      .then(result => {
+        console.log(result.body)
+        setLesson(result.body.result)
+      })
+
+  }
+
   async function loadContents() {
 
     const { id } = lesson
@@ -53,7 +65,9 @@ const EditLesson = () => {
     await getContents(id).then((result) => {
       const { body } = result
 
-      const resultContentsLoaded = body.result.map(content => JSON.parse(content.value))
+      const resultContentsLoaded = body.result.map(content => {
+        return { ...JSON.parse(content.value), id: content.ID }
+      })
 
       setContents(resultContentsLoaded)
 
@@ -61,6 +75,7 @@ const EditLesson = () => {
   }
 
   useEffect(() => {
+    loadLesson()
     loadContents()
   }, [])
 
@@ -99,19 +114,34 @@ const EditLesson = () => {
           value: JSON.stringify(content)
         }
 
-        console.log(data)
         await saveContent(data).then(result => {
 
           if (!result.error) {
-            setContents(contents.concat(content))
-
-            console.log(result)
+            const { insertId } = result.body.result
+            setContents(contents.concat({ ...content, id: insertId }))
           }
         })
 
 
       })
     }
+  }
+
+  const handleDeleteExam = ({ id }) => {
+
+
+    const contentToDelete = [...contents].find((_, index) => index === id)
+
+    //console.log(contentToDelete.id)
+
+    deleteContent(contentToDelete.id)
+      .then(result => {
+        console.log(result)
+        const newContents = [...contents].filter((_, index) => index !== id)
+
+        setContents(newContents)
+      })
+
   }
 
   const editAnswerHandle = async (index, contentIndex) => {
@@ -238,7 +268,7 @@ const EditLesson = () => {
                   contents.map((content, index) => (
                     <>
                       {
-                        content.type === "multiple_choice" && <MultipleChoice item={content}
+                        content.type === "multiple_choice" && <MultipleChoice handleDeleteExam={handleDeleteExam} item={content}
                           key={index + 9999}
                           examIndex={index}
                           editPointsHandle={editPointsHandle}
@@ -250,7 +280,7 @@ const EditLesson = () => {
                       }
 
                       {
-                        content.type === "true_false" && <TrueFalseItem item={content}
+                        content.type === "true_false" && <TrueFalseItem handleDeleteExam={handleDeleteExam} item={content}
                           key={index + 999}
                           examIndex={index}
                           editPointsHandle={editPointsHandle}

@@ -14,7 +14,7 @@ const EditExam = () => {
 
   const { id, examID } = useLoaderData()
   const navigate = useNavigate()
-  const { exam, setExam, examConfig, setExamConfig } = useExam({ id, examID })
+  const { exam, setExam, examConfig, setExamConfig, handleDeleteExam } = useExam({ id, examID })
 
   const editAnswerHandle = async (answerIndex, examIndex) => {
     const answerText = exam[examIndex].answers[answerIndex]
@@ -156,7 +156,9 @@ const EditExam = () => {
             </div>
           </div>
           <div className='flex flex-col gap-2 mt-4'>
-            <ExamGeneratedList editAnswerHandle={editAnswerHandle}
+            <ExamGeneratedList
+              handleDeleteExam={handleDeleteExam}
+              editAnswerHandle={editAnswerHandle}
               editAskHandle={editAskHandle}
               removeAnswerHandle={removeAnswerHandle}
               editCorrectAnswerHandle={editCorrectAnswerHandle}
