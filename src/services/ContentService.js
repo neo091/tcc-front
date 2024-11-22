@@ -16,7 +16,6 @@ async function getToken() {
   })
 }
 
-
 export const generateContent = async (data) => {
 
   await getToken()

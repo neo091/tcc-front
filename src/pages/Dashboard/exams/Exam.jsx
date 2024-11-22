@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { getAnalice } from "@services/gptService";
-import { CheckBadgeIcon, XCircleIcon } from "@heroicons/react/24/solid";
-import { Link, useNavigate } from "react-router-dom";
 import { useExamStore2 } from "@store/examStore2";
-
+import { ExamResume } from "@components/ExamResume";
 
 const ExamList = ({ currentQuestion, checkQuestion, checkTyping }) => {
   return (
-
     <>
 
       {
@@ -61,42 +58,27 @@ const ExamList = ({ currentQuestion, checkQuestion, checkTyping }) => {
   )
 }
 
-const Corrects = ({ questions }) => {
-
-  console.log(questions)
-  return
-}
 const Exam = () => {
 
-  const { exam, roomId, currentExam, setCompletedExams, completedExams } = useExamStore2()
+  const { exam, currentExam, setCompletedExams, completedExams } = useExamStore2()
 
-  const navigate = useNavigate()
 
   const [current, setCurrent] = useState(0)
   const [questions, setQuestions] = useState(exam)
   const [currentQuestion, setCurrentQuestion] = useState(exam[current])
   const [correctQuestion, setCorrectQuestion] = useState([])
   const [incorrectQuestion, setIncorrectQuestion] = useState([])
-  const [finalizado, setFinalizado] = useState(false)
   const [notaExamen, setNotaExamen] = useState([])
   const typingRef = useRef()
   const [isCompleted, setIsCompleted] = useState(false)
 
   const loadExam = async () => {
-    // const res = await fetch('http://localhost:5173/exam.json')
-    // const json = await res.json()
-    // setQuestions(json)
-    // setCurrentQuestion(json[current])
 
-    // setQuestions(exam)
-    // setCurrentQuestion(exam[current])
     const isCompletedExam = completedExams.find(item => item === currentExam)
 
     if (isCompletedExam) {
       setIsCompleted(true)
     }
-
-    // console.log(isCompletedExam)
 
   }
 
@@ -110,15 +92,21 @@ const Exam = () => {
 
   const finishExam = async () => {
 
-    getAnalice({
+    await getAnalice({
       correct: correctQuestion,
       incorrect: incorrectQuestion
     })
       .then((response) => {
-        setFinalizado(true)
+
         setNotaExamen(JSON.parse(response.body.res))
         setCompletedExams(currentExam)
-        // console.log(JSON.parse(response.body.res))
+        setIsCompleted(true)
+
+        const data = {
+          exam_id: currentExam,
+          notaExamen: JSON.parse(response.body.res)
+        }
+
       })
       .catch((e) => console.error(e.message))
   }
@@ -137,7 +125,6 @@ const Exam = () => {
     if (newCurrent >= questions.length) {
       setCurrentQuestion([])
       finishExam()
-
       return;
     }
 
@@ -151,18 +138,20 @@ const Exam = () => {
     const currentText = typingText.toLowerCase()
     const currentCorrect = currentQuestion?.correct.toLowerCase()
 
-    if (currentCorrect == currentText)
+    if (currentCorrect == currentText) {
       setCorrectQuestion([...correctQuestion, currentQuestion])
-    else
-      setIncorrectQuestion([...incorrectQuestion, currentQuestion])
+    }
+    else {
 
+      setIncorrectQuestion([...incorrectQuestion, currentQuestion])
+    }
     typingRef.current.value = ""
     const newCurrent = current + 1
 
     if (newCurrent >= questions.length) {
-      setCurrentQuestion([])
 
       finishExam()
+      setCurrentQuestion([])
 
       return;
     }
@@ -171,31 +160,12 @@ const Exam = () => {
 
   }
 
-
-
   return (
-    <>
+    <div className="my-4 h-[80vh] justify-center items-center flex flex-col">
       {isCompleted
-        ? <Corrects questions={correctQuestion} />
+        ? <ExamResume currentExamId={currentExam} notaExamen={notaExamen} />
         : <ExamList currentQuestion={currentQuestion} checkQuestion={checkQuestion} checkTyping={checkTyping} />}
-
-      {
-        finalizado && <>
-
-          <div className="text-center flex flex-col gap-3 items-center justify-center bg-slate-800 rounded max-w-[600px] m-auto py-8">
-
-            {notaExamen.percentage > 70 ? <CheckBadgeIcon className="w-24 text-green-500" /> : <XCircleIcon className="w-24 text-red-600" />}
-            <h2 className="text-2xl font-semibold">Has terminado el examen</h2>
-            <p>Su puntuación: {correctQuestion.reduce((acc, item) => acc + item.points, 0)}/{exam.reduce((acc, item) => acc + item.points, 0)} ({notaExamen.percentage}%)</p>
-            <p>{notaExamen.recommendations}</p>
-
-          </div>
-
-          <Link to={`/Dashboard/Rooms/${roomId}`} className=" bg-violet-600 px-4 py-2 rounded w-[200px] m-auto block text-center mt-8">Volver</Link>
-
-        </>
-      }
-    </>
+    </div>
   );
 }
 
