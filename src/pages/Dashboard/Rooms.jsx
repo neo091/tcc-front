@@ -1,71 +1,81 @@
 import React, { Children, useEffect, useState } from 'react';
 import Title from '../../components/Title';
-import { getUserData } from '../../auth';
-import { Link, useLoaderData } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { GridContent } from '../../components/GridContent';
+import { useRoomStore } from '@store/roomStore';
+import { useAuthStore } from '@store/authStore';
+import { getMyCourses } from '@services/Dashboard';
 
+export const MyRoom = ({ room }) => {
+  const { setRoom } = useRoomStore()
+  const navigate = useNavigate()
 
-export const loader = async () => {
-    const user = await getUserData()
+  const { nombre_aula, aula_descripcion, nivel, aula_id } = room
 
-    return { user }
+  const goRoomHandle = () => {
+    setRoom(room)
+    navigate(`/Dashboard/Rooms/${aula_id}`)
+  }
+  return (
+    <>
+      <button onClick={goRoomHandle} className='group p-2 box-border hover:bg-slate-800 rounded-md max-w-40 transition-all duration-300'>
+        <img src={`https://ui-avatars.com/api/?name=${nombre_aula}&background=0D8ABC&color=fff`} alt="" className='w-40' />
+        <h3 className='text-slate-400 truncate group-hover:text-slate-50 transition-all duration-300 '>{nombre_aula} </h3>
+        {/*<p className=' truncate'>{aula_descripcion}</p>*/}
+      </button>
+
+    </>
+  )
+
 }
 
-const ExitEnrollButton = ({ onPress, children, ...props }) => {
-    return (
-        <button {...props} onClick={onPress} className='bg-red-600 hover:bg-red-700 shadow-[inset_0px_-6px_0px_0px_#00000050] block sm:inline-block xl:inline-block lg:inline-block text-center my-2 font-semibold text-white p-4 transition-all duration-500'>
-            {children}
-        </button>
-    )
-}
+export const MyRoomsOfList = () => {
+
+  const { token } = useAuthStore()
+
+  const [myCourses, setMyCourses] = useState([])
+
+  const loadMyCourses = async () => {
+
+    const coursesResult = await getMyCourses({ token })
+
+    if (coursesResult.error) {
+      return
+    }
+
+    const { courses } = coursesResult.body
+
+    setMyCourses(courses)
+
+  }
+
+  useEffect(() => { loadMyCourses() }, [])
+
+  return (
+    <section>
+      <Title>Mis Aulas</Title>
+
+      <GridContent>
+        {
+          myCourses.map((course) => <MyRoom key={course.id} room={course} />)
+        }
+      </GridContent>
 
 
-const MyRoom = ({ room, handle }) => {
-    const { nombre_aula, aula_descripcion, nivel, aula_id } = room
-
-    return (
-        <>
-            <Link to={`/Dashboard/Rooms/${aula_id}`} className='p-2 box-border hover:bg-slate-800 rounded-md max-w-40'>
-                <img src={`https://ui-avatars.com/api/?name=${nombre_aula}&background=0D8ABC&color=fff`} alt="" className='w-40' />
-                <h3 className='text-slate-400 truncate'>{nombre_aula} </h3>
-                <p className=' truncate'>{aula_descripcion}</p>
-            </Link>
-
-        </>
-    )
+    </section>
+  )
 
 }
 
 const DashboardRooms = () => {
 
-    const { user } = useLoaderData()
 
-    const [myRooms, setMyRooms] = useState([])
 
-    const getMyRooms = async () => {
-        await fetch(`http://localhost:4000/api/dashboard/rooms/${user.id}`,
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${user.token}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => setMyRooms(data.body.data));
-    }
-
-    useEffect(() => { getMyRooms() }, [])
-
-    return (
-        <>
-            <Title>Mis Aulas</Title>
-
-            <GridContent>
-
-                {myRooms.map(room => <MyRoom key={room.aula_id} room={room} />)}
-            </GridContent>
-        </>
-    );
+  return (
+    <>
+      <MyRoomsOfList />
+    </>
+  );
 }
 
 export default DashboardRooms;

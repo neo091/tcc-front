@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { getAnalice } from "@services/gptService";
 import { useExamStore2 } from "@store/examStore2";
 import { ExamResume } from "@components/ExamResume";
+import { saveExamResume } from "@services/exam";
 
-const ExamList = ({ currentQuestion, checkQuestion, checkTyping }) => {
+const ExamList = ({ currentQuestion, checkQuestion, checkTyping, typingRef }) => {
   return (
     <>
-
       {
         currentQuestion?.type == "multiple_choice" && <div className="flex items-center">
           <div className="max-w-xl m-auto bg-slate-800 p-2">
@@ -62,10 +62,8 @@ const Exam = () => {
 
   const { exam, currentExam, setCompletedExams, completedExams } = useExamStore2()
 
-
   const [current, setCurrent] = useState(0)
-  const [questions, setQuestions] = useState(exam)
-  const [currentQuestion, setCurrentQuestion] = useState(exam[current])
+  const [currentQuestion, setCurrentQuestion] = useState(exam[0])
   const [correctQuestion, setCorrectQuestion] = useState([])
   const [incorrectQuestion, setIncorrectQuestion] = useState([])
   const [notaExamen, setNotaExamen] = useState([])
@@ -87,8 +85,13 @@ const Exam = () => {
   }, [])
 
   useEffect(() => {
-    setCurrentQuestion(questions[current])
-  }, [current])
+    if (current >= exam.length) {
+      finishExam()
+
+    } else {
+      setCurrentQuestion(exam[current]);
+    }
+  }, [current]);
 
   const finishExam = async () => {
 
@@ -102,11 +105,22 @@ const Exam = () => {
         setCompletedExams(currentExam)
         setIsCompleted(true)
 
+        const nota = JSON.parse(response.body.res)
+
+
         const data = {
           exam_id: currentExam,
-          notaExamen: JSON.parse(response.body.res)
+          recommendations: nota.recommendations,
+          corrects: JSON.stringify(correctQuestion),
+          incorrect: JSON.stringify(incorrectQuestion),
+          points: nota.totalPointsCorrect,
+          points_total: nota.totalPoints
         }
 
+        saveExamResume(data).then(result => {
+          setCompletedExams(currentExam);
+          setIsCompleted(true);
+        })
       })
       .catch((e) => console.error(e.message))
   }
@@ -114,57 +128,41 @@ const Exam = () => {
   const checkQuestion = (e) => {
 
     const currentSelected = e.currentTarget.innerText
+
     if (currentSelected === currentQuestion.answers[currentQuestion.correct]) {
-      setCorrectQuestion([...correctQuestion, currentQuestion])
+
+      setCorrectQuestion((prev) => [...prev, currentQuestion]);
     } else {
-      setIncorrectQuestion([...incorrectQuestion, currentQuestion])
+      setIncorrectQuestion((prev) => [...prev, currentQuestion]);
     }
 
-    const newCurrent = current + 1
-
-    if (newCurrent >= questions.length) {
-      setCurrentQuestion([])
-      finishExam()
-      return;
-    }
-
-    setCurrent(newCurrent)
+    setCurrent((prev) => prev + 1);
 
   }
 
-  const checkTyping = (e) => {
+  const checkTyping = () => {
 
-    const typingText = typingRef.current.value
-    const currentText = typingText.toLowerCase()
+    const currentText = typingRef.current.value.toLowerCase()
     const currentCorrect = currentQuestion?.correct.toLowerCase()
 
     if (currentCorrect == currentText) {
-      setCorrectQuestion([...correctQuestion, currentQuestion])
+      setCorrectQuestion((prev) => [...prev, currentQuestion]);
     }
     else {
 
-      setIncorrectQuestion([...incorrectQuestion, currentQuestion])
+      setIncorrectQuestion((prev) => [...prev, currentQuestion]);
     }
     typingRef.current.value = ""
-    const newCurrent = current + 1
-
-    if (newCurrent >= questions.length) {
-
-      finishExam()
-      setCurrentQuestion([])
-
-      return;
-    }
-
-    setCurrent(newCurrent)
+    setCurrent((prev) => prev + 1);
 
   }
 
   return (
     <div className="my-4 h-[80vh] justify-center items-center flex flex-col">
       {isCompleted
-        ? <ExamResume currentExamId={currentExam} notaExamen={notaExamen} />
-        : <ExamList currentQuestion={currentQuestion} checkQuestion={checkQuestion} checkTyping={checkTyping} />}
+        ? <ExamResume currentExamId={currentExam} />
+        : <ExamList currentQuestion={currentQuestion}
+          checkQuestion={checkQuestion} checkTyping={checkTyping} typingRef={typingRef} />}
     </div>
   );
 }

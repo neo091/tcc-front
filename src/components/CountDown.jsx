@@ -30,51 +30,38 @@ const Countdown = ({ targetDate }) => {
     return () => clearInterval(timer); // Limpieza del temporizador
   }, [targetDate]);
 
-  // Lógica de renderizado condicional
   const renderCountdown = () => {
     if (timeLeft.days > 1) {
-      // Mostrar solo días si falta más de 1 día
-      return <>Faltan {timeLeft.days} días.</>;
-    } else if (timeLeft.days === 1) {
-      // Mostrar días y horas si queda exactamente 1 día
-      return <>Faltan 1 día y {timeLeft.hours} horas.</>
-    } else if (timeLeft.hours === 1) {
-      // Mostrar días y horas si queda exactamente 1 día
-      return (
-        <>
-          Faltan {timeLeft.hours} horas. {timeLeft.minutes} minutos y {timeLeft.seconds} segundos.
-        </>
-      );
-    } else if (timeLeft.minutes > 0) {
-      // Mostrar días y horas si queda exactamente 1 día
-      return (
-        <>
-          Faltan {timeLeft.minutes} minutos y {timeLeft.seconds} segundos.
-        </>
-      );
-    } else if (timeLeft.seconds > 1) {
-      // Mostrar días y horas si queda exactamente 1 día
-      return (
-        <>
-          Faltan {timeLeft.seconds} segundos.
-        </>
-      );
-    } else {
-      // Mostrar solo horas, minutos y segundos si queda menos de un día
+      return <Fragment>Faltan {timeLeft.days} días.</Fragment>;
+    }
+
+    if (timeLeft.days === 1 && timeLeft.hours > 1) {
+      return <Fragment>Faltan {timeLeft.days} días. {timeLeft.hours} horas.</Fragment>;
+    }
+
+    if (timeLeft.days <= 0 && timeLeft.hours >= 1) {
+      return <Fragment>Faltan  {timeLeft.hours} horas. {timeLeft.minutes} minutos y {timeLeft.seconds} segundos.</Fragment>;
+    }
+
+    if (timeLeft.days <= 0 && timeLeft.hours <= 0 && timeLeft.minutes >= 1) {
+      return <Fragment>Faltan {timeLeft.minutes} minutos y {timeLeft.seconds} segundos.</Fragment>;
+    }
+
+    if (timeLeft.days <= 0 && timeLeft.hours <= 0 && timeLeft.seconds >= 1) {
+      return <Fragment>Faltan {timeLeft.seconds} segundos.</Fragment>;
+    }
+
+    if (timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.seconds === 0) {
       return (
         <span className="text-red-500">
-          Se acabó
+          Expiró!
         </span>
-      );
+      )
     }
   };
 
 
-  return (
-    <Fragment>
-      {renderCountdown()}
-    </Fragment>
-  );
+  return renderCountdown()
 };
 
 export default Countdown;

@@ -40,10 +40,10 @@ import HomeDash from '@Dashboard/Home.jsx'
 import EnglishTest from '@Dashboard/Test.jsx'
 import TestPage from '@Pages/Test-Page.jsx'
 import FilesStudent from '@Dashboard/Files.jsx'
-import DashboardRooms, { loader as dashLoader } from '@Dashboard/Rooms.jsx'
+import DashboardRooms from '@Dashboard/Rooms.jsx'
 import DashboardRoomsView, { loader as RoomsViewLoader } from '@Dashboard/RoomsView.jsx'
-import DashboardLessonView, { loader as LessonViewLoader } from '@Dashboard/LessonView.jsx'
-import DashboardCourses, { loader as CoursesLoader } from '@Dashboard/Courses.jsx'
+import DashboardLessonContent from '@Dashboard/LessonContent.jsx'
+import DashboardCourses from '@Dashboard/Courses.jsx'
 import DashboardCourse, { loader as CourseLoader } from '@Dashboard/Course.jsx'
 import DashboardExams from '@Dashboard/exams/index.jsx'
 import DashboardExam from '@Dashboard/exams/Exam.jsx'
@@ -174,10 +174,10 @@ const router = createBrowserRouter(
         { index: true, element: <HomeDash /> },
         { path: "Test", element: <EnglishTest /> },
         { path: "Files", element: <FilesStudent /> },
-        { path: "Rooms", element: <DashboardRooms />, loader: dashLoader },
+        { path: "Rooms", element: <DashboardRooms /> },
         { path: "Rooms/:id", element: <DashboardRoomsView />, loader: RoomsViewLoader },
-        { path: "Lesson/:id", element: <DashboardLessonView />, loader: LessonViewLoader },
-        { path: "Courses", element: <DashboardCourses />, loader: CoursesLoader },
+        { path: "Rooms/Lesson", element: <DashboardLessonContent /> },
+        { path: "Courses", element: <DashboardCourses /> },
         { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader },
         { path: 'Profile', element: <Profile /> },
         { path: 'Exams', element: <DashboardExams /> },
