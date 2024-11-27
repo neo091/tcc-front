@@ -86,9 +86,6 @@ const Login = () => {
     setSession(result.body)
     setIsLogin(true)
 
-    window.localStorage.setItem(
-      'loggedTCC', JSON.stringify(result.body)
-    )
 
   }
   return (

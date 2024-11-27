@@ -61,6 +61,8 @@ export const ProfileBg = () => {
 
   const { session, setUserBg } = useAuthStore()
 
+  console.log(session);
+
   const updateImage = async (file, type) => {
     let userPic
     await updateUserImage({ file, token: session.token, type: type })

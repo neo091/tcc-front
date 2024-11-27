@@ -16,12 +16,17 @@ export const useAuthStore = create(
       return get().token
     },
     setUserPic: (data)=>{
+      const mySession = get().session
+      mySession.pic = data
      
-      set({session:{...get().session, pic:data}})
+      set({session:mySession})
     },
     setUserBg: (data)=>{
+
+      const mySession = get().session
+      mySession.bg = data
      
-      set({session:{...get().session, bg:data}})
+      set({session:mySession})
     },
     setSession: (data) => {
       set({ session: data, token: data.token })
