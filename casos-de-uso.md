@@ -32,14 +32,14 @@
 - [✅] Gestión de aula.
 
 ### Exámenes
-- Listar exámenes disponibles
+- [✅] Listar exámenes disponibles
 
-###
-- Recomendaciones del tutor
-- agregar fechas de vencimiento a las tareas y examenes
+### Recomendaciones del tutor
+- [✅] agregar fechas de vencimiento a exámenes
+- [❗] agregar fechas de vencimiento a tareas
 - las tareas van a tener ponderamiento de mora de maximo de dos dias, los examenes no.
 - ver la generacion de lecciones asistidas con ia mas los recursos del docente.
-- Ver el prompt de las preguntas del examen (ya esta).
+- [✅] Ver el prompt de las preguntas del examen (ya esta).
 - Ver el menu del administrador.
 - Ver el perfil para arreglar.
 - Arreglar las fallas.
