@@ -6,7 +6,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import Home from '@Pages/Home'
 import ErrorPage from '@Pages/error-page.jsx'
-// import Profile from '@Pages/Profile.jsx'
+import Profile from '@Pages/Profile.jsx'
 import Login from '@Pages/Login/Login.jsx'
 import Register from '@Pages/Register/Register.jsx'
 
@@ -57,7 +57,7 @@ import AdminHome from "@Admin/Home.jsx"
 import AdminUsers from "@Admin/Users.jsx"
 import AdminRooms from "@Admin/Rooms.jsx"
 import Chatbot from '@Pages/Dashboard/Chatbot'
-import Profile from '@Pages/Dashboard/Profile'
+//import Profile from '@Pages/Dashboard/Profile'
 //cc
 import Comienzo from './pages/Comienzo/comienzo.jsx';
 import TestFacil from './pages/Comienzo/testFacil.jsx';

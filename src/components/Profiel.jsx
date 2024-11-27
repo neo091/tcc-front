@@ -1,9 +1,9 @@
 const UserTypeToString = (type) => {
 
-    if (type === 0) return 'undefined'
-    if (type === 1) return 'Student'
-    if (type === 2) return 'Teacher'
-    if (type === 3) return 'Admin'
+  if (type === 0) return 'undefined'
+  if (type === 1) return 'Student'
+  if (type === 2) return 'Teacher'
+  if (type === 3) return 'Admin'
 
 }
 
