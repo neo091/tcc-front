@@ -1,9 +1,12 @@
 import { CheckBadgeIcon, XCircleIcon } from "@heroicons/react/24/solid"
 import { getExamResume } from "@services/exam"
+import { useAuthStore } from "@store/authStore"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 export const ExamResume = ({ currentExamId }) => {
+
+  const { token } = useAuthStore()
 
   const [recommendations, setRecommendations] = useState("")
   const [points, setPoints] = useState("")
@@ -14,7 +17,7 @@ export const ExamResume = ({ currentExamId }) => {
 
   const loadResume = async () => {
 
-    await getExamResume(currentExamId).then(result => {
+    await getExamResume({ id: currentExamId, token }).then(result => {
 
       const { recommendations, points, points_total, corrects, incorrect } = result.body
 

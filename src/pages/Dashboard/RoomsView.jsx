@@ -29,15 +29,13 @@ export const ExamsSection = ({ pendingExams }) => {
 const RoomsView = () => {
   const { session } = useAuthStore()
   const { room } = useRoomStore()
+  const { completedExams, setCompletedExams } = useExamStore2()
 
 
   const [pendingExams, setPendingExams] = useState([])
 
-  const { selected } = useSelectedStore()
 
-  useEffect(() => {
-    getRomPendingExams()
-  }, [])
+  const { selected } = useSelectedStore()
 
 
 
@@ -53,6 +51,36 @@ const RoomsView = () => {
         setPendingExams(data.body.exams)
       })
   }
+
+  const getMyExamsCompleted = async () => {
+    const result = await fetch(`http://localhost:4000/api/dashboard/rooms/${room.aula_id}/myExams`, {
+      headers: {
+        "Authorization": `Bearer ${session.token}`,
+        "Content-Type": "application/json",
+      }
+    })
+
+    const json = await result.json()
+
+    const myExams = json.body
+
+
+    myExams.map((myExam) => {
+
+      const isCompleted = completedExams.find(exam => exam !== myExam.exam_id)
+
+      if (!isCompleted) {
+
+        setCompletedExams(myExam.exam_id)
+      }
+
+    })
+  }
+
+  useEffect(() => {
+    getRomPendingExams()
+    getMyExamsCompleted()
+  }, [])
 
   return (
     <>

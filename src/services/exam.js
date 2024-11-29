@@ -33,13 +33,13 @@ export const saveExamResume = async (data) => {
   return response.data
 }
 
-export const getExamResume = async (id) => {
-
-  await getToken()
+export const getExamResume = async ({id, token}) => {
 
   const config = {
-    headers: { Authorization: token }
+    headers: { Authorization: `Bearer ${token}` }
   }
+
+  console.log(config);
 
   const response = await axios.get(
     `${base_url}/api/dashboard/exam/resume/${id}`,
