@@ -6,7 +6,7 @@ import { useExamStore2 } from "@store/examStore2";
 import { useRoomStore } from "@store/roomStore";
 import { useSelectedStore } from "@store/useSelectedStore";
 import { useEffect, useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import Tareas from "@Dashboard/tareas/Tareas";
 
 export const loader = ({ params }) => {
 
@@ -31,13 +31,9 @@ const RoomsView = () => {
   const { room } = useRoomStore()
   const { completedExams, setCompletedExams } = useExamStore2()
 
-
   const [pendingExams, setPendingExams] = useState([])
 
-
   const { selected } = useSelectedStore()
-
-
 
   const getRomPendingExams = async () => {
     await fetch(`http://localhost:4000/api/dashboard/rooms/${room.aula_id}/exams`, {
@@ -87,6 +83,7 @@ const RoomsView = () => {
       <RoomsSelected />
       {selected === "lessons" && <LessonsSectionOfList />}
       {selected === "exams" && <ExamsSection pendingExams={pendingExams} />}
+      {selected === "tasks" && <Tareas />}
 
     </>
 
