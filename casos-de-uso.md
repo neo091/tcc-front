@@ -1,9 +1,8 @@
-# Casos de uso	Actores
+# Casos de uso
 
 ## Login
 - [✅] Registro de usuario.
-- [❗] Confirmación de registro por correo al sistema educativo.
-- [✅] Acceso al sistema.
+- [✅] Acceso al sistema con tokens de seguridad.
 
 ## Perfil de usuario	
 - [✅] El usuario puede verificar su perfil.
@@ -15,8 +14,8 @@
 - [✅] Gestión de aulas.
 - [✅] Elaboración de prueba, para verificación del estado del usuario.
 - [✅] Elaboración de exámenes a través de inteligencia artificial.
-- [❗] Verificación del rendimiento del alumno a través de un reporte.
 - [✅] Subir archivo pdf.
+- [❗] Verificación del rendimiento del alumno a través de un reporte.
 
 ## Perfil del administrador
 - [✅] Panel de Administrador
@@ -26,21 +25,16 @@
 
 ## Funcionalidades del Sistema 
 - [✅] Generación de exámenes y test a través de inteligencia artificial.
-- [❗] Chatbot para dudas del usuario.
-- [❗] Generación de reporte con AI
+- [✅] Chatbot para dudas del usuario.
 - [✅] Gestión de archivos.
 - [✅] Gestión de aula.
 
 ### Exámenes
 - [✅] Listar exámenes disponibles
+- [✅] agregar fechas de vencimiento a exámenes
+- [✅] Ver el prompt de las preguntas del examen (ya esta).
+- [✅] agregar fechas de vencimiento a tareas
 
 ### Recomendaciones del tutor
-- [✅] agregar fechas de vencimiento a exámenes
-- [❗] agregar fechas de vencimiento a tareas
-- las tareas van a tener ponderamiento de mora de maximo de dos dias, los examenes no.
-- ver la generacion de lecciones asistidas con ia mas los recursos del docente.
-- [✅] Ver el prompt de las preguntas del examen (ya esta).
+- ver la generación de lecciones asistidas con ia mas los recursos del docente.
 - Ver el menu del administrador.
-- Ver el perfil para arreglar.
-- Arreglar las fallas.
-- Ver el reporte el finde semana.
