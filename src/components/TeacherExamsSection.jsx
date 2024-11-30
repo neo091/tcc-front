@@ -2,6 +2,7 @@ import { PencilSquareIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24
 import { useExam } from "@hooks/useExam";
 import { useRoomStore } from "@store/roomStore";
 import { Link, useNavigate } from "react-router-dom"
+import Swal from "sweetalert2";
 
 
 const ListOfExams = ({ exam, examDelete }) => {
