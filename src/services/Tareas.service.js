@@ -14,3 +14,18 @@ export async function obtenerTareas({roomId, token}){
   return result.data
 
 }
+
+export async function createNewTask({roomId, token, data}){
+
+  const config = {
+    headers:{
+      "Authorization": `Bearer ${token}`
+    }
+  }
+  
+  const result = await axios.post(`${base_url}/api/dashboard/rooms/${roomId}/tasks`,
+    data, config)
+
+  return result.data
+
+}

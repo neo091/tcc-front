@@ -17,7 +17,7 @@ import Rooms from '@Teacher/Rooms.jsx'
 import EditRoom from '@Teacher/Rooms/EditRoom'
 import NewRoom, { action as NewRoomAction } from '@Teacher/NewRoom.jsx'
 import RoomsList from '@Teacher/RoomsList.jsx'
-import Room, { loader as RoomLoader } from '@Teacher/Room.jsx'
+import Room from '@Teacher/Room.jsx'
 import Files from '@Teacher/Files.jsx'
 import NewLesson, { loader as NewLessonLoader } from '@Teacher/NewLesson.jsx'
 import RoomDelete, { loader as RoomDeleteLoader } from '@Teacher/RoomDelete.jsx'
@@ -29,7 +29,6 @@ import Exams from '@Teacher/Exams/Exams.jsx'
 import ExamsIndex from '@Teacher/Exams/ExamsIndex.jsx'
 import AddExam, { loader as AddExamLoader } from '@Teacher/Exams/AddExam.jsx'
 import EditExam, { loader as EditExamLoader } from '@Teacher/Exams/Edit.jsx'
-import TaskNew, { loader as NewTaskLoader } from '@Teacher/Tasks/TaskNew.jsx'
 import TaskEdit, { loader as TaskEditLoader } from '@Teacher/Tasks/TaskEdit.jsx'
 
 //---//
@@ -105,8 +104,7 @@ const router = createBrowserRouter(
             },
             {
               path: ":id",
-              element: <Room />,
-              loader: RoomLoader
+              element: <Room />
             },
 
             {
@@ -137,11 +135,6 @@ const router = createBrowserRouter(
             {
               path: ":id/lessons/:lessonId/edit/addSection",
               element: <AddSection />
-            },
-            {
-              path: ":id/NewTask",
-              element: <TaskNew />,
-              loader: NewTaskLoader
             },
             {
               path: ":id/TaskEdit/:taskId",

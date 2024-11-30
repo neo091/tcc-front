@@ -4,45 +4,48 @@ import { useLessons } from '../../hooks/useLessons';
 import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import { useLessonStore } from '../../store/lessonStore';
+import { useRoomStore } from '@store/roomStore';
 
-const Lessons = ({ id }) => {
+const Lessons = () => {
 
-    const { lessons, removeLesson, addLesson } = useLessons({ id })
-    const { resetLesson, setLastLessonCreatedId, lastLessonCreatedId } = useLessonStore()
-    const navigate = useNavigate()
+  const { room } = useRoomStore()
 
-    const newLessonHandle = async () => {
-        await resetLesson()
-        const lessonId = await addLesson()
-        setLastLessonCreatedId(lessonId)
-        navigate(`lessons/${lessonId}/edit`)
-    }
+  const { lessons, removeLesson, addLesson } = useLessons({ id: room.aula_id })
+  const { resetLesson, setLastLessonCreatedId, lastLessonCreatedId } = useLessonStore()
+  const navigate = useNavigate()
 
-    return (
-        <>
+  const newLessonHandle = async () => {
+    await resetLesson()
+    const lessonId = await addLesson()
+    setLastLessonCreatedId(lessonId)
+    navigate(`lessons/${lessonId}/edit`)
+  }
 
-            <div className="bg-slate-800 rounded mb-4">
-                <div className="py-4 px-4 border-b border-slate-700 flex">
-                    <h2 className="flex-1">Lecciones</h2>
-                    <button onClick={newLessonHandle} >
-                        <PlusCircleIcon className="w-8 h-8" />
-                    </button>
-                </div>
+  return (
+    <>
 
-                <div className="p-4 flex flex-col gap-2">
-                    {
-                        lessons.length > 0
-                            ? lessons.map((lesson) => <ListOfLessons key={lesson.id} lesson={lesson} removeHandle={removeLesson} />)
-                            : <p className='text-center'>Crear lecciones</p>
-                    }
-                </div>
+      <div className="bg-slate-800 rounded mb-4">
+        <div className="py-4 px-4 border-b border-slate-700 flex">
+          <h2 className="flex-1">Lecciones</h2>
+          <button onClick={newLessonHandle} >
+            <PlusCircleIcon className="w-8 h-8" />
+          </button>
+        </div>
 
-            </div>
+        <div className="p-4 flex flex-col gap-2">
+          {
+            lessons.length > 0
+              ? lessons.map((lesson) => <ListOfLessons key={lesson.id} lesson={lesson} removeHandle={removeLesson} />)
+              : <p className='text-center'>Crear lecciones</p>
+          }
+        </div>
+
+      </div>
 
 
 
-        </>
-    )
+    </>
+  )
 }
 
 export default Lessons;
