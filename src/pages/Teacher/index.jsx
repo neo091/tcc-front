@@ -1,6 +1,6 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import LogoImage from '/images/logo.png'
-import { Bars2Icon, ChevronRightIcon, HomeIcon, PowerIcon, PresentationChartBarIcon } from "@heroicons/react/24/solid";
+import { Bars2Icon, ChevronRightIcon, HomeIcon, PowerIcon, PresentationChartBarIcon,QuestionMarkCircleIcon,BookOpenIcon } from "@heroicons/react/24/solid";
 import { useEffect, useRef } from "react";
 import { useAuthStore } from "../../store/authStore";
 import Swal from "sweetalert2";
@@ -98,6 +98,26 @@ const Teacher = () => {
                   <span className="max-xl:hidden block">Mis Aulas</span>
                 </Link>
               </li>
+              
+                  <li>
+                    <Link
+                      to="/report"
+                      className="group flex items-center gap-2.5 rounded px-4 py-2 font-medium duration-300 ease-in-out hover:bg-violet-800"
+                    >
+                      <BookOpenIcon className="w-6 h-6" />
+                      <span className="max-xl:hidden block">Reportes</span>
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link
+                      to="/ayuda"
+                      className="group flex items-center gap-2.5 rounded px-4 py-2 font-medium duration-300 ease-in-out hover:bg-violet-800"
+                    >
+                      <QuestionMarkCircleIcon className="w-6 h-6" />
+                      <span className="max-xl:hidden block">Ayuda</span>
+                    </Link>
+                  </li>
 
               <li >
                 <button onClick={disconnectHandle} className="group flex items-center gap-2.5 rounded px-4 py-2 font-medium duration-300 ease-in-out hover:bg-red-700 w-full">

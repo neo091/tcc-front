@@ -50,6 +50,11 @@ import Demo from '@Pages/Demo.jsx'
 
 //---//
 
+//Reporte y Ayuda.
+import Report from "@Pages/Report.jsx"
+import Ayuda from "@Pages/Ayuda.jsx"
+
+
 // Admin
 import Admin from "@Admin/Admin.jsx"
 import AdminHome from "@Admin/Home.jsx"
@@ -81,6 +86,8 @@ const router = createBrowserRouter(
     { path: "/testFacil", element: <TestFacil /> },
     { path: "/testMedio", element: <TestMedio /> },
     { path: "/testDificil", element: <TestDificil /> },
+    {path: "/report", element: <Report />},
+    {path: "/ayuda", element: <Ayuda />},
     {
       path: "/Teacher",
       element: <Teacher />,
