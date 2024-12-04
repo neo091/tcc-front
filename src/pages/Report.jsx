@@ -1,48 +1,89 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import reportService from '../services/reportService'; // Ajusta la ruta de importación según sea necesario
-const token = localStorage.getItem('token'); // Suponiendo que el token está almacenado en el localStorage
-
+import reportService from '@services/reportService'; // Ajusta la ruta de importación según sea necesario
+import { useAuthStore } from '@store/authStore';
 
 const Report = () => {
-  const [aula, setAula] = useState('');
+
+  const { token, session } = useAuthStore()
+  const navigate = useNavigate();
+
+  const [aulas, setAulas] = useState([])
+  const [aulaId, setAulaId] = useState(null)
+
+  const [aula, setAula] = useState(false);
   const [estudiante, setEstudiante] = useState('');
   const [sugerenciasEstudiante, setSugerenciasEstudiante] = useState([]);
   const [estudianteSeleccionado, setEstudianteSeleccionado] = useState(false);
+  const [students, setStudents] = useState([])
 
-  const navigate = useNavigate();
+  const getRooms = async () => {
+    const result = await fetch(`http://localhost:4000/api/teacher/rooms`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
 
-  // Lista de aulas disponibles para el docente (ejemplo)
-  const aulas = ['Aula 101', 'Aula 102', 'Aula 103', 'Laboratorio 1'];
+    const data = await result.json()
 
-  // Lista de estudiantes (ejemplo)
-  const estudiantes = {
-    'Aula 101': ['Juan Pérez', 'María López'],
-    'Aula 102': ['Carlos Gómez', 'Ana Torres'],
-    'Aula 103': ['Pedro Rodríguez', 'Laura Silva'],
-    'Laboratorio 1': ['Sofía Hernández', 'Jorge Márquez'],
-  };
+    if (result.ok) {
+      setAulas(data.body)
+    }
+  }
+
+  const getRoomsUsers = async ({ id }) => {
+    const result = await fetch(`http://localhost:4000/api/teacher/rooms/${id}/students`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+    const data = await result.json()
+
+    if (result.ok) {
+      setStudents(data.body)
+      //console.log(data.body);
+    }
+  }
 
   // Manejar la selección de aula
-  const seleccionarAula = (selectedAula) => {
-    setAula(selectedAula);
-    setEstudiante('');
-    setEstudianteSeleccionado(false);
-    setSugerenciasEstudiante([]);
+  const seleccionarAula = (e) => {
+    //setAula(selectedAula);
+    //setEstudiante('');
+    //setEstudianteSeleccionado(false);
+    //setSugerenciasEstudiante([]);
+
+    const id = e.target.value
+    if (id === "") {
+      setAula(false)
+      setEstudiante("")
+      setSugerenciasEstudiante([])
+      return
+    }
+
+    setAula(true)
+    getRoomsUsers({ id })
+    setAulaId(id)
   };
 
   // Manejar la búsqueda de estudiante
-  const buscarEstudiante = (input) => {
-    setEstudiante(input);
-    setEstudianteSeleccionado(false);
-    setSugerenciasEstudiante(
-      input && aula
-        ? estudiantes[aula].filter((e) =>
-            e.toLowerCase().includes(input.toLowerCase())
-          )
-        : []
-    );
+  const buscarEstudiante = (e) => {
+    const searchTxt = e.target.value
+    setEstudiante(searchTxt)
+    if (searchTxt === "") {
+      setSugerenciasEstudiante([])
+      return
+    }
+
+
+    const selectedStudent = [...students].filter(student =>
+      student.nombre.toLowerCase().includes(searchTxt) ||
+      student.apellido.toLowerCase().includes(searchTxt)
+    )
+
+    setSugerenciasEstudiante(selectedStudent);
+
   };
 
   // Seleccionar estudiante de las sugerencias
@@ -51,40 +92,47 @@ const Report = () => {
     setEstudianteSeleccionado(true);
     setSugerenciasEstudiante([]);
   };
-/*
-  const imprimirPDF = () => {
-    console.log('Generando reporte en PDF para:', aula, estudiante);
-    // Lógica para generar el PDF
+  /*
+    const imprimirPDF = () => {
+      console.log('Generando reporte en PDF para:', aula, estudiante);
+      // Lógica para generar el PDF
+    };
+  */
+  const imprimirPDF = async () => {
+    if (!token) {
+      console.error("Usuario no autenticado.");
+      alert("No se encuentra un token de autenticación.");
+      return;
+    }
+
+
+    try {
+      const reportBlob = await reportService.generateReport(
+        { ne: estudiante, PRN: session.name, id_aula: aulaId }, // Asegúrate de pasar los datos correctos
+        token
+      );
+
+      // Crear un enlace temporal para descargar el archivo
+      const url = window.URL.createObjectURL(reportBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'reporte.pdf'; // Nombre del archivo PDF
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      console.log('Reporte generado con éxito.');
+    } catch (error) {
+      console.error("Error al generar el reporte:", error.message);
+      alert("Ocurrió un error al generar el reporte. Intenta nuevamente.");
+    }
   };
-*/
-const imprimirPDF = async () => {
-  if (!token) {
-    console.error("Usuario no autenticado.");
-    alert("No se encuentra un token de autenticación.");
-    return;
-  }
 
-  try {
-    const reportBlob = await reportService.generateReport(
-      { ne: estudiante, PRN: "Nombre del Profesor", id_aula: aula }, // Asegúrate de pasar los datos correctos
-      token
-    );
+  useEffect(() => {
 
-    // Crear un enlace temporal para descargar el archivo
-    const url = window.URL.createObjectURL(reportBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'reporte.pdf'; // Nombre del archivo PDF
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    getRooms()
 
-    console.log('Reporte generado con éxito.');
-  } catch (error) {
-    console.error("Error al generar el reporte:", error.message);
-    alert("Ocurrió un error al generar el reporte. Intenta nuevamente.");
-  }
-};
+  }, [])
 
   return (
     <div className="min-h-screen p-6 text-white" style={{ backgroundColor: '#141B2B' }}>
@@ -96,14 +144,13 @@ const imprimirPDF = async () => {
         <div className="mb-6">
           <label className="block text-white-300 mb-2">Seleccionar Aula:</label>
           <select
-            value={aula}
-            onChange={(e) => seleccionarAula(e.target.value)}
+            onChange={seleccionarAula}
             className="w-full px-4 py-2 rounded bg-gray-700 text-white border border-white-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             <option value="">-- Selecciona un Aula --</option>
-            {aulas.map((a, index) => (
-              <option key={index} value={a}>
-                {a}
+            {aulas.map((a) => (
+              <option key={a.id} value={a.aula_id}>
+                {a.nombre_aula} {a.id}
               </option>
             ))}
           </select>
@@ -115,22 +162,21 @@ const imprimirPDF = async () => {
           <input
             type="text"
             value={estudiante}
-            onChange={(e) => buscarEstudiante(e.target.value)}
+            onChange={buscarEstudiante}
             placeholder="Escribe el nombre del estudiante..."
-            className={`w-full px-4 py-2 rounded bg-gray-700 text-white border ${
-              aula ? 'border-white-600' : 'border-gray-500 cursor-not-allowed'
-            } focus:outline-none focus:ring-2 ${aula ? 'focus:ring-blue-400' : ''}`}
+            className={`w-full px-4 py-2 rounded bg-gray-700 text-white border 
+              ${aula ? 'border-white-600' : 'border-gray-500 cursor-not-allowed'} focus:outline-none focus:ring-2 ${!aula ? 'focus:ring-blue-400' : ''}`}
             disabled={!aula}
           />
           {sugerenciasEstudiante.length > 0 && (
             <ul className="border rounded bg-gray-700 mt-2">
-              {sugerenciasEstudiante.map((s, index) => (
+              {sugerenciasEstudiante.map(element => (
                 <li
-                  key={index}
+                  key={element.nombre}
                   className="px-4 py-2 hover:bg-blue-700 cursor-pointer"
-                  onClick={() => seleccionarEstudiante(s)}
+                  onClick={() => seleccionarEstudiante(element.nombre + " " + element.apellido)}
                 >
-                  {s}
+                  {element.nombre} {element.apellido}
                 </li>
               ))}
             </ul>
@@ -141,11 +187,10 @@ const imprimirPDF = async () => {
         <div className="flex gap-4">
           <button
             onClick={imprimirPDF}
-            className={`${
-              aula && estudianteSeleccionado
-                ? 'bg-cyan-500 hover:bg-green-700'
-                : 'bg-gray-500 cursor-not-allowed'
-            } text-white px-4 py-2 rounded shadow-md`}
+            className={`${aula && estudianteSeleccionado
+              ? 'bg-cyan-500 hover:bg-green-700'
+              : 'bg-gray-500 cursor-not-allowed'
+              } text-white px-4 py-2 rounded shadow-md`}
             disabled={!aula || !estudianteSeleccionado}
           >
             Imprimir Reporte en PDF
