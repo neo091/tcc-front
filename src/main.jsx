@@ -47,6 +47,7 @@ import DashboardCourse, { loader as CourseLoader } from '@Dashboard/Course.jsx'
 import DashboardExams from '@Dashboard/exams/index.jsx'
 import DashboardExam from '@Dashboard/exams/Exam.jsx'
 import Demo from '@Pages/Demo.jsx'
+import TareaView from '@Dashboard/tareas/TareaView.jsx';
 
 //---//
 
@@ -176,6 +177,7 @@ const router = createBrowserRouter(
         { path: "Files", element: <FilesStudent /> },
         { path: "Rooms", element: <DashboardRooms /> },
         { path: "Rooms/:id", element: <DashboardRoomsView />, loader: RoomsViewLoader },
+        { path: "Rooms/:id/TaskView", element: <TareaView /> },
         { path: "Rooms/Lesson", element: <DashboardLessonContent /> },
         { path: "Courses", element: <DashboardCourses /> },
         { path: "Course/:id", element: <DashboardCourse />, loader: CourseLoader },
