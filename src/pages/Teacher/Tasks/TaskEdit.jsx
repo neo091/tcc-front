@@ -1,9 +1,10 @@
-import ExamGeneratedList from "@components/ExamGeneratedList";
+import TasksOfList from "@components/TasksOfList";
 import { ArrowUpTrayIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import { useAuthStore } from "@store/authStore";
 import { useRoomStore } from "@store/roomStore";
 import { useTaskStore } from "@store/useTaskStore";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const TaskEdit = () => {
   const { task, setTask } = useTaskStore()
@@ -14,6 +15,21 @@ const TaskEdit = () => {
   const [examTypes, setExamTypes] = useState([])
   const [taskType, setTaskType] = useState('multiple_choise')
   const [tasks, setTasks] = useState([])
+  const [tasksLoader, setTasksLoader] = useState(null)
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    background: '#1e293b',
+    color: '#fff',
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
 
   const getExamTypes = async () => {
     const result = await fetch('/examTypes.json')
@@ -66,12 +82,35 @@ const TaskEdit = () => {
 
     const json = await result.json()
     setFiles(json.body)
+  }
+
+  const loadTasks = async () => {
+    console.log('load contents', task.id);
+
+    const result = await fetch(` http://localhost:4000/api/teacher/tasks/content/${task.id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+    const json = await result.json()
     console.log(json);
+    if (result.ok) {
+      if (json.body) {
+        const tasks = json.body
+        setTasksLoader(tasks.id)
+        //console.log(tasks.value);
+        setTasks(JSON.parse(tasks.value))
+      }
+    }
+
   }
 
   useEffect(() => {
     getFile()
     getExamTypes()
+    loadTasks()
   }, [])
 
   const selectFileHandle = async (file) => {
@@ -85,17 +124,31 @@ const TaskEdit = () => {
 
     e.target.disabled = true
 
+    if (!text) {
+      e.target.disabled = false
+
+      Toast.fire({
+        icon: "warning",
+        title: "please select a TEXT or PDF file"
+      })
+
+      return;
+    }
+
     if (text.length <= 0) return
     if (taskType === '') return
     const data = {
       "task": task.id,
       "type": taskType,
-      text
+      text: text,
+      amount: 1
     }
     const result = await fetch(`http://localhost:4000/api/teacher/tasks/content/generate`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     })
@@ -104,9 +157,20 @@ const TaskEdit = () => {
 
     if (result.ok) {
 
-      if (json.body.questions && json.body.questions.length > 0) {
-        console.log(json.body?.questions);
-        setTasks([...tasks, json.body?.questions[0]])
+      if (json.body.questions) {
+        const questions = json.body.questions
+        let myShift = [...tasks]
+        questions.forEach(e => {
+          myShift.unshift(e)
+          setTasks(myShift)
+        })
+
+        //setTasks(tasks.unshift(questions))
+
+        //const myShift = tasks
+        //myShift.unshift(json.body.questions)
+        //console.log(myShift);
+        //setTasks(tasks.concat(json.body.questions))
       } else {
         console.log('error al generar tarea');
       }
@@ -120,9 +184,46 @@ const TaskEdit = () => {
     setTaskType(e.target.value)
   }
 
+  const saveTasks = async () => {
+    const result = await fetch(`http://localhost:4000/api/teacher/tasks/content`, {
+      method: tasksLoader ? 'PATCH' : 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        task: task.id,
+        tasks: tasks
+      })
+    })
+
+    const json = await result.json()
+
+    if (result.ok) {
+      if (json.error) {
+        console.log('error al Actualizar');
+        return;
+      }
+      console.log('Actualizado', json);
+
+      if (tasksLoader) {
+        Toast.fire({
+          icon: "success",
+          title: "Update success!"
+        })
+      } else {
+        Toast.fire({
+          icon: "success",
+          title: "Saved success!"
+        })
+      }
+    }
+  }
+
   return (
-    <section className="w-[88%]">
-      {task.title} {task.id}
+    <section className="xl:w-[80vh] m-auto">
+      <h1 className="text-2xl font-semibold">{task.title} {task.id}</h1>
 
       <div className="p-2 mt-4">
         <button onClick={openFileDialog} className="p-2 bg-sky-500 rounded flex gap-2">
@@ -151,16 +252,26 @@ const TaskEdit = () => {
           </select>
         </div>
 
-        <button className="bg-green-500 hover:bg-green-400 text-green-950 font-semibold p-2 rounded flex gap-2 disabled:bg-gray-500" onClick={generateTask}>
-          Generar tarea
-          <SparklesIcon className="w-6" />
+        <div className="grid grid-cols-2 gap-2 text-center">
+          <button className="bg-teal-500 hover:bg-teal-400 text-green-950 font-semibold p-2 rounded flex gap-2 disabled:bg-gray-500 justify-center" onClick={generateTask}>
+            Generar tarea
+            <SparklesIcon className="w-6" />
 
-        </button>
+          </button>
+
+          <button onClick={saveTasks} className="bg-green-600 p-2 rounded text-green-950 font-semibold">
+            {tasksLoader ? 'Actualizar Tareas' : 'Guardar Tareas'}
+          </button>
+        </div>
       </div>
 
-      <div className="p-2 mt-2">
-        <ExamGeneratedList examList={tasks} />
+
+
+      <div className="p-2 mt-2 max-h-[88vh]">
+        <TasksOfList list={tasks} update={setTasks} />
       </div>
+
+
     </section>
   );
 }
