@@ -29,7 +29,7 @@ import Exams from '@Teacher/Exams/Exams.jsx'
 import ExamsIndex from '@Teacher/Exams/ExamsIndex.jsx'
 import AddExam, { loader as AddExamLoader } from '@Teacher/Exams/AddExam.jsx'
 import EditExam, { loader as EditExamLoader } from '@Teacher/Exams/Edit.jsx'
-import TaskEdit, { loader as TaskEditLoader } from '@Teacher/Tasks/TaskEdit.jsx'
+import TaskEdit from '@Teacher/Tasks/TaskEdit.jsx'
 
 //---//
 
@@ -51,7 +51,7 @@ import Demo from '@Pages/Demo.jsx'
 //---//
 
 //Reporte y Ayuda.
-import Report from "@Pages/Report.jsx"
+import Report from "@Pages/Teacher/Report.jsx"
 import Ayuda from "@Pages/Ayuda.jsx"
 
 
@@ -86,8 +86,8 @@ const router = createBrowserRouter(
     { path: "/testFacil", element: <TestFacil /> },
     { path: "/testMedio", element: <TestMedio /> },
     { path: "/testDificil", element: <TestDificil /> },
-    {path: "/report", element: <Report />},
-    {path: "/ayuda", element: <Ayuda />},
+
+    { path: "/ayuda", element: <Ayuda /> },
     {
       path: "/Teacher",
       element: <Teacher />,
@@ -144,9 +144,8 @@ const router = createBrowserRouter(
               element: <AddSection />
             },
             {
-              path: ":id/TaskEdit/:taskId",
-              element: <TaskEdit />,
-              loader: TaskEditLoader
+              path: ":id/TaskEdit",
+              element: <TaskEdit />
             },
             {
               path: ':id/Exams', element: <Exams />,
@@ -158,6 +157,7 @@ const router = createBrowserRouter(
             }
           ]
         },
+        { path: "Report", element: <Report /> },
         {
           path: "Files",
           element: <Files />

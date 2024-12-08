@@ -264,107 +264,97 @@ const Report = () => {
   }, []);
 
   return (
-    <div className="min-h-screen p-6 text-white" style={{ backgroundColor: '#141B2B' }}>
-      <div className="bg-gray-800 p-4 rounded shadow-md">
-        <h1 className="text-3xl font-bold mb-4">Reportes</h1>
-        <p className="mb-6 text-white-200">Selecciona un aula y un estudiante para generar un reporte.</p>
+    <div className="bg-slate-800 p-4 rounded shadow-md">
+      <h1 className="text-3xl font-bold mb-4">Reportes</h1>
+      <p className="mb-6 text-white-200">Selecciona un aula y un estudiante para generar un reporte.</p>
 
-        <div className="mb-6">
-          <label className="block text-white-300 mb-2">Seleccionar Aula:</label>
-          <select
-            onChange={seleccionarAula}
-            className="w-full px-4 py-2 rounded bg-gray-700 text-white border border-white-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            <option value="">-- Selecciona un Aula --</option>
-            {aulas.map((a) => (
-              <option key={a.id} value={a.aula_id}>
-                {a.nombre_aula} {a.id}
-              </option>
+      <div className="mb-6">
+        <label className="block text-white-300 mb-2">Seleccionar Aula:</label>
+        <select
+          onChange={seleccionarAula}
+          className="w-full px-4 py-2 rounded bg-gray-700 text-white border border-white-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <option value="">-- Selecciona un Aula --</option>
+          {aulas.map((a) => (
+            <option key={a.id} value={a.aula_id}>
+              {a.nombre_aula} {a.id}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mb-6">
+        <label className="block text-white-300 mb-2">Buscar Estudiante:</label>
+        <input
+          type="text"
+          value={estudiante}
+          onChange={buscarEstudiante}
+          placeholder="Escribe el nombre del estudiante..."
+          className={`w-full px-4 py-2 rounded bg-gray-700 text-white border ${aula ? 'border-white-600' : 'border-gray-500 cursor-not-allowed'
+            } focus:outline-none focus:ring-2 ${!aula ? 'focus:ring-blue-400' : ''}`}
+          disabled={!aula}
+        />
+        {sugerenciasEstudiante.length > 0 && (
+          <ul className="border rounded bg-gray-700 mt-2">
+            {sugerenciasEstudiante.map((element) => (
+              <li
+                key={element.nombre}
+                className="px-4 py-2 hover:bg-blue-700 cursor-pointer"
+                onClick={() => seleccionarEstudiante(element)}
+              >
+                {element.nombre} {element.apellido}
+              </li>
             ))}
-          </select>
-        </div>
+          </ul>
+        )}
+      </div>
 
-        <div className="mb-6">
-          <label className="block text-white-300 mb-2">Buscar Estudiante:</label>
-          <input
-            type="text"
-            value={estudiante}
-            onChange={buscarEstudiante}
-            placeholder="Escribe el nombre del estudiante..."
-            className={`w-full px-4 py-2 rounded bg-gray-700 text-white border ${aula ? 'border-white-600' : 'border-gray-500 cursor-not-allowed'
-              } focus:outline-none focus:ring-2 ${!aula ? 'focus:ring-blue-400' : ''}`}
-            disabled={!aula}
-          />
-          {sugerenciasEstudiante.length > 0 && (
-            <ul className="border rounded bg-gray-700 mt-2">
-              {sugerenciasEstudiante.map((element) => (
-                <li
-                  key={element.nombre}
-                  className="px-4 py-2 hover:bg-blue-700 cursor-pointer"
-                  onClick={() => seleccionarEstudiante(element)}
-                >
-                  {element.nombre} {element.apellido}
-                </li>
-              ))}
-            </ul>
-          )}
+      {
+        studentComment.length > 0 && <div>
+          <h2>Comentarios:</h2>
+          <div className='p-2 bg-gray-700 rounded my-2'>
+            {studentComment.map(comment => {
+              return (
+                <div className='flex gap-1'>
+
+                  <p className='flex-1'>{comment?.comentario}</p>
+                  <button className='p-2 bg-sky-600 rounded' onClick={editStudentComment}>Editar</button>
+                  <button onClickCapture={deleteCommentHandle} className='p-2 bg-red-600 rounded'>
+                    <TrashIcon className='w-6' />
+                  </button>
+                </div>
+              )
+            })}
+          </div>
         </div>
+      }
+
+      <div className="flex gap-4">
+        <button
+          onClick={imprimirPDF}
+          className={`${aula && estudianteSeleccionado
+            ? 'bg-cyan-500 hover:bg-green-700'
+            : 'bg-gray-500 cursor-not-allowed'
+            } text-white px-4 py-2 rounded shadow-md`}
+          disabled={!aula || !estudianteSeleccionado}
+        >
+          Imprimir Reporte en PDF
+        </button>
 
         {
-          studentComment.length > 0 && <div>
-            <h2>Comentarios:</h2>
-            <div className='p-2 bg-gray-700 rounded my-2'>
-              {studentComment.map(comment => {
-                return (
-                  <div className='flex gap-1'>
-
-                    <p className='flex-1'>{comment?.comentario}</p>
-                    <button className='p-2 bg-sky-600 rounded' onClick={editStudentComment}>Editar</button>
-                    <button onClickCapture={deleteCommentHandle} className='p-2 bg-red-600 rounded'>
-                      <TrashIcon className='w-6' />
-                    </button>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        }
-
-        <div className="flex gap-4">
-          <button
-            onClick={imprimirPDF}
+          studentComment.length <= 0 && <button
+            onClick={agregarComentario}
             className={`${aula && estudianteSeleccionado
-              ? 'bg-cyan-500 hover:bg-green-700'
+              ? 'bg-yellow-500 hover:bg-yellow-600'
               : 'bg-gray-500 cursor-not-allowed'
               } text-white px-4 py-2 rounded shadow-md`}
             disabled={!aula || !estudianteSeleccionado}
           >
-            Imprimir Reporte en PDF
+            Agregar Comentario
           </button>
-
-          {
-            studentComment.length <= 0 && <button
-              onClick={agregarComentario}
-              className={`${aula && estudianteSeleccionado
-                ? 'bg-yellow-500 hover:bg-yellow-600'
-                : 'bg-gray-500 cursor-not-allowed'
-                } text-white px-4 py-2 rounded shadow-md`}
-              disabled={!aula || !estudianteSeleccionado}
-            >
-              Agregar Comentario
-            </button>
-          }
-
-
-          <button
-            onClick={() => navigate('/Teacher')}
-            className="bg-rose-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow-md"
-          >
-            Volver
-          </button>
-        </div>
-
+        }
       </div>
+
     </div>
   );
 };

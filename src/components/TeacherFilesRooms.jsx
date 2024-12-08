@@ -104,15 +104,22 @@ const TeacherFilesRooms = () => {
 
       <div className="p-4">
         {
-          files.map(({ name, archivo_id }) => (
-            <div key={archivo_id} className="bg-slate-700 rounded relative p-2 block my-2 hover:underline hover:cursor-pointer ">
-              <div className="mr-8 truncate">{name}</div>
-              <button className="text-red-500 absolute right-1 top-2" title="Delete">
-                <TrashIcon className='w-6 h-6' onClick={() => deleteFileHandle(archivo_id, name)} />
-              </button>
+          files.map(({ name, archivo_id, view_in_files }) => {
 
-            </div>
-          ))
+
+            return (
+              <>
+                {view_in_files === 1 && <div key={archivo_id} className="bg-slate-700 rounded relative p-2 block my-2 hover:underline hover:cursor-pointer ">
+                  <div className="mr-8 truncate">{name}</div>
+                  <button className="text-red-500 absolute right-1 top-2" title="Delete">
+                    <TrashIcon className='w-6 h-6' onClick={() => deleteFileHandle(archivo_id, name)} />
+                  </button>
+
+                </div>}
+
+              </>
+            )
+          })
         }
         {
           files.length <= 0 && <p className="text-center">Carga archivos</p>

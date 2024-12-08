@@ -10,8 +10,6 @@ export function useLessons({ id, lessonId }) {
         if (!id) return
         const response = await getLessons({ id })
 
-        console.log('obteniendo lecciones')
-
         if (response.error) {
 
             console.log(error)
