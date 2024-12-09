@@ -58,6 +58,7 @@ const ExamList = ({ currentQuestion, checkQuestion, checkTyping, typingRef }) =>
   )
 }
 
+
 const Exam = () => {
 
   const { exam, currentExam, setCompletedExams, completedExams } = useExamStore2()

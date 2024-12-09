@@ -30,7 +30,7 @@ const Dashboard = () => {
 
         <SidebarStudents showMenu={showMenu} toggleMenuHandle={toggleMenuHandle} />
 
-        <main className="mt-6 max-md:px-4 max-md:mt-16">
+        <main className="max-md:px-4 max-md:mt-16">
           <Outlet />
         </main>
 

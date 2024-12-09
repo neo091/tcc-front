@@ -9,6 +9,7 @@ export function useTasks() {
   const { token } = useAuthStore()
 
   const [tasks, setTasks] = useState([])
+  const [completedTasks, setCompletedTasks] = useState([])
 
   const loadTasks = async () => {
     const getTasks = await obtenerTareas({ roomId: room.aula_id, token: token })

@@ -43,3 +43,27 @@ export async function deleteTask({ id, token }) {
   return result.data
 
 }
+
+export async function getCompletedTasks({task, token}){
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  }
+  const result = await axios.get(`${base_url}/api/dashboard/rooms/tasks/${task}/completed`, config)
+  return result.data
+}
+
+export async function saveCompletedTask({task, token, data}){
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  }
+  //  http://localhost:4000/api/dashboard/rooms/tasks/60/completed
+  const result = await axios.post(`${base_url}/api/dashboard/rooms/tasks/${task}/completed`, data, config)
+
+  return result.data
+}
