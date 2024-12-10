@@ -24,7 +24,7 @@ const Admin = () => {
                         <h3 className="px-2">MENU</h3>
                         <nav className="flex-1">
                             <ul>
-                                <li><Link to={"/Admin"} className="px-4 py-2 hover:bg-slate-700 block">Admin Profile</Link></li>
+                                <li><Link to={"Profile"} className="px-4 py-2 hover:bg-slate-700 block">Perfil Admin</Link></li>
                                 <li><Link to={"/Admin/Users"} className="px-4 py-2 hover:bg-slate-700 block">Gestion de Usuario</Link></li>
                                 <li><Link to={"/Admin/Rooms"} className="px-4 py-2 hover:bg-slate-700 block">Gestion de Aulas</Link></li>
                             </ul>
