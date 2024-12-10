@@ -11,7 +11,6 @@ const Tareas = () => {
   const { token } = useAuthStore()
   const [tareas, setTareas] = useState([])
 
-
   const cargarTareas = async () => {
 
     const tareasResult = await obtenerTareas({ roomId: room.aula, token, token })

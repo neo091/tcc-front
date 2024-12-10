@@ -5,26 +5,27 @@ export const useTaskStore = create(
   persist(
     (set, get) => ({
       task: {},
-      tasksCompleted: [],
       completed: [],
       questions: [],
       currentQuestion: 0,
       replied: 0,
       correctQuestions: [],
       inCorrectQuestions: [],
-      setCompleted:({id})=>{
+      setCompleted: ({ id }) => {
         const completed = get().completed
         if (completed.includes(id)) return
-        set({completed: [...completed].concat(id)})
+        set({ completed: [...completed].concat(id) })
       },
-      resetCompleted:()=>{
-        set({completed: []})
+      resetCompleted: ({ id }) => {
+        const newList = get().completed.filter(element => element === id)
+
+        set({ completed: newList })
       },
-      setQuestions: async (token) => {
+      setQuestions: async ({ token }) => {
 
         const { id } = get().task
 
-        const response = await fetch(` http://localhost:4000/api/teacher/tasks/content/${id}`,
+        const response = await fetch(`http://localhost:4000/api/teacher/tasks/content/${id}`,
           {
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -43,31 +44,29 @@ export const useTaskStore = create(
             get().resetQuestions()
 
             set({ questions: JSON.parse(value) })
+            //console.log(json);
           }
-          //console.log(json);
         }
 
       },
-      checkQuestion: ({index}) => {
+      checkQuestion: ({ index }) => {
 
-        const { questions, currentQuestion, correctQuestions, inCorrectQuestions} = get()
+        const { questions, currentQuestion, correctQuestions, inCorrectQuestions } = get()
 
         const isCorrect = questions[currentQuestion].correct === index
 
-        if(isCorrect){
-          set({correctQuestions: [...correctQuestions, questions[currentQuestion]]})
-        }else{
-          set({inCorrectQuestions: [...inCorrectQuestions, questions[currentQuestion]]})
+        if (isCorrect) {
+          set({ correctQuestions: [...correctQuestions, questions[currentQuestion]] })
+        } else {
+          set({ inCorrectQuestions: [...inCorrectQuestions, questions[currentQuestion]] })
         }
 
         get().goNext()
-
       },
-      isCompleted: ({id})=>{
-        
-
-        console.log('tasks', id);
-        return false
+      isCompleted: () => {
+        const { task, completed } = get()
+        let completedTask = completed.includes(task.id)
+        return { completed: completedTask }
       },
       goNext: () => {
         const { currentQuestion, questions } = get()
