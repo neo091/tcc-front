@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTestStore } from "../../store/testStore";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getQuestions, getResume, getRecommendations } from "../../services/gptService";
 
 const BackgroundTest = (info, index) => {
@@ -109,9 +109,9 @@ const ShowQuestions = ({ questions }) => {
   }
 
   return (
-    <>
+    <section className="animate-fadeIn">
 
-      <div className="mt-4 p-4 bg-slate-900 rounded-lg flex flex-col items-center content-center relative">
+      <div className="  mt-4 p-4 bg-slate-900 rounded-lg flex flex-col items-center content-center relative">
         <div className="absolute bg-slate-700 pt-1 px-4 rounded top-0 -translate-y-3">{currentTest + 1} / {questions.length}</div>
         <div className=" opacity-60" >{questionInfo.title}</div>
         <div className=" font-semibold text-2xl">{questionInfo.question}</div>
@@ -133,7 +133,7 @@ const ShowQuestions = ({ questions }) => {
       <div>
 
       </div>
-    </>
+    </section>
   )
 }
 

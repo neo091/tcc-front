@@ -21,7 +21,7 @@
 - [✅] Panel de Administrador
 - [✅] Gestión de usuarios.
 - [✅] Activación y desactivación de perfil de usuarios.
-- [❗] Gestión de aulas y contenidos del docente.	 
+- [❗] Gestión de aulas y contenidos del docente.
 
 ## Funcionalidades del Sistema 
 - [✅] Generación de exámenes y test a través de inteligencia artificial.

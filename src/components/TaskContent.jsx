@@ -24,8 +24,6 @@ const TaskContent = () => {
       }
       setCompleted({ id: task.id })
 
-
-
       saveCompletedTask({ task: task.id, token, data })
 
       setTaskFinished(true)

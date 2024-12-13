@@ -3,6 +3,7 @@ import { getContents } from '@services/UserContentsService';
 import { useAuthStore } from '@store/authStore';
 import { useLessonStore } from '@store/lessonStore';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LessonContent = () => {
 
@@ -26,9 +27,11 @@ const LessonContent = () => {
 
   useEffect(() => { loadContents() }, [])
 
+  const navigate = useNavigate()
+
 
   return (
-    <div>
+    <div className='text-center'>
 
       <h1 className='text-2xl font-semibold mb-4 mt-4'> {lesson.title} </h1>
       <div>
@@ -43,6 +46,7 @@ const LessonContent = () => {
           })
         }
       </div>
+      <button onClick={() => navigate(-1)} className='px-4 py-2 rounded bg-blue-700'>Volver</button>
     </div>
   );
 }

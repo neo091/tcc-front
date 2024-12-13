@@ -1,7 +1,6 @@
 import axios from "axios";
 const base_url = import.meta.env.VITE_AUTH_URI || 'http://localhost:4000'
 
-
 export async function obtenerTareas({ roomId, token }) {
 
   const config = {
@@ -44,7 +43,7 @@ export async function deleteTask({ id, token }) {
 
 }
 
-export async function getCompletedTasks({task, token}){
+export async function getCompletedTasks({ task, token }) {
   const config = {
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -55,7 +54,7 @@ export async function getCompletedTasks({task, token}){
   return result.data
 }
 
-export async function saveCompletedTask({task, token, data}){
+export async function saveCompletedTask({ task, token, data }) {
   const config = {
     headers: {
       "Authorization": `Bearer ${token}`,

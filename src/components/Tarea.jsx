@@ -8,6 +8,7 @@ const Tarea = ({ tarea }) => {
   const navigate = useNavigate()
 
   const isCompleted = completed.includes(tarea.id)
+
   const selectTask = () => {
 
     setTask(tarea)

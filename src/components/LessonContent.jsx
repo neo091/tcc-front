@@ -6,7 +6,6 @@ import { MultipleChoice, TrueFalse } from './ContentTypes'
 export const Content = ({ value }) => {
 
   const content = JSON.parse(value)
-  console.log(content)
 
   return (
     <article className='my-4'>
