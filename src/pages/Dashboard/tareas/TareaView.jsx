@@ -44,11 +44,9 @@ const TareaView = () => {
   }, [])
 
   return (
-    <section className='mt-8'>
-      <div className="w-full text-center my-6">
-        <button onClick={() => navigate(-1)} className="p-2 bg-blue-500 rounded">Volver</button>
-      </div>
-      <div className="max-w-xl bg-slate-800 m-auto text-center items-center justify-center flex flex-col p-4 rounded animate-fadeIn">
+    <section className='mt-8 animate-fadeIn'>
+
+      <div className="max-w-xl bg-slate-800 m-auto text-center items-center justify-center flex flex-col p-4 rounded ">
 
 
         {showTasks && <TaskContent currentQuestion={questions[currentQuestion]} />}
@@ -58,7 +56,9 @@ const TareaView = () => {
 
       </div>
 
-
+      <div className="w-full text-center my-6">
+        <button onClick={() => navigate(-1)} className="p-2 bg-blue-500 rounded">Volver</button>
+      </div>
     </section>
   );
 }

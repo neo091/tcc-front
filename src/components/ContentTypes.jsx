@@ -6,7 +6,7 @@ export const MultipleChoice = ({ item }) => {
   const { ask, points, answers } = item
   const ref = useRef()
 
-  const checkAnserHandle = (e, index) => {
+  const checkAnserHandle = (e) => {
 
     const botones = ref.current.querySelectorAll('button')
 
@@ -24,7 +24,6 @@ export const MultipleChoice = ({ item }) => {
 
   }
 
-
   return (
     <Card>
       <CardHeader>
@@ -36,11 +35,7 @@ export const MultipleChoice = ({ item }) => {
 
         <div ref={ref}>
           {
-            answers?.map((answer, index) => {
-              return (
-                <button className="w-full p-4 bg-blue-700 my-2 rounded-lg text-xl transition-all duration-300 " onClick={(e) => checkAnserHandle(e, index)}>{answer}</button>
-              )
-            })
+            answers?.map((answer, index) => <button key={`${index}-${answer}`} className="w-full p-4 bg-blue-700 my-2 rounded-lg text-xl transition-all duration-300 " onClick={(e) => checkAnserHandle(e)}>{answer}</button>)
           }
         </div>
 
@@ -48,7 +43,6 @@ export const MultipleChoice = ({ item }) => {
     </Card>
   )
 }
-
 
 export const TrueFalse = ({ item }) => {
 
@@ -57,7 +51,6 @@ export const TrueFalse = ({ item }) => {
 
   const checkAnserHandle = (e) => {
 
-
     const botones = ref.current.querySelectorAll('button')
 
     for (let i = 0; i < botones.length; i++) {
@@ -85,11 +78,7 @@ export const TrueFalse = ({ item }) => {
       <CardContent>
         <div ref={ref}>
           {
-            answers?.map((answer) => {
-              return (
-                <button className="w-full p-4 bg-blue-700 my-2 rounded-lg text-xl transition-all duration-300 " onClick={(e) => checkAnserHandle(e)}>{answer}</button>
-              )
-            })
+            answers?.map((answer, index) => <button key={`${index}-answer`} className="w-full p-4 bg-blue-700 my-2 rounded-lg text-xl transition-all duration-300 " onClick={(e) => checkAnserHandle(e)}>{answer}</button>)
           }
         </div>
 
@@ -97,4 +86,3 @@ export const TrueFalse = ({ item }) => {
     </Card>
   )
 }
-
