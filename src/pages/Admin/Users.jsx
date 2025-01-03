@@ -1,212 +1,201 @@
-/*
-import { Card, CardContent, CardHeader, CardTitle } from "@components/Card";
-import UsersList from "@components/UsersList";
 
-const Users = () => {
-
-    return (
-        <section className="grid grid-cols-12 py-2">
-
-            <Card extraCss="col-span-12">
-                <CardHeader>
-                    <CardTitle>
-                        Usuarios
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-
-                    <UsersList />
-
-                </CardContent>
-            </Card>
-
-        </section >
-    );
-}
-
-export default Users;
-*/
 import React, { useEffect, useState } from 'react';
-import adminUsuarioService from '../../services/adminUsuarioService';
+import { getUserData } from '../../auth';
+
+const base_url = import.meta.env.VITE_AUTH_URI || 'http://localhost:4000/admin';
+let token = null;
+
+const setToken = (newToken) => {
+  token = `Bearer ${newToken}`;
+};
+
+const getToken = async () => {
+  try {
+    const result = await getUserData();
+    if (result && result.token) {
+      setToken(result.token);
+    } else {
+      console.warn('No se encontró el token de usuario.');
+    }
+  } catch (error) {
+    console.error('Error al obtener el token de usuario:', error);
+    throw error;
+  }
+};
+
+const fetchUsuarios = async () => {
+  await getToken();
+  const response = await fetch(`${base_url}/usuarios-all`, {
+    headers: { Authorization: token },
+  });
+  if (!response.ok) {
+    throw new Error('Error al obtener los usuarios');
+  }
+  return await response.json();
+};
+
+const updateUsuario = async (usuarioId, formData) => {
+  await getToken();
+  const response = await fetch(`${base_url}/update-usuario/${usuarioId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  });
+  if (!response.ok) {
+    throw new Error('Error al actualizar el usuario');
+  }
+};
 
 const Users = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-  const [email, setEmail] = useState('');
-  const [rol, setRol] = useState('1'); // Usar string para coincidir con las opciones
-  const [estado, setEstado] = useState('activo');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [roleFilter, setRoleFilter] = useState('');
+  const [formData, setFormData] = useState({
+    nombre: '',
+    apellido: '',
+    correo: '',
+    rol_id: '1',
+    estado: 'activo',
+  });
+  const [filters, setFilters] = useState({ searchQuery: '', roleFilter: '' });
 
-  // Definimos un mapa para los roles
   const rolMap = {
     '1': 'Alumno',
     '2': 'Profesor',
     '3': 'Admin',
   };
 
-  const fetchUsuarios = async () => {
-    try {
-      const data = await adminUsuarioService.getAllUsuarios();
-      setUsuarios(data.data || []);
-      setLoading(false);
-    } catch (error) {
-      setError('Error al obtener usuarios');
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchUsuarios();
+    const loadUsuarios = async () => {
+      try {
+        const data = await fetchUsuarios();
+        setUsuarios(data.data || []);
+      } catch {
+        setError('Error al obtener usuarios');
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadUsuarios();
   }, []);
 
-  // Filtrar usuarios según el rol y la búsqueda
-  const filteredUsuarios = usuarios.filter(usuario =>
-    usuario.nombre.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    (roleFilter ? usuario.rol_id && usuario.rol_id.toString() === roleFilter : true) // Verificamos si rol_id está definido
-  );
+  const handleFilterChange = (e) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value });
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'nombre') setNombre(value);
-    if (name === 'apellido') setApellido(value);
-    if (name === 'email') setEmail(value);
-    if (name === 'rol') setRol(value);
-    if (name === 'estado') setEstado(value);
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSelectUser = (usuario) => {
     setSelectedUser(usuario);
-    setNombre(usuario.nombre || '');
-    setApellido(usuario.apellido || '');
-    setEmail(usuario.correo || '');
-    setRol(usuario.rol_id ? usuario.rol_id.toString() : '1');  // Verificación para rol_id
-    setEstado(usuario.estado || 'activo');
-  };
-
-  const handleDelete = async (usuarioId) => {
-    try {
-      await adminUsuarioService.deleteUsuario(usuarioId);
-      setUsuarios(prevUsuarios => prevUsuarios.filter(usuario => usuario.usuario_id !== usuarioId));
-    } catch (err) {
-      setError('Error al eliminar el usuario');
-    }
+    setFormData({
+      nombre: usuario.nombre || '',
+      apellido: usuario.apellido || '',
+      correo: usuario.correo || '',
+      rol_id: usuario.rol_id?.toString() || '1',
+      estado: usuario.estado || 'activo',
+    });
+    setSuccessMessage('');
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!selectedUser) return;
 
-    // Map roles correctly
-    const rolMapping = {
-      'Alumno': 1,
-      'Profesor': 2,
-      'Admin': 3
-    };
-
-    const updates = {};
-    if (nombre !== selectedUser.nombre) updates.nombre = nombre;
-    if (apellido !== selectedUser.apellido) updates.apellido = apellido;
-    if (email !== selectedUser.correo) updates.correo = email;
-    if (rolMapping[rol] !== selectedUser.rol_id) updates.rol_id = rolMapping[rol];
-    if (estado !== selectedUser.estado) updates.estado = estado;
-
-    // If no changes are made, return early
-    if (Object.keys(updates).length === 0) {
-      setError('No se han realizado cambios para actualizar.');
-      return;
-    }
-
     try {
-      await adminUsuarioService.updateUsuario(selectedUser.usuario_id, updates);
-      fetchUsuarios();
+      await updateUsuario(selectedUser.usuario_id, formData);
+      setUsuarios((prev) =>
+        prev.map((user) =>
+          user.usuario_id === selectedUser.usuario_id
+            ? { ...user, ...formData }
+            : user
+        )
+      );
+      setSuccessMessage('Usuario actualizado exitosamente');
       setSelectedUser(null);
-      setNombre('');
-      setApellido('');
-      setEmail('');
-      setRol('1'); // Default role value
-      setEstado('activo');
-    } catch (err) {
+      setFormData({ nombre: '', apellido: '', correo: '', rol_id: '1', estado: 'activo' });
+    } catch {
       setError('Error al actualizar el usuario');
     }
   };
 
-  const handleBack = () => {
-    setSelectedUser(null);
-    setNombre('');
-    setApellido('');
-    setEmail('');
-    setRol('1');
-    setEstado('activo');
-  };
+  const filteredUsuarios = usuarios.filter((usuario) => {
+    const matchesSearch =
+      usuario.nombre.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
+      usuario.apellido.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
+      usuario.correo.toLowerCase().includes(filters.searchQuery.toLowerCase());
+
+    const matchesRole = filters.roleFilter
+      ? usuario.rol_id?.toString() === filters.roleFilter
+      : true;
+
+    return matchesSearch && matchesRole;
+  });
 
   return (
-    <div className="container mt-5">
-      <h1 className="text-center mb-4" style={{ color: 'white' }}>Gestión de Usuarios</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-center text-3xl font-bold text-white mb-8">Gestión de Usuarios</h1>
+      {loading && <div className="text-center">Cargando...</div>}
+      {error && <div className="text-red-500 text-center">{error}</div>}
+      {successMessage && <div className="text-green-500 text-center">{successMessage}</div>}
 
-      {loading && <div className="text-center"><div className="spinner-border" role="status"></div></div>}
-      {error && <div className="alert alert-danger">{error}</div>}
-
-      <div className="mb-3">
-        <input
-          type="text"
-          placeholder="Buscar por nombre..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="border px-4 py-2 rounded w-full text-black placeholder-gray-400"
-        />
-      </div>
-
-      <div className="mb-3">
-        <select
-          value={roleFilter}
-          onChange={(e) => setRoleFilter(e.target.value)}
-          className="border px-4 py-2 rounded w-full text-black"
-        >
-          <option value="">Filtrar por rol</option>
-          <option value="1">Alumno</option>
-          <option value="2">Profesor</option>
-          <option value="3">Admin</option>
-        </select>
-      </div>
-
-      <div className="row">
-        <div className="col-md-6 mb-4">
-          <h3 className="mb-3" style={{ color: 'White' }}>Usuarios</h3>
-          <table className="table table-striped table-bordered">
-            <thead className="thead-dark">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* User List */}
+        <div className="bg-gray-800 p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold text-white mb-4">Gestion de Usuarios</h2>
+          <div className="space-y-4">
+            <input
+              type="text"
+              name="searchQuery"
+              placeholder="Buscar por nombre..."
+              value={filters.searchQuery}
+              onChange={handleFilterChange}
+              className="w-full px-4 py-2 border border-gray-600 rounded text-black"
+            />
+            <select
+              name="roleFilter"
+              value={filters.roleFilter}
+              onChange={handleFilterChange}
+              className="w-full px-4 py-2 border border-gray-600 rounded text-black"
+            >
+              <option value="">Filtrar por rol</option>
+              <option value="1">Alumno</option>
+              <option value="2">Profesor</option>
+              <option value="3">Admin</option>
+            </select>
+          </div>
+          <table className="table-auto w-full mt-4 text-white">
+            <thead>
               <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th className="text-left">Nombre</th>
+                <th className="text-left">Apellido</th>
+                <th className="text-left">Email</th>
+                <th className="text-left">Rol</th>
+                <th className="text-left">Estado</th>
+                <th className="text-left">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {filteredUsuarios.map(usuario => (
+              {filteredUsuarios.map((usuario) => (
                 <tr key={usuario.usuario_id}>
                   <td>{usuario.nombre}</td>
                   <td>{usuario.apellido}</td>
                   <td>{usuario.correo}</td>
-                  <td>
-                    {usuario.rol_id && rolMap[usuario.rol_id.toString()] ?
-                      rolMap[usuario.rol_id.toString()] : 'Desconocido'}
-                  </td>
+                  <td>{rolMap[usuario.rol_id?.toString()] || 'Desconocido'}</td>
                   <td>{usuario.estado}</td>
                   <td>
                     <button
                       onClick={() => handleSelectUser(usuario)}
-                      className="btn btn-warning btn-sm mr-2"
+                      className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-blue-600"
                     >
                       Gestionar
                     </button>
-
                   </td>
                 </tr>
               ))}
@@ -214,72 +203,92 @@ const Users = () => {
           </table>
         </div>
 
-        <div className="col-md-6 mb-4">
-          {selectedUser && (
-            <form onSubmit={handleUpdate}>
-              <div className="form-group">
-                <label>Nombre:</label>
+        {/* User Form */}
+        {selectedUser && (
+          <div className="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold text-white mb-4">Gestionar Usuarios</h2>
+            <form onSubmit={handleUpdate} className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-white">Nombre:</label>
                 <input
                   type="text"
                   name="nombre"
-                  value={nombre}
+                  value={formData.nombre}
                   onChange={handleChange}
-                  className="border px-4 py-2 rounded w-full text-black"
+                  className="w-full px-4 py-2 border border-gray-600 rounded text-black"
+                  required
                 />
               </div>
-              <div className="form-group">
-                <label>Apellido:</label>
+              <div>
+                <label className="text-white">Apellido:</label>
                 <input
                   type="text"
                   name="apellido"
-                  value={apellido}
+                  value={formData.apellido}
                   onChange={handleChange}
-                  className="border px-4 py-2 rounded w-full text-black"
+                  className="w-full px-4 py-2 border border-gray-600 rounded text-black"
+                  required
                 />
               </div>
-              <div className="form-group">
-                <label>Email:</label>
+              <div>
+                <label className="text-white">Email:</label>
                 <input
                   type="email"
-                  name="email"
-                  value={email}
+                  name="correo"
+                  value={formData.correo}
                   onChange={handleChange}
-                  className="border px-4 py-2 rounded w-full text-black"
+                  className="w-full px-4 py-2 border border-gray-600 rounded text-black"
+                  required
                 />
               </div>
-              <div className="form-group">
-                <label>Rol:</label>
+              <div>
+                <label className="text-white">Rol:</label>
                 <select
-                  name="rol"
-                  value={rol}
+                  name="rol_id"
+                  value={formData.rol_id}
                   onChange={handleChange}
-                  className="border px-4 py-2 rounded w-full text-black"
+                  className="w-full px-4 py-2 border border-gray-600 rounded text-black"
                 >
                   <option value="1">Alumno</option>
                   <option value="2">Profesor</option>
                   <option value="3">Admin</option>
                 </select>
               </div>
-              <div className="form-group">
-                <label>Estado:</label>
-                <input
-                  type="text"
-                  name="estado"
-                  value={estado}
-                  onChange={handleChange}
-                  className="border px-4 py-2 rounded w-full text-black"
-                />
-              </div>
-              <div className="form-group">
-                <button type="submit" className="btn btn-primary">Actualizar</button>
-                <button type="button" className="btn btn-secondary ml-2" onClick={handleBack}>Cancelar</button>
+              <div className="col-span-2">
+              <label className="text-white">Estado:</label>
+              <select
+                name="estado"
+                value={formData.estado}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-600 rounded text-black"
+              >
+                <option value="ACTIVO">ACTIVO</option>
+                <option value="INACTIVO">INACTIVO</option>
+              </select>
+            </div>
+
+              <div className="col-span-2 flex justify-end">
+                <button
+                  type="submit"
+                  className="bg-cyan-500 text-white px-4 py-2 rounded mr-2  hover:bg-green-600"
+                >
+                  Actualizar
+                </button>
+                <button
+                  type="button"
+                  className="bg-pink-500 text-white px-4 py-2 rounded  hover:bg-red-600"
+                  onClick={() => setSelectedUser(null)}
+                >
+                  Cancelar
+                </button>
               </div>
             </form>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
+  
 };
 
 export default Users;
