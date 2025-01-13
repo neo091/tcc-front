@@ -1,9 +1,21 @@
 import { Link, Outlet } from "react-router-dom";
 import Logo from "/images/logo.png"
 import { useAuth } from "@hooks/useAuth";
+import { useAuthStore } from "@store/authStore";
+import { useEffect } from "react";
 
 const Admin = () => {
 
+  const { Logout } = useAuth()
+  const { session } = useAuthStore()
+
+  useEffect(() => {
+
+    if (session.type !== "" && session.type !== 3) {
+
+      Logout()
+    }
+  }, [])
 
 
   return (
@@ -33,7 +45,7 @@ const Admin = () => {
               </ul>
             </nav>
             <footer>
-              <button onClick={useAuth().Logout} className=" hover:bg-red-700 p-2 block w-full">
+              <button onClick={Logout} className=" hover:bg-red-700 p-2 block w-full">
                 Desconexión
               </button>
             </footer>
