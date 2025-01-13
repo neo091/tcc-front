@@ -9,6 +9,7 @@ export const ExamResume = ({ currentExamId }) => {
   const { token } = useAuthStore()
 
   const [recommendations, setRecommendations] = useState("")
+  const [recommendationsList, setRecommendationsList] = useState([])
   const [points, setPoints] = useState("")
   const [pointsTotal, setPointsTotal] = useState("")
   const [corrects, setCorrects] = useState([])
@@ -21,12 +22,14 @@ export const ExamResume = ({ currentExamId }) => {
 
       const { recommendations, points, points_total, corrects, incorrect } = result.body
 
+      const recs = JSON.parse(recommendations)
 
-      setRecommendations(recommendations)
+      setRecommendations(JSON.parse(recommendations))
+      setRecommendationsList(recs.recList)
       setPoints(points)
       setPointsTotal(points_total)
-      setCorrects(JSON.parse(corrects))
-      setIncorrect(JSON.parse(incorrect))
+      setCorrects(corrects && JSON.parse(corrects))
+      setIncorrect(incorrect && JSON.parse(incorrect))
 
     })
 
@@ -40,12 +43,28 @@ export const ExamResume = ({ currentExamId }) => {
     <div className="text-center bg-slate-800 p-4 rounded shadow-xl shadow-black/20 space-y-2 hover:shadow-none transition-all duration-300 max-h-[80vh] overflow-y-auto">
       <h1 className="font-semibold text-2xl">Resumen</h1>
       <p className="font-semibold">Puntos: {points} de {pointsTotal}</p>
-      <p className="font-mono p-2 bg-slate-950 rounded">{recommendations}</p>
+      <p className="font-mono p-2 bg-slate-950 rounded">{recommendations.rec}</p>
+
+
+      <div>
+        <h2 className=" text-2xl font-semibold">Recomendaciones:</h2>
+        <section>
+
+          {recommendationsList?.map((recommendation) => (
+            <article className=" my-4 ms-4 bg-slate-900 p-4 rounded-lg">
+              <h3 className=" font-semibold">{recommendation?.estrategia}:</h3>
+              <p>{recommendation?.descripción}</p>
+            </article>
+          ))}
+
+        </section>
+      </div>
+
 
       <section>
         <h2 className="text-green-600 flex gap-2 font-bold">Correctas</h2>
         {
-          corrects.map(question => {
+          corrects?.map(question => {
             return (
               <article className="bg-slate-700 my-4 p-2 text-left rounded shadow-xl shadow-black/20 hover:shadow-none transition-all duration-300 relative">
                 Q. {question.ask}
@@ -59,10 +78,8 @@ export const ExamResume = ({ currentExamId }) => {
         }
       </section>
 
-
-
       {
-        incorrect.length > 0 && (
+        incorrect?.length > 0 && (
           <section>
             <h2 className="text-red-600 flex gap-2 font-bold mt-8"> <XCircleIcon className="w-6" /> Incorrectas</h2>
 
