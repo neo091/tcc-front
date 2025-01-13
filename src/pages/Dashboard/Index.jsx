@@ -1,18 +1,30 @@
 import SidebarStudents from "@components/SidebarStudents";
 import { Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
+import { useAuth } from "@hooks/useAuth";
 import { useAuthStore } from "@store/authStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
 
   const [showMenu, setShowMenu] = useState(false)
   const { session } = useAuthStore()
+  const { Logout } = useAuth()
 
 
   const toggleMenuHandle = () => {
     setShowMenu(!showMenu)
   }
+
+  useEffect(() => {
+    if (session.type !== 1) {
+      Logout()
+    }
+
+    if (session.state === 0) {
+      Logout("inactive")
+    }
+  }, [])
 
   return (
     <>
