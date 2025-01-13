@@ -74,7 +74,6 @@ const Finished = () => {
         <span>Puntuación</span>
       </p>
 
-
       <div>
         <h2 className="text-2xl font-semibold">Resumen:</h2>
         {resume != null && <p className="ms-4">{resume?.observaciones}</p>}

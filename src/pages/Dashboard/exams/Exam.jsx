@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getAnalice } from "@services/gptService";
+import { getAnalice, getRecommendations } from "@services/gptService";
 import { useExamStore2 } from "@store/examStore2";
 import { ExamResume } from "@components/ExamResume";
 import { saveExamResume } from "@services/exam";
@@ -100,28 +100,36 @@ const Exam = () => {
       correct: correctQuestion,
       incorrect: incorrectQuestion
     })
-      .then((response) => {
+      .then(async (response) => {
 
         setNotaExamen(JSON.parse(response.body.res))
-        setCompletedExams(currentExam)
-        setIsCompleted(true)
+        //setCompletedExams(currentExam)
+        //setIsCompleted(true)
 
         const nota = JSON.parse(response.body.res)
 
+        await getRecommendations(nota.recommendations).then(response => {
 
-        const data = {
-          exam_id: currentExam,
-          recommendations: nota.recommendations,
-          corrects: JSON.stringify(correctQuestion),
-          incorrect: JSON.stringify(incorrectQuestion),
-          points: nota.totalPointsCorrect,
-          points_total: nota.totalPoints
-        }
+          const { res } = response.body
 
-        saveExamResume(data).then(result => {
-          setCompletedExams(currentExam);
-          setIsCompleted(true);
+          console.log(res.recommendation)
+          const data = {
+            exam_id: currentExam,
+            recommendations: JSON.stringify({ rec: nota.recommendations, recList: res.recommendation }),
+            corrects: JSON.stringify(correctQuestion),
+            incorrect: JSON.stringify(incorrectQuestion),
+            points: nota.totalPointsCorrect,
+            points_total: nota.totalPoints
+          }
+
+          saveExamResume(data).then(result => {
+            setCompletedExams(currentExam);
+            setIsCompleted(true);
+          })
         })
+
+
+
       })
       .catch((e) => console.error(e.message))
   }

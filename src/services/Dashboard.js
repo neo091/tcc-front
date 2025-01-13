@@ -31,3 +31,15 @@ export const getMyCourses = async ({ token }) => {
 
   return response.data
 }
+
+export const getRoomInfoService = async ({ token, userId, room }) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+
+  }
+
+  const response = await axios.get(`${base_url}/api/dashboard/rooms/courses/info/${userId}/${room}`, config)
+
+  return response.data
+
+}

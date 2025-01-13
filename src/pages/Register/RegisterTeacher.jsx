@@ -199,7 +199,7 @@ export default RegisterTeacher
 
 import { useState } from 'react';
 import Alert from '@components/Alerts';
-import RegisterService, { doLogin } from '@services/auth';
+import { doLogin, registerTeacherService } from '@services/auth';
 import isEmail from 'validator/lib/isEmail';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@store/authStore';
@@ -291,7 +291,7 @@ const RegisterTeacher = () => {
       return;
     }
 
-    RegisterService.register(user)
+    registerTeacherService(user)
       .then((result) => {
         if (result.error) {
           showAlert({ type: 'danger', message: 'Registro fallido!' });

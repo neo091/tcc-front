@@ -99,7 +99,7 @@ const Users = () => {
       apellido: usuario.apellido || '',
       correo: usuario.correo || '',
       rol_id: usuario.rol_id?.toString() || '1',
-      estado: usuario.estado || 'activo',
+      estado: usuario.estado || 0,
     });
     setSuccessMessage('');
   };
@@ -174,10 +174,8 @@ const Users = () => {
             <thead>
               <tr>
                 <th className="text-left">Nombre</th>
-                <th className="text-left">Apellido</th>
                 <th className="text-left">Email</th>
                 <th className="text-left">Rol</th>
-                <th className="text-left">Estado</th>
                 <th className="text-left">Acciones</th>
               </tr>
             </thead>
@@ -185,10 +183,8 @@ const Users = () => {
               {filteredUsuarios.map((usuario) => (
                 <tr key={usuario.usuario_id}>
                   <td>{usuario.nombre}</td>
-                  <td>{usuario.apellido}</td>
                   <td>{usuario.correo}</td>
                   <td>{rolMap[usuario.rol_id?.toString()] || 'Desconocido'}</td>
-                  <td>{usuario.estado}</td>
                   <td>
                     <button
                       onClick={() => handleSelectUser(usuario)}
@@ -255,17 +251,17 @@ const Users = () => {
                 </select>
               </div>
               <div className="col-span-2">
-              <label className="text-white">Estado:</label>
-              <select
-                name="estado"
-                value={formData.estado}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-600 rounded text-black"
-              >
-                <option value="ACTIVO">ACTIVO</option>
-                <option value="INACTIVO">INACTIVO</option>
-              </select>
-            </div>
+                <label className="text-white">Estado:</label>
+                <select
+                  name="estado"
+                  value={formData.estado}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-600 rounded text-black"
+                >
+                  <option value="1">ACTIVO</option>
+                  <option value="0">INACTIVO</option>
+                </select>
+              </div>
 
               <div className="col-span-2 flex justify-end">
                 <button
@@ -288,7 +284,7 @@ const Users = () => {
       </div>
     </div>
   );
-  
+
 };
 
 export default Users;
