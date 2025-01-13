@@ -69,6 +69,8 @@ import TestFacil from './pages/Comienzo/testFacil.jsx';
 import TestMedio from './pages/Comienzo/testMedio.jsx';
 import TestDificil from './pages/Comienzo/testDificil.jsx';
 import RegisterTeacher from '@Pages/Register/RegisterTeacher.jsx'
+import ActiveAccount from '@Pages/ActiveAccount.jsx'
+import Suspended from '@Pages/Suspended.jsx'
 
 //---//
 
@@ -223,6 +225,14 @@ const router = createBrowserRouter(
         { path: "Profile", element: <Profile /> },
       ]
     },
+    {
+      path: 'active',
+      element: <ActiveAccount />
+    },
+    {
+      path: 'Suspended',
+      element: <Suspended />
+    }
   ]
 )
 
