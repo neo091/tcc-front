@@ -11,6 +11,7 @@ const Teacher = () => {
   const sidebarRef = useRef()
   const { Logout } = useAuth()
   const { session, isLogin, accountType } = useAuthStore()
+  const navigate = useNavigate()
 
   const toggleSidebar = (e) => {
 
@@ -28,6 +29,14 @@ const Teacher = () => {
 
 
   useEffect(() => {
+
+    if (session.type !== 2) {
+      Logout()
+    }
+
+    if (session.state === 0) {
+      navigate('/active')
+    }
 
     document.body.addEventListener('click', toggleSidebar);
     return () => {
