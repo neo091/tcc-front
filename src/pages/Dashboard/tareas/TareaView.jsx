@@ -41,6 +41,7 @@ const TareaView = () => {
 
   useEffect(() => {
     loadIsCompleted()
+
   }, [])
 
   return (

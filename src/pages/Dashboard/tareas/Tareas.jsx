@@ -24,9 +24,10 @@ const Tareas = () => {
   }, [])
 
   return (
-    <section className="flex flex-col gap-2">
-      <Title>Tareas</Title>
-      <TareaOfList tareas={tareas} />
+    <section className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <TareaOfList tareas={tareas} />
+      </div>
     </section>
   )
 }

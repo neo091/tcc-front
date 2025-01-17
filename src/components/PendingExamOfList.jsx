@@ -50,10 +50,10 @@ const PendingExamOfList = ({ exam, roomId }) => {
 
 
   return (
-    <article className="p-2 bg-slate-800 rounded shadow-slate-950 shadow-md hover:shadow-none transition-shadow duration-300 ease-in-out">
-      <div className="flex items-center">
-        <div className="flex-1">
-          <p className="font-bold text-lg">{examConfig.title}</p>
+    <article className="p-6 bg-slate-800 rounded-md border-[1px] border-slate-600 shadow-slate-950 shadow-md hover:shadow-none transition-shadow duration-300 ease-in-out">
+      <div className="flex flex-col gap-4">
+        <div>
+          <p className="font-semibold text-2xl">{examConfig.title}</p>
           <p className='font-semibold text-slate-500'>Preguntas: {examContent.length} </p>
 
           {
@@ -65,22 +65,22 @@ const PendingExamOfList = ({ exam, roomId }) => {
           }
 
         </div>
-        <div>
+        <div className='font-semibold'>
 
           {
-            !isExpired && !isCompleted && <button onClick={selectExamHandle} className="bg-blue-600 px-4 py-2 inline-block  w-full rounded-sm shadow-md shadow-slate-950 hover:shadow-none transition-shadow duration-300 ease-in-out ">
+            !isExpired && !isCompleted && <button onClick={selectExamHandle} className="bg-blue-600 px-4 py-2 inline-block  w-full rounded-md shadow-md shadow-slate-950/50 hover:shadow-none transition-shadow duration-300 ease-in-out ">
               <p>Iniciar examen</p>
             </button>
           }
 
           {
-            !isExpired && isCompleted && <button onClick={selectExamHandle} className="bg-blue-600 px-4 py-2 inline-block  w-full rounded-sm shadow-md shadow-slate-950 hover:shadow-none transition-shadow duration-300 ease-in-out ">
+            !isExpired && isCompleted && <button onClick={selectExamHandle} className="bg-blue-600 px-4 py-2 inline-block  w-full rounded-md shadow-md shadow-slate-950/50 hover:shadow-none transition-shadow duration-300 ease-in-out ">
               <p>Resumen</p>
             </button>
           }
 
           {
-            isExpired && isCompleted && <button onClick={selectExamHandle} className="bg-blue-600 px-4 py-2 inline-block  w-full rounded-sm shadow-md shadow-slate-950 hover:shadow-none transition-shadow duration-300 ease-in-out ">
+            isExpired && isCompleted && <button onClick={selectExamHandle} className="bg-blue-600 px-4 py-2 inline-block  w-full rounded-md shadow-md shadow-slate-950/50 hover:shadow-none transition-shadow duration-300 ease-in-out ">
               <p>Resumen</p>
             </button>
           }

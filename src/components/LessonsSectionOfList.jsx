@@ -21,6 +21,7 @@ export const LessonsSectionOfList = () => {
     }
 
     const { lessons } = result.body
+
     setMyLessons(lessons)
   }
 
@@ -29,9 +30,10 @@ export const LessonsSectionOfList = () => {
 
   return (
     <>
-      <h2 className="text-4xl font-semibold my-3">Mis Lecciones</h2>
-      <section className="flex flex-col gap-3">
-        {myLessons?.map(lesson => <LessonItem key={lesson.id} lesson={lesson} />)}
+      <section className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {myLessons?.map(lesson => <LessonItem key={lesson.id} lesson={lesson} />)}
+        </div>
       </section>
     </>
   )

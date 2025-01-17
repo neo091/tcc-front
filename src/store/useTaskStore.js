@@ -37,14 +37,15 @@ export const useTaskStore = create(
         const json = await response.json()
 
         if (response.ok) {
-          const value = json.body.value
 
-          if (typeof JSON.parse(value) === "object") {
-            //console.log(typeof data);
-            get().resetQuestions()
-
-            set({ questions: JSON.parse(value) })
-            //console.log(json);
+          if (!json.error) {
+            if (json.body != "") {
+              const value = json.body.value
+              if (typeof JSON.parse(value) === "object") {
+                get().resetQuestions()
+                set({ questions: JSON.parse(value) })
+              }
+            }
           }
         }
 

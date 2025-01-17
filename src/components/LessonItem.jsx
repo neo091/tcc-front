@@ -17,10 +17,13 @@ export const LessonItem = ({ lesson }) => {
 
   return (
 
-    <button onClick={selectLessonHandle} className="block p-2 bg-slate-800 rounded shadow-slate-950 shadow-md hover:shadow-none transition-shadow duration-300 ease-in-out">
-      <h2 className=" text-3xl font-semibold">{title}</h2>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem natus modi aut odit facere commodi adipisci error, explicabo corrupti maxime officia asperiores, minus, porro accusamus recusandae vitae doloribus debitis accusantium.</p>
-    </button>
+    <article className="p-6 flex flex-col gap-3  bg-slate-800 border-[1px] border-slate-700 rounded shadow-slate-950 shadow-md transition-shadow duration-300 ease-in-out">
+      <h2 className="text-2xl font-semibold">{title}</h2>
+      <p>{desc ? desc : 'no description yet'}</p>
+      <button onClick={selectLessonHandle} className="bg-blue-600 px-4 py-2 inline-block  w-full rounded-md shadow-md shadow-slate-950/50 hover:shadow-none transition-shadow duration-300 ease-in-out ">
+        <p>Iniciar lección</p>
+      </button>
+    </article>
 
   )
 }
