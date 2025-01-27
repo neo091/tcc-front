@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 import { getUserData } from '../../auth';
 
 const base_url = import.meta.env.VITE_AUTH_URI || 'http://localhost:4000/admin';
@@ -103,7 +104,7 @@ const Users = () => {
     });
     setSuccessMessage('');
   };
-
+/*
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!selectedUser) return;
@@ -118,13 +119,46 @@ const Users = () => {
         )
       );
       setSuccessMessage('Usuario actualizado exitosamente');
+      
       setSelectedUser(null);
       setFormData({ nombre: '', apellido: '', correo: '', rol_id: '1', estado: 'activo' });
     } catch {
       setError('Error al actualizar el usuario');
     }
   };
+*/
+const handleUpdate = async (e) => {
+  e.preventDefault();
+  if (!selectedUser) return;
 
+  try {
+    await updateUsuario(selectedUser.usuario_id, formData);
+    setUsuarios((prev) =>
+      prev.map((user) =>
+        user.usuario_id === selectedUser.usuario_id
+          ? { ...user, ...formData }
+          : user
+      )
+    );
+
+    Swal.fire({
+      title: '¡Éxito!',
+      text: 'Usuario actualizado exitosamente',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    });
+
+    setSelectedUser(null);
+    setFormData({ nombre: '', apellido: '', correo: '', rol_id: '1', estado: 'activo' });
+  } catch {
+    Swal.fire({
+      title: 'Error',
+      text: 'Error al actualizar el usuario',
+      icon: 'error',
+      confirmButtonText: 'Cerrar'
+    });
+  }
+};
   const filteredUsuarios = usuarios.filter((usuario) => {
     const matchesSearch =
       usuario.nombre.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
@@ -174,6 +208,7 @@ const Users = () => {
             <thead>
               <tr>
                 <th className="text-left">Nombre</th>
+                <th className="text-left">Apellido</th>
                 <th className="text-left">Email</th>
                 <th className="text-left">Rol</th>
                 <th className="text-left">Acciones</th>
@@ -183,6 +218,7 @@ const Users = () => {
               {filteredUsuarios.map((usuario) => (
                 <tr key={usuario.usuario_id}>
                   <td>{usuario.nombre}</td>
+                  <td>{usuario.apellido}</td>
                   <td>{usuario.correo}</td>
                   <td>{rolMap[usuario.rol_id?.toString()] || 'Desconocido'}</td>
                   <td>
