@@ -1,16 +1,55 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import LogoImage from '/images/logo.png'
 import { useAuth } from '@hooks/useAuth';
-import { ArrowDownTrayIcon, ArrowUpTrayIcon, Bars2Icon, PowerIcon } from '@heroicons/react/24/solid';
+import { ArrowUpTrayIcon, Bars2Icon, PowerIcon } from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
-
+import Swal from 'sweetalert2';
+import { useAuthStore } from '@store/authStore';
+import { checkActivation, uploadActivateFile } from '@services/teacer.activations.service';
+const serverUrl = import.meta.env.VITE_AUTH_URI || 'http://localhost:4000'
 
 const ActiveAccount = () => {
   const sidebarRef = useRef()
+  const { token } = useAuthStore()
   const { Logout } = useAuth()
 
-  const toggleSidebar = (e) => {
+  const [fileOneUploaded, setFileOneUploaded] = useState(false)
+  const [fileTwoUploaded, setFileTwoUploaded] = useState(false)
+  const [fileOne, setFileOne] = useState("")
+  const [fileTwo, setFileTwo] = useState("")
 
+  const [activationState, setActivationState] = useState(null)
+
+  useEffect(() => {
+    const loadMyActivation = async () => {
+      await checkActivation({ token })
+        .then(result => myActivationResult(result.body.verification))
+        .catch((e) => console.log(e.message))
+    }
+    loadMyActivation()
+  }, [])
+
+  const myActivationResult = (result) => {
+    if (result) {
+
+      setActivationState(result.state)
+
+      if (result.img_1 !== null && result.img_1 !== "") {
+        setFileOneUploaded(true)
+        setFileOne(serverUrl + "/" + result.img_1)
+      }
+
+      if (result.img_2 !== null && result.img_2 !== "") {
+        setFileTwoUploaded(true)
+        setFileTwo(serverUrl + "/" + result.img_2)
+      }
+
+      console.log(result);
+
+    }
+  }
+
+  const toggleSidebar = (e) => {
 
     const element = e.target
 
@@ -21,6 +60,7 @@ const ActiveAccount = () => {
     if (element.id.toString() !== "toggleSidebar") {
       sidebarRef.current.classList.add("hidden")
     }
+
   }
 
   useEffect(() => {
@@ -29,6 +69,65 @@ const ActiveAccount = () => {
       document.body.removeEventListener('click', toggleSidebar);
     }
   }, [])
+
+
+  const uploadFileOne = async () => {
+
+    const { value: file } = await Swal.fire({
+      title: "Certificado",
+      text: "Foto de certificado o diploma que confirmen que eres un docente",
+      input: "file",
+      inputAttributes: {
+        "accept": "image/*",
+        "aria-label": "Upload your profile picture"
+      },
+      background: "#4b5563",
+      color: "white"
+    })
+
+    if (file) await uploadActivateFile({
+      token,
+      file,
+      type: "1"
+    }).then(result => {
+      if (result.upload) {
+        setFileOneUploaded(true)
+        setFileOne(serverUrl + "/" + result.file)
+      }
+    }).catch((e) => {
+      console.log(e.message)
+    })
+
+  }
+
+  const uploadFileTwo = async () => {
+
+    const { value: file } = await Swal.fire({
+      title: "Selfie de Certificado",
+      text: "Selfie de certificado o diploma que confirmen que eres un docente",
+      input: "file",
+      inputAttributes: {
+        "accept": "image/*",
+        "aria-label": "Upload your picture"
+      },
+      background: "#4b5563",
+      color: "white"
+    });
+
+    if (file) await uploadActivateFile({
+      token,
+      file,
+      type: "2"
+    }).then(result => {
+      if (result.upload) {
+        setFileTwoUploaded(true)
+        setFileTwo(serverUrl + "/" + result.file)
+      }
+    }).catch((e) => {
+      console.log(e.message)
+    })
+
+  }
 
 
   return (
@@ -75,11 +174,38 @@ const ActiveAccount = () => {
           <h1 className='text-4xl text-center font-bold mb-6'>Activar Cuenta</h1>
           <p>Tu cuenta se encuentra <span className='text-red-600 mb-4'>INACTIVA</span>, por favor sigue los siguientes pasos para activarla:</p>
 
+          {
+            activationState !== null
+              ? activationState === 0
+                ? <p className='text-blue-400'>Pendiente de validación...</p>
+                : activationState === 1
+                  ? (
+                    <p className='text-green-400'>Cuenta Activada</p>
+                  )
+                  : activationState === 2
+                  && (<p className='text-red-400'>Activación Rechazada</p>)
+              : (<></>)
+          }
+
           <p className='text-2xl'><span className='font-bold text-violet-600'>1:</span> Foto de certificado o diploma que confirmen que eres un docente</p>
-          <button className='p-2 bg-violet-600 flex gap-1 items-center text-center justify-center font-semibold'>SUBIR ARCHIVO <ArrowUpTrayIcon className='w-6' /></button>
+          {
+            fileOne !== "" && (
+              <p>
+                <a href={fileOne} target='_blank'>Ver Imagen</a>
+              </p>
+            )
+          }
+          <button disabled={fileOneUploaded} onClick={uploadFileOne} className='disabled:bg-slate-400 disabled:cursor-not-allowed p-2 bg-violet-600 flex gap-1 items-center text-center justify-center font-semibold'>SUBIR ARCHIVO <ArrowUpTrayIcon className='w-6' /></button>
 
           <p className='text-2xl'><span className='font-bold text-violet-600'>2:</span> Selfie de certificado o diploma que confirmen que eres un docente</p>
-          <button className='p-2 bg-violet-600 flex gap-1 items-center text-center justify-center font-semibold'>SUBIR ARCHIVO <ArrowUpTrayIcon className='w-6' /></button>
+          {
+            fileTwo !== "" && (
+              <p>
+                <a href={fileTwo} target='_blank'>Ver Imagen</a>
+              </p>
+            )
+          }
+          <button disabled={fileTwoUploaded} onClick={uploadFileTwo} className='disabled:bg-slate-400 disabled:cursor-not-allowed p-2 bg-violet-600 flex gap-1 items-center text-center justify-center font-semibold'>SUBIR ARCHIVO <ArrowUpTrayIcon className='w-6' /></button>
         </div>
       </div>
     </div>
