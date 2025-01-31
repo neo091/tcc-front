@@ -46,7 +46,8 @@ const Activation = () => {
   const [error, setError] = useState(null);
   const [selectedVerification, setSelectedVerification] = useState(null);
   const [formData, setFormData] = useState({ state: 0, verified: 0, state_message: '' });
-  const [zoomedImage, setZoomedImage] = useState(null); // Nuevo estado
+  const [zoomedImage, setZoomedImage] = useState(null); // Nuevo estado para imagen zoom
+  const [imageToDelete, setImageToDelete] = useState(null); // Estado para la imagen a eliminar
 
   useEffect(() => {
     const loadVerifications = async () => {
@@ -65,30 +66,38 @@ const Activation = () => {
   const handleSelectVerification = async (verification) => {
     try {
       const details = await fetchVerificationDetails(verification.id);
-      setSelectedVerification(details[0]);
-      setFormData({ 
-        state: details[0].state || 0, 
-        verified: details[0].verified, 
-        state_message: details[0].state_message || '' ,
-        estado: details[0].estado
+      const selected = details[0];
+  
+      // Si el estado es 2 (Rechazado), aseguramos que el mensaje de rechazo se mantenga
+      setSelectedVerification(selected);
+      setFormData({
+        state: selected.state || 0,
+        verified: selected.verified,
+        state_message: selected.state === 2 ? selected.state_message : '', // Si es rechazado, mantiene el mensaje, sino lo vacía
+        estado: selected.estado,
       });
     } catch {
       setError('Error al obtener detalles de la verificación');
     }
   };
-
+  
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     let newValue = type === 'checkbox' ? (e.target.checked ? 1 : 0) : value;
-
+  
     if (name === 'state') {
-      setFormData((prev) => ({
-        ...prev,
-        state: value,
-        verified: value == 1 || value == 2 ? 1 : 0,
-        state_message: value == 1 ? 'aceptado' : value == 2 ? prev.state_message : '',
-        estado: value == 1 ? 1 : 0,
-      }));
+      setFormData((prev) => {
+        // Si el estado cambia a "Aceptado" o "Rechazado", se limpia el mensaje si es necesario
+        const newStateMessage = value == 2 ? prev.state_message : ''; // Solo conserva el mensaje si el estado es "Rechazado"
+        
+        return {
+          ...prev,
+          state: value,
+          verified: value == 1 || value == 2 ? 1 : 0,
+          state_message: newStateMessage, // Limpiamos el mensaje si no es "Rechazado"
+          estado: value == 1 ? 1 : 0,
+        };
+      });
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -96,6 +105,7 @@ const Activation = () => {
       }));
     }
   };
+  
 
   const handleUpdate = async () => {
     if (!selectedVerification) return;
@@ -116,14 +126,43 @@ const Activation = () => {
     }
   };
 
-  // Función para manejar el clic en la imagen
   const handleImageClick = (img) => {
     setZoomedImage(img);
   };
 
-  // Función para cerrar el modal de zoom
   const handleCloseZoom = () => {
     setZoomedImage(null);
+  };
+
+  const handleDeleteImage = (imageColumn) => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará permanentemente la imagen.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // Realizar la llamada al API para eliminar la imagen
+          await fetch(`${base_url}/act/verificationdel/${selectedVerification.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageColumn }),
+          });
+
+          // Actualizar la verificación sin la imagen eliminada
+          const updatedVerification = { ...selectedVerification };
+          updatedVerification[imageColumn] = null;
+          setSelectedVerification(updatedVerification);
+
+          Swal.fire('Eliminada', 'La imagen ha sido eliminada.', 'success');
+        } catch (error) {
+          Swal.fire('Error', 'Hubo un problema al eliminar la imagen.', 'error');
+        }
+      }
+    });
   };
 
   return (
@@ -168,21 +207,53 @@ const Activation = () => {
           <div className="bg-gray-800 p-6 rounded-lg w-96 text-white">
             <h2 className="text-xl font-semibold mb-4">Detalles de Verificación</h2>
             {selectedVerification.img_1 && (
-              <img 
-                src={`${base_url}/${selectedVerification.img_1}`} 
-                alt="Imagen 1" 
-                className="mb-2 rounded-lg cursor-pointer"
-                onClick={() => handleImageClick(`${base_url}/${selectedVerification.img_1}`)}
-              />
+              <div className="mb-4">
+                <img
+                  src={`${base_url}/${selectedVerification.img_1}`}
+                  alt="Imagen 1"
+                  className="rounded-lg cursor-pointer"
+                  onClick={() => handleImageClick(`${base_url}/${selectedVerification.img_1}`)}
+                />
+                <div className="flex justify-between mt-2">
+                  <button
+                    onClick={() => handleImageClick(`${base_url}/${selectedVerification.img_1}`)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded"
+                  >
+                    Zoom
+                  </button>
+                  <button
+                    onClick={() => handleDeleteImage('img_1')}
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                  >
+                    Borrar
+                  </button>
+                </div>
+              </div>
             )}
 
             {selectedVerification.img_2 && (
-              <img 
-                src={`${base_url}/${selectedVerification.img_2}`} 
-                alt="Imagen 2" 
-                className="mb-4 rounded-lg cursor-pointer"
-                onClick={() => handleImageClick(`${base_url}/${selectedVerification.img_2}`)}
-              />
+              <div className="mb-4">
+                <img
+                  src={`${base_url}/${selectedVerification.img_2}`}
+                  alt="Imagen 2"
+                  className="rounded-lg cursor-pointer"
+                  onClick={() => handleImageClick(`${base_url}/${selectedVerification.img_2}`)}
+                />
+                <div className="flex justify-between mt-2">
+                  <button
+                    onClick={() => handleImageClick(`${base_url}/${selectedVerification.img_2}`)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded"
+                  >
+                    Zoom
+                  </button>
+                  <button
+                    onClick={() => handleDeleteImage('img_2')}
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                  >
+                    Borrar
+                  </button>
+                </div>
+              </div>
             )}
 
             <select name="state" value={formData.state} onChange={handleChange} className="w-full mb-4 p-2 rounded bg-gray-700">
@@ -207,17 +278,9 @@ const Activation = () => {
         </div>
       )}
 
-      {/* Modal de zoom */}
       {zoomedImage && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center" 
-          onClick={handleCloseZoom}
-        >
-          <img 
-            src={zoomedImage} 
-            alt="Imagen ampliada" 
-            className="max-w-full max-h-full object-contain" 
-          />
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center" onClick={handleCloseZoom}>
+          <img src={zoomedImage} alt="Imagen ampliada" className="max-w-full max-h-full object-contain" />
         </div>
       )}
     </div>
