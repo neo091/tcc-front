@@ -42,6 +42,7 @@ const Admin = () => {
                 <li><Link to={"Profile"} className="px-4 py-2 hover:bg-slate-700 block">Perfil Admin</Link></li>
                 <li><Link to={"/Admin/Users"} className="px-4 py-2 hover:bg-slate-700 block">Gestion de Usuario</Link></li>
                 <li><Link to={"/Admin/Rooms"} className="px-4 py-2 hover:bg-slate-700 block">Gestion de Aulas</Link></li>
+                <li><Link to={"/Admin/Activation"} className="px-4 py-2 hover:bg-slate-700 block">Docentes Activacion</Link></li>
               </ul>
             </nav>
             <footer>
