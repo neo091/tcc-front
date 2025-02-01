@@ -1,47 +1,104 @@
-import TaskContent from "@components/TaskContent";
-import { getCompletedTasks } from "@services/Tareas.service";
+import { checkIsCompletedTask, getFeedback, getTask } from "@services/Tareas.service";
 import { useAuthStore } from "@store/authStore";
 import { useTaskStore } from "@store/useTaskStore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import FinishTask from "@components/FinishTask";
 import TaskResume from "@components/TaskResume";
+import TaskContent from "@components/TaskContent";
 
 
 const TareaView = () => {
 
   const { token } = useAuthStore()
-  const { task, isCompleted, setCompleted, resetCompleted, setQuestions, questions, currentQuestion } = useTaskStore()
-
-  const [showTasks, setShowTasks] = useState(false)
-  const [showExists, setShowExists] = useState(false)
-  const [resume, setResume] = useState([])
-
+  const { taskId } = useTaskStore()
   const navigate = useNavigate()
 
-  const loadIsCompleted = async () => {
-    await getCompletedTasks({ task: task.id, token })
-      .then((result) => {
-        if (result.body.length > 0) {
-          if (!isCompleted().completed) {
-            setCompleted({ id: task.id })
-          }
-          setResume(result.body[0])
-          setShowExists(true)
+  const [task, setTask] = useState([])
+  const [currentTask, setCurrentTask] = useState(0)
+  const [replied, setReplied] = useState(0)
+  const [completed, setCompleted] = useState(false)
+  const [resume, setResume] = useState(false)
+  const [correct, setCorrect] = useState([])
+  const [incorrect, setInCorrect] = useState([])
+  const [feedback, setFeedback] = useState([])
+
+  const checkQuestion = ({ index }) => {
+
+    const current = task[currentTask]
+
+
+    if (current.correct === index) {
+      setCorrect(correct.concat(current))
+
+    } else {
+      setInCorrect(incorrect.concat(current))
+    }
+
+
+    const nextStep = currentTask + 1
+
+    if (nextStep < task.length) {
+      setCurrentTask(currentTask + 1)
+    }
+
+    if ((replied + 1) === task.length) {
+      console.log("completed!");
+      setCompleted(true)
+    }
+
+    setReplied(replied + 1)
+
+  }
+
+  const checkHandle = ({ index }) => {
+    checkQuestion({ index })
+  }
+
+
+  const checkIsCompleted = async () => {
+    await checkIsCompletedTask({ taskId, token })
+      .then(async res => {
+
+        if (res.body.length === 0) {
+          await getTask({ taskId, token })
+            .then(result => {
+
+              setTask(JSON.parse(result.body.value))
+
+            })
+            .catch(e => {
+              console.log(e.message);
+            })
         } else {
-          if (isCompleted().completed) {
-            resetCompleted({ id: task.id })
-          }
-          setQuestions({ token })
-          setShowTasks(true)
+
+          const { corrects, incorrects } = res.body
+
+          await getFeedback({ taskId, token })
+            .then(result => {
+              setFeedback(JSON.parse(result.body.response))
+
+              setCorrect(JSON.parse(corrects))
+              setInCorrect(JSON.parse(incorrects))
+
+              setCompleted(true)
+              setResume(true)
+
+            })
+            .catch(e => {
+              console.log(e.message);
+            })
+
+
         }
+
       })
-      .catch((err) => console.log(err))
+      .catch(e => {
+        console.log(e.message);
+      })
   }
 
   useEffect(() => {
-    loadIsCompleted()
-
+    checkIsCompleted()
   }, [])
 
   return (
@@ -49,10 +106,27 @@ const TareaView = () => {
 
       <div className="max-w-xl bg-slate-800 m-auto text-center items-center justify-center flex flex-col p-4 rounded ">
 
+        {
+          !completed && (
+            <TaskContent
+              task={task[currentTask]}
+              replied={replied}
+              checkHandle={checkHandle}
+              total={task.length}
+            />
+          )
+        }
 
-        {showTasks && <TaskContent currentQuestion={questions[currentQuestion]} />}
-
-        {showExists && <TaskResume resume={resume} />}
+        {completed && (
+          <TaskResume
+            correct={correct}
+            incorrect={incorrect}
+            taskId={taskId}
+            token={token}
+            resume={resume}
+            feedback={feedback}
+          />
+        )}
 
 
       </div>

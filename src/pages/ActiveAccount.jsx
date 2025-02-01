@@ -15,8 +15,8 @@ const ActiveAccount = () => {
 
   const [fileOneUploaded, setFileOneUploaded] = useState(false)
   const [fileTwoUploaded, setFileTwoUploaded] = useState(false)
-  const [fileOne, setFileOne] = useState("")
-  const [fileTwo, setFileTwo] = useState("")
+  const [fileOne, setFileOne] = useState(null)
+  const [fileTwo, setFileTwo] = useState(null)
 
   const [activationState, setActivationState] = useState(null)
 

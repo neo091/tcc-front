@@ -12,12 +12,10 @@ const Tareas = () => {
   const [tareas, setTareas] = useState([])
 
   const cargarTareas = async () => {
-
     const tareasResult = await obtenerTareas({ roomId: room.aula, token, token })
     const { body: tasks } = tareasResult
     setTareas(tasks)
   }
-
 
   useEffect(() => {
     cargarTareas()

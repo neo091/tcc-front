@@ -66,3 +66,62 @@ export async function saveCompletedTask({ task, token, data }) {
 
   return result.data
 }
+
+export async function checkIsCompletedTask({ taskId, token }) {
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  }
+  const result = await axios.get(`${base_url}/api/dashboard/rooms/tasks/${taskId}/completed`, config)
+  return result.data
+}
+
+export async function getTask({ taskId, token }) {
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  }
+  const result = await axios.get(`${base_url}/api/dashboard/rooms/task/${taskId}`, config)
+  return result.data
+}
+
+export async function generateAndSaveFeedback({ taskId, token, data }) {
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  }
+  //  http://localhost:4000/api/dashboard/rooms/tasks/60/completed
+  const result = await axios.post(`${base_url}/api/gpt/feedback/${taskId}`, data, config)
+
+  return result.data
+}
+
+export async function saveFeedback({ taskId, token, data }) {
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  }
+  //  http://localhost:4000/api/dashboard/rooms/tasks/60/completed
+  const result = await axios.post(`${base_url}/api/gpt/feedback`, data, config)
+
+  return result.data
+}
+
+export async function getFeedback({ taskId, token }) {
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  }
+  const result = await axios.get(`${base_url}/api/dashboard/rooms/task/feedback/${taskId}`, config)
+  return result.data
+}

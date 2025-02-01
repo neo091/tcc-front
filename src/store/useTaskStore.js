@@ -5,6 +5,18 @@ export const useTaskStore = create(
   persist(
     (set, get) => ({
       task: {},
+      taskId: null,
+      setTaskId: (taskId) => {
+        set({ taskId: taskId })
+
+        if (get().taskId === taskId) {
+          return { completed: true, taskId }
+        } else {
+          return { completed: false, taskId }
+        }
+
+
+      },
       completed: [],
       questions: [],
       currentQuestion: 0,
@@ -79,9 +91,7 @@ export const useTaskStore = create(
 
         set({ replied: get().replied + 1 })
       },
-      setTask: (task) => {
-        set({ task: task })
-      },
+
       resetQuestions: () => {
         set({ questions: [], currentQuestion: 0, replied: 0, correctQuestions: [], inCorrectQuestions: [] })
       },

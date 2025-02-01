@@ -1,87 +1,56 @@
-import { saveCompletedTask } from "@services/Tareas.service";
-import { useAuthStore } from "@store/authStore";
-import { useTaskStore } from "@store/useTaskStore";
 import { useState } from "react"
-import FinishTask from "./FinishTask";
 
-const TaskContent = () => {
-  const { task, questions, currentQuestion, replied, checkQuestion, setCompleted, correctQuestions, inCorrectQuestions } = useTaskStore()
-  const { token } = useAuthStore()
-  const [text, setText] = useState('')
-  const [taskFinished, setTaskFinished] = useState(false)
+const TaskContent = ({ task, replied, total, checkHandle }) => {
 
-  const checkHandle = ({ index }) => {
+  const answers = task?.answers
 
-    if ((replied + 1) === questions.length) {
-      console.log('Completed', 'rep:', replied + 1, 'total', questions.length)
-
-      // preparar los datos para enviar al servidor
-      const data = {
-        points: correctQuestions.reduce((total, current) => total + Number(current.points), 0),
-        points_total: questions.reduce((total, current) => total + Number(current.points), 0),
-        corrects: JSON.stringify(correctQuestions),
-        incorrects: JSON.stringify(inCorrectQuestions)
-      }
-      setCompleted({ id: task.id })
-
-      saveCompletedTask({ task: task.id, token, data })
-
-      setTaskFinished(true)
-      return
-    }
-    checkQuestion({ index })
-  }
+  const [text, setText] = useState("")
 
   return (
     <>
-      {
-        !taskFinished ? (
+      <div className='max-w-xl  bg-slate-800 p-2 rounded animate-fadeIn'>
 
-          questions.length > 0 ? <div className='max-w-xl  bg-slate-800 p-2 rounded animate-fadeIn'>
+        <p className="p-2 bg-slate-600 rounded-md mb-4 w-28 m-auto">{replied} / {total}</p>
+        <h2 className="text-center text-3xl bg-slate-700 p-2 rounded-md">{task?.ask}</h2>
+        <div className='border-b-[1px] border-gray-600 my-4'></div>
+        {
+          task?.type === "multiple_choice" && (
+            <>
+              {answers.map((answer, index) => (
+                <button key={answer} onClick={(e) => checkHandle({ index })} className={" bg-blue-600 hover:bg-blue-700 rounded block w-full text-center my-2 font-semibold text-white p-4 transition-all duration-500"}>
+                  {answer}
+                </button>
+              ))}
+            </>
+          )
+        }
 
-            <p className="p-2 bg-slate-600 rounded-md ">{replied} / {questions.length}</p>
-            <h2 className="text-center text-3xl bg-slate-700 p-2 rounded-md">{questions[currentQuestion]?.ask}</h2>
-            <div className='border-b-[1px] border-gray-600 my-4'></div>
+        {
+          task?.type == "true_false" && (
+            <>
+              {answers.map((answer, index) => <button key={answer} onClick={() => checkHandle({ index })} className={" bg-blue-600 hover:bg-blue-700 rounded block w-full text-center my-2 font-semibold text-white p-4 transition-all duration-500"}>
+                {answer}
+              </button>)}
+            </>
+          )
+        }
 
-            {
-              questions[currentQuestion]?.type === "multiple_choice" && (
-                <>
-                  {questions[currentQuestion]?.answers?.map((answer, index) => <button key={answer} onClick={(e) => checkHandle({ index })} className={" bg-blue-600 hover:bg-blue-700 rounded block w-full text-center my-2 font-semibold text-white p-4 transition-all duration-500"}>
-                    {answer}
-                  </button>)}
-                </>
-              )
-            }
+        {
+          task?.type == "typing" && (
+            <>
+              <input type="text" placeholder="typing here!" className="w-full p-4 my-4 text-black rounded" defaultValue={text} onKeyUp={(e) => setText(e.target.value)} />
+              <button onClick={() => {
+                if (text) {
+                  checkHandle({ index: text })
+                }
+              }} className={" bg-blue-600 hover:bg-blue-700 rounded block w-full text-center my-2 font-semibold text-white p-4 transition-all duration-500"}>
+                Aceptar
+              </button>
+            </>
+          )
+        }
 
-            {
-              questions[currentQuestion]?.type == "true_false" && (
-                <>
-                  {questions[currentQuestion]?.answers?.map((answer, index) => <button key={answer} onClick={() => checkHandle({ index })} className={" bg-blue-600 hover:bg-blue-700 rounded block w-full text-center my-2 font-semibold text-white p-4 transition-all duration-500"}>
-                    {answer}
-                  </button>)}
-                </>
-              )
-            }
-
-            {
-              questions[currentQuestion]?.type == "typing" && (
-                <>
-                  <input type="text" placeholder="typing here!" className="w-full p-4 my-4 text-black rounded" defaultValue={text} onKeyUp={(e) => setText(e.target.value)} />
-                  <button onClick={() => {
-                    if (text) {
-                      checkHandle({ index: text })
-                    }
-                  }} className={" bg-blue-600 hover:bg-blue-700 rounded block w-full text-center my-2 font-semibold text-white p-4 transition-all duration-500"}>
-                    Aceptar
-                  </button>
-                </>
-              )
-            }
-          </div> : 'no hay tareas para mostrar'
-
-        ) : <FinishTask />
-      }
-
+      </div>
     </>
 
   )
