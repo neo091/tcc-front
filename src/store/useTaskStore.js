@@ -14,8 +14,9 @@ export const useTaskStore = create(
         } else {
           return { completed: false, taskId }
         }
-
-
+      },
+      setTask: (task) => {
+        set({ task })
       },
       completed: [],
       questions: [],

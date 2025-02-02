@@ -1,5 +1,6 @@
 import TasksOfList from "@components/TasksOfList";
 import { ArrowUpTrayIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import { deleteFile } from "@services/teacher.files.service";
 import { useAuthStore } from "@store/authStore";
 import { useRoomStore } from "@store/roomStore";
 import { useTaskStore } from "@store/useTaskStore";
@@ -221,27 +222,60 @@ const TaskEdit = () => {
     }
   }
 
+  const fileDeleteHandle = (event) => {
+
+    const fileId = event.target.dataset.fileId
+
+    const newFiles = files.filter(file => Number(file.archivo_id) !== Number(fileId))
+
+    Swal.fire(
+      {
+        title: "Borrar?",
+        confirmButtonText: "Si, borrar",
+        showCancelButton: true
+      }
+    ).then(result => {
+
+      if (result.isConfirmed) {
+        deleteFile({ token, file: fileId }).then(result => {
+
+          if (!result.error)
+            setFiles(newFiles)
+
+          if (result.error)
+            Swal.fire("Error", result.body.message, "error")
+
+        }).catch(e => {
+          Swal.fire("Error", e.message, "error")
+        })
+      }
+    })
+  }
+
   return (
     <section className="xl:w-[80vh] m-auto">
-      <h1 className="text-2xl font-semibold">{task.title} {task.id}</h1>
+      <h1 className="text-2xl font-semibold">{task.title}</h1>
 
-      <div className="p-2 mt-4">
+      <div className="mt-4">
         <button onClick={openFileDialog} className="p-2 bg-sky-500 rounded flex gap-2">
           Subir Archivo PDF
           <ArrowUpTrayIcon className="w-6" />
 
         </button>
       </div>
-      <div>
+      <div className="flex flex-col gap-2 mt-4">
         {files.map(file => {
           return (
-            <p key={file.archivo_id}><a href={`http://localhost:4000/uploads/${file.name}`} target="_blank" className="inline-block p-2 hover:underline">{file.name}</a> | <button className="text-red-500 inline-block p-2 hover:underline">borrar</button> <input type="radio" name="selectedFile" onClick={(e) => selectFileHandle(file)} />
-            </p>
+            <div key={file.archivo_id} className="flex gap-2 p-2 bg-gray-800 rounded-xl justify-between">
+              <input type="radio" className="w-6" name="selectedFile" onClick={(e) => selectFileHandle(file)} />
+              <a href={`http://localhost:4000/uploads/${file.name}`} target="_blank" className="inline-block p-2 hover:underline">{file.name}</a>
+              <button data-file-id={file.archivo_id} onClick={fileDeleteHandle} className="text-white inline-block hover:bg-red-600 transition-all duration-300 p-2 bg-red-500 rounded">Borrar</button>
+            </div>
           )
         })}
       </div>
 
-      <div className="p-2 mt-4">
+      <div className="mt-4">
 
         <div className="my-2">
           <label htmlFor="">Tipo de Contenido</label>
@@ -256,21 +290,18 @@ const TaskEdit = () => {
           <button className="bg-teal-500 hover:bg-teal-400 text-green-950 font-semibold p-2 rounded flex gap-2 disabled:bg-gray-500 justify-center" onClick={generateTask}>
             Generar tarea
             <SparklesIcon className="w-6" />
-
           </button>
 
           <button onClick={saveTasks} className="bg-green-600 p-2 rounded text-green-950 font-semibold">
             {tasksLoader ? 'Actualizar Tareas' : 'Guardar Tareas'}
           </button>
+
         </div>
       </div>
 
-
-
-      <div className="p-2 mt-2 max-h-[88vh]">
+      <div className="mt-2 max-h-[88vh]">
         <TasksOfList list={tasks} update={setTasks} />
       </div>
-
 
     </section>
   );

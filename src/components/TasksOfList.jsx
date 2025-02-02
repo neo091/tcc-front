@@ -129,7 +129,7 @@ const TasksOfList = ({ list, update }) => {
       {
         list.map((task, index) => {
           return (
-            <>
+            <div key={task.answer}>
               {
                 task.type === "multiple_choice" && <MultipleChoice item={task} index={index} remove={removeOfList} editAsk={editAskHandle} />
               }
@@ -141,7 +141,7 @@ const TasksOfList = ({ list, update }) => {
               {
                 task.type === "typing" && <Typing item={task} index={index} remove={removeOfList} editAsk={editAskHandle} />
               }
-            </>
+            </div>
           )
         })
       }
