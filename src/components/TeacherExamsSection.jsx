@@ -1,6 +1,7 @@
-import { PencilSquareIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/solid"
+import { CheckIcon, PencilSquareIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/solid"
 import { useExam } from "@hooks/useExam";
 import { useRoomStore } from "@store/roomStore";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2";
 
@@ -51,9 +52,11 @@ const ListOfExams = ({ exam, examDelete }) => {
         {examConfig.title === "" ? `Exam Nº: ${exam.id}` : examConfig.title}
       </h3>
 
-      <button onClick={editHandle} className="text-sky-500" title="Edit">
-        <PencilSquareIcon className='w-6 h-6' />
-      </button>
+      {
+        exam.published === 0 ? <button onClick={editHandle} className="text-sky-500" title="Edit">
+          <PencilSquareIcon className='w-6 h-6' />
+        </button> : <CheckIcon className="w-6 h-6 text-green-300 " />
+      }
 
       <button onClick={remove} className="text-red-500" title="Delete">
         <TrashIcon className='w-6 h-6' />

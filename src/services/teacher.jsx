@@ -403,6 +403,19 @@ export async function editExam(data) {
   )
 }
 
+export async function postExam(data) {
+
+  const user = await getUserData()
+
+  setToken(user.token)
+
+  return await axios.put(`${base_url}/api/teacher/exams/post`, data,
+    {
+      headers: { Authorization: token }
+    }
+  )
+}
+
 export async function getExams(roomID) {
 
   const user = await getUserData()

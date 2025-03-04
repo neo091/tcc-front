@@ -2,7 +2,7 @@ import { useLoaderData, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/Card';
 
 import Swal from 'sweetalert2';
-import { editExam } from '@services/teacher';
+import { editExam, postExam } from '@services/teacher';
 import { useExam } from '@hooks/useExam';
 import ExamGeneratedList from '@components/ExamGeneratedList';
 
@@ -115,19 +115,38 @@ const EditExam = () => {
     })
   }
 
+
+  const publicExamHandle = () => {
+    const data = {
+      "id": examID
+    }
+
+    Swal.fire({
+      title: "Publicar",
+      showCancelButton: true,
+      cancelButtonColor: "red",
+      confirmButtonText: "Publicar",
+      text: "Una vez PUBLICADO ya no podrá editarse"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+
+        await postExam(data).then(result => console.log(result)).catch((e) => console.log(e))
+
+
+        navigate(`/Teacher/Rooms/${id}`)
+      }
+    })
+  }
+
   return (
     <>
       {
         exam && <div>
-          <div className='grid grid-cols-1 md:grid-cols-2  gap-4    '>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <Card>
               <CardHeader>
-                <CardTitle>
-                  Editar Examen
-                </CardTitle>
-                <div>
-                  {examConfig.level}
-                </div>
+                <CardTitle>Editar Examen</CardTitle>
+                <button onClick={publicExamHandle} className='bg-green-500 px-6 py-2 rounded font-medium'>Publicar</button>
               </CardHeader>
 
               <CardContent>
