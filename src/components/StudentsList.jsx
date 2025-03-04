@@ -48,7 +48,7 @@ const StudentsList = () => {
                     Nivel
                 </div>
                 <div className='px-6 py-2 bg-slate-700 flex-1'>
-                    Tipo
+                    Fecha
                 </div>
 
             </div>

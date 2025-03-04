@@ -7,9 +7,10 @@ const TeacherHome = () => {
     return (
         <>
             <div className="flex flex-col gap-4">
-                <CounterSection />
+              
                 <ChartSection />
                 <ChatSection />
+                
             </div>
         </>
     );

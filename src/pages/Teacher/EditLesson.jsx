@@ -155,7 +155,7 @@ const EditLesson = () => {
 
     });
     if (answer) {
-      Swal.fire(`Entered email: ${answer}`);
+      Swal.fire(`Entered Answer: ${answer}`);
       const newContents = [...contents]
       newContents[contentIndex].answers[index] = answer
       setContents(newContents)

@@ -24,7 +24,7 @@ const TeacherFilesRooms = () => {
 
   const addFileHandle = async () => {
     const { value: file } = await Swal.fire({
-      title: "Select image",
+      title: "Select PDF",
       input: "file",
       inputAttributes: {
         "accept": "pdf/*",

@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 import Chart from "react-apexcharts";
 import { Card, CardTitle } from './Card';
@@ -305,37 +307,9 @@ const ChartSection = () => {
 
     return (
         <div className="grid grid-cols-12 gap-6 ">
-            <Card extraCss={'col-span-12 xl:col-span-9'}>
-                <div className='p-2'>
-                    <CardTitle>Promedio de Aprendizaje</CardTitle>
-                    <div className='h-[392px]'>
-                        <Chart options={LineOptions} series={LineOptions.series} type="area" height='392px' />
-                    </div>
-
-                </div>
-            </Card>
-
-            <Card extraCss={'col-span-12 xl:col-span-3'}>
-                <div className='p-2'>
-                    <CardTitle>Promedio General</CardTitle>
-                    <div className='h-[392px]'>
-                        <Chart options={optionsBars} series={optionsBars.series} type="bar" height="392px" />
-                    </div>
-                </div>
-            </Card>
-            <Card extraCss={'col-span-12 xl:col-span-4'}>
-                <div className='p-2'>
-                    <CardTitle>Exámenes Generados</CardTitle>
-                    <div className='min-h-[392px]'>
-                        <Chart options={donutState.options} series={donutState.series} type="donut" height="392px" />
-                    </div>
-
-                </div>
-            </Card>
-
             <Card extraCss={'col-span-12 xl:col-span-8'}>
                 <div className='p-6'>
-                    <CardTitle>Lista Exámenes Generados</CardTitle>
+                    <CardTitle>Lista de los examenes en curso</CardTitle>
 
                     <Exam />
 
