@@ -113,7 +113,7 @@ const AddExam = () => {
 
     });
     if (answer) {
-      Swal.fire(`Entered email: ${answer}`);
+      Swal.fire(`Entered answer: ${answer}`);
       const newExam = [...exam]
       newExam[examIndex].answers[answerIndex] = answer
       setExam(newExam)
