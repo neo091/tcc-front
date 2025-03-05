@@ -61,7 +61,7 @@ import Admin from "@Admin/Admin.jsx"
 import AdminHome from "@Admin/Home.jsx"
 import AdminUsers from "@Admin/Users.jsx"
 import AdminRooms from "@Admin/Rooms.jsx"
-import AdminActivation from"@Admin/Activation.jsx"
+import AdminActivation from "@Admin/Activation.jsx"
 import Chatbot from '@Pages/Dashboard/Chatbot'
 //import Profile from '@Pages/Dashboard/Profile'
 //cc
@@ -224,7 +224,7 @@ const router = createBrowserRouter(
         { path: "Users", element: <AdminUsers /> },
         { path: "Rooms", element: <AdminRooms /> },
         { path: "Profile", element: <Profile /> },
-        { path: "Activation", element: <AdminActivation/> },
+        { path: "Activation", element: <AdminActivation /> },
       ]
     },
     {

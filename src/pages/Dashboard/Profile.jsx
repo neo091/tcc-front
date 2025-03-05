@@ -4,10 +4,10 @@ import { useAuthStore } from "@store/authStore"
 
 const UserTypeToString = (type) => {
 
-    if (type === 0) return 'undefined'
-    if (type === 1) return 'Student'
-    if (type === 2) return 'Teacher'
-    if (type === 3) return 'Admin'
+  if (type === 0) return 'undefined'
+  if (type === 1) return 'Student'
+  if (type === 2) return 'Teacher'
+  if (type === 3) return 'Admin'
 
 }
 
@@ -19,29 +19,29 @@ const UserType = ({ type }) => <p className="text-sm text-center text-blue-500">
 const Profile = () => {
 
 
-    const { session } = useAuthStore()
+  const { session } = useAuthStore()
 
-    console.log(session)
+  console.log(session)
 
-    const updatePanel = (e) => {
-        document.querySelector('.active-panel').classList.remove('active-panel')
-        e.target.classList.add('active-panel')
-        updatePanelHandle(e.target.dataset.panelName)
-    }
+  const updatePanel = (e) => {
+    document.querySelector('.active-panel').classList.remove('active-panel')
+    e.target.classList.add('active-panel')
+    updatePanelHandle(e.target.dataset.panelName)
+  }
 
 
-    return (
-        <>
-            <Title>Perfil</Title>
-            <GridContent>
-                <ProfilePicture src='/images/JohnWick.png' />
-                <ProfileInfo name={session.name} />
-                <ProfileInfo name={session.email} />
-                <UserType type={session.type} />
-            </GridContent>
-        </>
+  return (
+    <>
+      <Title>Perfil</Title>
+      <GridContent>
+        <ProfilePicture src='/images/JohnWick.png' />
+        <ProfileInfo name={session.name} />
+        <ProfileInfo name={session.email} />
+        <UserType type={session.type} />
+      </GridContent>
+    </>
 
-    );
+  );
 }
 
 export default Profile;

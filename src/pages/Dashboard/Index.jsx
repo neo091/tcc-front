@@ -12,6 +12,33 @@ const Dashboard = () => {
   const { Logout } = useAuth()
 
 
+
+  const loadFilters = () => {
+
+    const colorBlindConfig = window.localStorage.getItem("colorblind")
+
+    if (!colorBlindConfig) return
+
+    let filter;
+    switch (colorBlindConfig) {
+      case 'protanopia':
+        filter = 'grayscale(30%) contrast(120%)';
+        break;
+      case 'deuteranopia':
+        filter = 'sepia(50%) saturate(150%)';
+        break;
+      case 'tritanopia':
+        filter = 'hue-rotate(200deg) contrast(110%)';
+        break;
+      case 'normal':
+      default:
+        filter = 'none';
+        break;
+    }
+    document.body.style.filter = filter
+  }
+
+
   const toggleMenuHandle = () => {
     setShowMenu(!showMenu)
   }
@@ -24,6 +51,10 @@ const Dashboard = () => {
     if (session.state === 0) {
       Logout("inactive")
     }
+  }, [])
+
+  useEffect(() => {
+    loadFilters()
   }, [])
 
   return (

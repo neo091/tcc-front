@@ -8,7 +8,15 @@ export function useAuth() {
 
   const Logout = async (inactive = "") => {
     await resetSession()
+
+    const lastColorBlindSelected = window.localStorage.getItem("colorblind")
+
+
     window.localStorage.clear()
+
+    window.localStorage.setItem(
+      'colorblind', lastColorBlindSelected
+    )
 
     if (inactive !== "" && inactive === "inactive") {
       navigate('/Suspended')
